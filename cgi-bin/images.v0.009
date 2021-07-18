@@ -1,0 +1,467 @@
+#!/usr/bin/perl -w
+######################################################################
+#
+# images (*) creates and displays image galleries.  Hopefully.
+#
+# Copyright (C) 2006 Rob Nugen
+# 
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+# 
+# http://www.gnu.org/copyleft/gpl.html
+#
+######################################################################
+
+######################################################################
+#
+# (*) I'm using no extension so I can rewrite it later in python or
+#  another language, allowing the same URLs to work in the future version
+#
+# version 0.009  21 June 2006: throws exceptions, knows what tables it needs
+# version 0.003  15 June 2006: combines tabber and hoverbox
+# version 0.003a 14 June 2006: uses tabber to put sidebar in clickable tabs
+# version 0.002  13 June 2006: reads tags from mySQL according to what's been typed in search field
+# version 0.002a 13 June 2006: CGI::Ajax is the wrap-around
+# version 0.001  11 June 2006: got it to read hashes from files and connect to mySQL
+# version 0.0    created 10 June 2006
+#
+######################################################################
+
+# load in the modules
+use lib "/home/thunderrabbit/lib/perl5/site_perl";  # to use modules installed in my user space (in this case Ajax)
+use strict;
+use CGI;
+use CGI::Ajax;
+use CGI::Cookie;
+use DBI;
+use Image::Magick;
+use Error qw(:try);
+
+######################################################################
+#
+# This is the shortest technique I found to create my own errors.
+# Note two occurences of object name on each line, and "package main"
+# after all the definitions
+#
+######################################################################
+package Critical_error;     @Critical_error::ISA = qw(Error);
+package Notsobad_error;     @Notsobad_error::ISA = qw(Error);
+
+# 
+# optimally, this object would have the table list built inside, but I don't know how.
+# Instead, we will write to @main::need_tables;
+#
+package Must_make_tables;     @Must_make_tables::ISA = qw(Error);  
+
+#$ dunno how to add an array to this object: package Must_make_tables;     @Must_make_tables::ISA = qw(Notsobad_error);
+#$ dunno how to add an array to this object: 
+#$ dunno how to add an array to this object: sub new
+#$ dunno how to add an array to this object: {
+#$ dunno how to add an array to this object:     my $class = shift; 
+#$ dunno how to add an array to this object:     my $self = {};
+#$ dunno how to add an array to this object: #    my $self = shift;
+#$ dunno how to add an array to this object:     my $text = "" . shift;
+#$ dunno how to add an array to this object:     my @args = ();
+#$ dunno how to add an array to this object:     $self->{'TABLE_LIST'} = [];  # this tells what tables we need to make
+#$ dunno how to add an array to this object: 
+#$ dunno how to add an array to this object:     local $Error::Depth = $Error::Depth + 1;
+#$ dunno how to add an array to this object:     local $Error::Debug = 1;  # Enables storing of stacktrace
+#$ dunno how to add an array to this object:     bless ($self, $class);
+#$ dunno how to add an array to this object:     $self->SUPER::new(-text => $text, @args);
+#$ dunno how to add an array to this object: }
+
+package main;
+
+require "hash_io.pl";
+require "draw_navigation_test_version_adds_hiding.pl";
+require "mkdef.pl";
+require "allowSource.pl";
+require "DB_CDE.pl";  #  DBI code from Mike Schienle
+require "setCookies.pl";
+
+my @need_tables;  # array of tables we need to create.  This should optimally be part of the Must_make_tables object above.
+
+my $action;  # this will be set by
+my $q = new CGI;    
+my $pjx = CGI::Ajax->new( 'tag_search' => \&tag_search);
+$pjx->JSDEBUG(1);
+$pjx->DEBUG(0);
+
+# settings for image params, language, and db access are stored in text files that will be read into hashes, starting with %settings
+
+my ($settings_file,%settings,%lang,%dbHash);
+$settings_file = "/home/thunderrabbit/setup_journal/images.settings";
+
+try {
+    &critical_settings_check;
+    &check_tables_in_db;
+    $action = "user screen";
+}
+catch Critical_error with {
+    my $err = shift;
+
+# global one already exists; why not use it?	my $q = new CGI;
+    print "Content-type: text/html\n\n";  # This shouldn't be needed, but fucks up otherwise
+    print $q->start_html($lang{'title'});
+    print $q->p("Sorry; a critical error occured: ", $err->{"-text"});
+    print $q->end_html;
+
+    warn ("A critical error occured: ", $err->{"-text"});
+    exit;
+}
+catch Must_make_tables with {
+    my $err = shift;
+    my $is_admin;
+
+    try { $is_admin = &isAdmin }
+    catch Critical_error with {
+	# Should optimally re-throw the error, but I can't get that to work.
+	my $err = shift;
+
+# global one already exists; why not use it?	my $q = new CGI;
+	print "Content-type: text/html\n\n";  # This shouldn't be needed, but fucks up otherwise
+	print $q->start_html($lang{'title'});
+	print $q->p("Sorry. ", $err->{"-text"});
+	print $q->end_html;
+
+	warn ("A critical error occured: ", $err->{"-text"});
+	exit;
+
+    };
+
+    if ($is_admin) {
+	$action="AJAX admin screen";
+    }
+    else 
+    {
+# global one already exists; why not use it?	my $q = new CGI;
+	print "Content-type: text/html\n\n";  # This shouldn't be needed, but fucks up otherwise
+	print $q->start_html($lang{'title'});
+	print $q->p($lang{'oops'});
+	# We are in Must_make_tables' catch block.  More general Notsobad_errors should be caught below
+	print $q->p($lang{'need to create tables'}, $q->b(join ("</b>, <b>", @need_tables)));
+	print $q->p($lang{'enter admin password'});
+	print $q->start_form;
+	print $q->textfield(-name=>$settings{'name of admin pw field'},-size=>20,-maxlength=>20), "\n";
+	print $q->end_form;
+	print $q->end_html;
+	exit;
+    }
+}
+
+catch Notsobad_error with {
+    my $err = shift;
+# global one already exists; why not use it?	my $q = new CGI;
+
+    print "Content-type: text/html\n\n";  # This shouldn't be needed, but fucks up otherwise
+    print $q->start_html($lang{'title'});
+    print $q->p($lang{'oops'}, $err->{"-text"});
+    print $q->p("Basically, we have got the critical error check finished.  Now we need to delicately handle the check_tables_in_db.  Right now " .
+"I think you are confused because we will not always get back to this point; only if there was actually a missing table discovered by check_tables_in_db. " .
+"Perhaps it would be good to actually have that function check for the tags table.  Find it and no throw an error, but display the user screen for tags. " .
+"Then, have it look for the images table, and throw an error.  (Actually it should be looking for images first) " .
+"Oh!  Or, since we know the SQL to create the tags table, actually drop that table and have this recreate it.");
+    print $q->p("We get stuck in this block if it was critical error or notsobad error, but there was no admin-password found.");
+    print $q->p("Once we get past this block, either we had an error but found admin-password (and therefore should run admin screen), or we had no error and don't need password (and should run user screen).  I think.");
+    print $q->p("If everything is good, don't even look for cookies, etc.  Just print the page.  therefore paragraph 1 above is good idea.");
+    print $q->p("Musings for a not-so-tired brain:");
+    print $q->p("<b>*</b> Need to flowchart out where to check for admin password, when to read/write cookies for it.");
+    print $q->p("<b>*</b> Be careful with \$action.  When is appropriate time to set that?  Probably not before we know if we get past the pre checks.");
+    print $q->p("<b>*</b> Should we declare more than one \$q = new CGI?");
+# removed to not confuse with above ramblings    
+    print $q->end_html;
+    exit;
+}
+otherwise {
+    warn ("images is in otherwise-BLOCK, which means we didn't catch the error above.");
+    my $err = shift;
+    warn ("caught the culprit; looks like ", $err->{"-text"});
+}
+finally {
+};
+
+###########################
+##
+##
+##  If we can reach the database, then check for images and tables and
+##  stuff.  Dunno if we should check for the existence of each table
+##  that can be here, but it would be really cool to allow
+##  semi-functionality according to which tables exist, and just warn
+##  that there is not full functionality.  This script should be able
+##  to check an admin password (stored in %dbHash) and create any
+##  tables necessary.
+##
+##
+###########################
+
+
+###########################
+##
+##
+
+##  
+
+##
+##
+###########################
+
+
+# DBI handles
+my ($sth, $sql, $rv, $dbh, $dbData);
+
+#xxxxxxxxxx here was my $q = new CGI;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+# this outputs the html for the page.
+print $pjx->build_html($q,\&main,""); # The extra "" keeps Ajax.pm from causing "Use of uninitialized value" warnings.
+
+sub main {
+    my $html = "";
+    $html .= $q->start_html(-title=>$lang{'title'},
+			    -script=>[{-language=>'JAVASCRIPT', -src=>'/js/tabber.js'},   # does the navigation tabs on the left
+				      {-language=>'JAVASCRIPT', -src=>'/js/boxover.js'}],   # creates the tooltip items on tab labels
+			    -style=>{-src=>'/css/example.css'}
+			    ) . "\n";
+
+    $html .= &draw_AJAX_navigation("0main&images");
+
+    $html .= $q->p($action);
+    # begin search sidebar
+    $html .= "\n" . $q->start_div({-class=>"tabber", -id=>"sidebartabs", -style=>"border:1px solid blue; width: 20%; height: 100%"}) . "\n";
+
+    { # begin tag search sidebar
+	# Use -title=>"header=[hoverbox title] body=[hoverbox body]" to get a hoverbox.  use <h2> tag to label the tab
+	$html .= "\n" . $q->start_div({-class=>"tabbertab", -id=>"tagsearchtab", 
+				       -style=>"border: 1px solid black; width: 100px; height: 480px; overflow: none", # THESE VALS NOT CAREFULLY CHOSEN
+				       -title=>"header=[$lang{'tag tab hover title'}] body=[$lang{'tag tab hover body'}]"}) . "\n";
+	$html .= "\n" . $q->h2($lang{'tag tab'}) . "\n";
+
+	$html .= "\n" . $q->start_form;
+	$html .= "\n" . $q->textfield({-name=>"tag", -id=>"tag", -onkeyup=>"tag_search( ['tag'], ['rdiv'] ); return true;"}). "\n"; 
+	$html .= $q->end_form. "\n";
+	$html .= "\n" . $q->start_div({-id=>"rdiv", 
+				       -style=>"border: 1px solid black; width: 80px; height: 460px; overflow: auto"}  # THESE VALS NOT CAREFULLY CHOSEN
+				      );
+	$html .= $q->end_div . $q->comment("ends (id=\"rdiv\")") . "\n";
+
+	$html .= "\n" . $q->end_div . $q->comment("ends (class=\"tabbertab\" id=\"tagsearchtab\")") . "\n";
+    } # end tag search sidebar
+
+    { # begin event search sidebar
+	# Use -title=>"header=[hoverbox title] body=[hoverbox body]" to get a hoverbox.  use <h2> tag to label the tab
+	$html .= "\n" . $q->start_div({-class=>"tabbertab", -id=>"eventsearchtab", 
+				       -title=>"header=[$lang{'event tab hover title'}] body=[$lang{'event tab hover body'}]"}) . "\n";
+	$html .= "\n" . $q->h2($lang{'event tab'}) . "\n";
+
+	$html .= $q->p("spam");  # we need to learn how to hide and display things.  right now the tag search field is hardcoded onto the front page.  That shit ain't going to work.  Need to have a hideable sidebar with various content in it.  Hideable is optional, but gotta allow tags / cal / event / random to be browsed/searched");
+
+	$html .= "\n" . $q->end_div . $q->comment("ends (class=\"tabbertab\" id=\"eventsearchtab\")") . "\n";
+    } # end event search sidebar
+
+    $html .= $q->end_div . $q->comment("ends (class=\"tabber\" id=\"sidebartabs\")") . "\n";
+    # end search sidebar
+    
+    $html .= &allowAjaxSource;
+    $html .= $q->end_html;
+    return $html;
+}
+
+sub tag_search {
+    my ($tag) = @_;
+    my $html = "";
+
+    # set up DB connection
+    unless ($dbh = &DBConnect(%dbHash)) {
+	$html .= $q->p($lang{'cannot reach db'});
+	return $html;
+    }
+    $sql = qq< select * from tags where tag_sortname like ? or tag_displayname like ? order by tag_sortname>;
+    $sth = $dbh->prepare( $sql );
+    $sth->execute( $tag . '%', $tag . '%');
+    
+    if ($sth->rows()) {
+	my @items;
+	while ( my $row = $sth->fetch() ) {
+#	    warn ("images::tag_search found $tag");
+	    push (@items, $row->[2]);
+	}
+	my $list_length = $settings{'max search list length'} || 25;
+	$list_length = (2+$#items) if ((2+$#items) < $list_length);
+	$html .= $q-> scrolling_list('tag_matches',
+				     \@items,$items[0],$list_length,"true");
+    } else {
+	$html .= $lang{"no tags start with"} . " " . $tag;
+    }
+    # disconnect from the database causes $html not to be returned
+    # &DBDisconnect();
+
+    return $html;
+}
+
+
+
+# Image::Magick vars
+my ($img, $imageData, $thumbData, $err);
+
+
+#!     $file{'image'} = $filename;
+#!     $file{'data'} = $binary_image_data;
+
+#! use this I::M and DBI code     # convert image to thumbnail
+#! use this I::M and DBI code     $img = new Image::Magick;
+#! use this I::M and DBI code     $err = $img->Read($file{'image'});
+#! use this I::M and DBI code     die "Can't read image file: $err\n" if $err;
+#! use this I::M and DBI code     $imageData = $img->ImageToBlob();
+#! use this I::M and DBI code     $err = $img->Scale(geometry=>"200x200");
+#! use this I::M and DBI code     die "Can not scale image file: $err" if $err;
+#! use this I::M and DBI code     $thumbData = $img->ImageToBlob();
+#! use this I::M and DBI code     
+#! use this I::M and DBI code     # build, prepare and execute SQL command
+#! use this I::M and DBI code     $sql = "REPLACE INTO Gallery 
+#! use this I::M and DBI code       (Date, Image, Thumb, Type, Title, 
+#! use this I::M and DBI code       Comments, Category)
+#! use this I::M and DBI code       VALUES (NOW(), ?, ?, ?, ?, ?, ?)";
+#! use this I::M and DBI code     $sth = $dbh->prepare($sql)
+#! use this I::M and DBI code       or DBError("Died in prepare");
+#! use this I::M and DBI code     $sth->execute($imageData, $thumbData, 
+#! use this I::M and DBI code       $content_type, $title, $comments, 
+#! use this I::M and DBI code       $category)
+#! use this I::M and DBI code       or DBError("Died in execute");
+#! use this I::M and DBI code 
+#! use this I::M and DBI code     # get the last inserted ID to build a URL
+#! use this I::M and DBI code     $sql = "SELECT ID FROM Gallery 
+#! use this I::M and DBI code       WHERE ID=LAST_INSERT_ID()";
+#! use this I::M and DBI code     $sth = $dbh->prepare($sql)
+#! use this I::M and DBI code       or DBError("Died in prepare");
+#! use this I::M and DBI code     $sth->execute()
+#! use this I::M and DBI code       or DBError("Died in execute");
+#! use this I::M and DBI code     $dbData = $sth->fetchrow_hashref();
+#! use this I::M and DBI code     $sth->finish();
+#! use this I::M and DBI code     $id = $dbData->{'ID'};
+#! use this I::M and DBI code 
+
+#########################################################################################################
+##
+##  &check_tables_in_db
+##  
+##    Are there tables in the database?             (N -> allow admin login and start creating tables)
+##    Are there pictures in the images table?       (N -> allow admin login and import images)
+##    Are there attribute tables for search?        (N -> allow admin login to create the tables)
+##
+##  First, compare tables that exist to tables that are needed
+##
+##  
+##
+##  
+##
+##  
+##
+##  
+#########################################################################################################
+
+sub check_tables_in_db {
+    
+    my @row;
+    my %table_exists;
+
+    $sth = $dbh->prepare("show tables;"); 
+    $sth->execute;
+
+    # keep track of tables that exist
+    $table_exists{$row[0]} = 1    while (@row = $sth->fetchrow_array);
+
+    # compare existing tables (%table_exists) to list of required tables $settings{'required tables'}
+    foreach my $needed_table (split " ", $settings{'required tables'}) {
+	push (@need_tables, $needed_table) unless $table_exists{$needed_table};
+    }
+    throw Must_make_tables unless ($#need_tables == -1);
+
+
+}
+############################################################################################################
+##
+##  &critical_settings_check is supposed to make sure the system is fit for use whatsoever.
+##  Basic logic:
+##    Can we read the settings files into hashes?
+##    Can we get to the database?
+##
+##  If NO to either of the above, it's a critical failure which this program cannot recover.
+##    
+##  But, try to fail gracefully; errors here will most likely fail during initial setup, 
+##  so the user (admin) should be given an idea of which file didn't exist or had a problem, etc..
+##
+##  &hash_read and &DBConnect will throw errors if they fail.
+##    
+############################################################################################################
+sub critical_settings_check {
+
+    # this is the root of all settings in the images project
+    &hash_read(\%settings,$settings_file);
+
+    # this allows the user interface to be in different languages
+    die with Critical_error(-text=>"No 'language file' entry in $settings_file.  It should point to a file with text output lines in your preferred language.")
+	unless ($settings{'language file'});
+    &hash_read(\%lang,$settings{'language file'});
+
+    # info on how to connect to the database
+    die with Critical_error(-text=>"No 'dbHash file' entry in $settings_file.  It should point to a file with mySQL connection settings.")
+	unless ($settings{'dbHash file'});
+    &hash_read(\%dbHash,$settings{'dbHash file'});
+
+    # Make sure we can get to the database.
+    $dbh = &DBConnect(%dbHash);
+}  # &critical_settings_check
+
+
+
+sub isAdmin {
+    my %read_cookies = fetch CGI::Cookie;
+    my %write_cookies;
+    my $images_admin_password;
+
+    if ($images_admin_password = $q->param($settings{'name of admin pw field'})) {
+#	warn ("read param $images_admin_password");
+	$write_cookies{$settings{'name of admin pw field'}} = $images_admin_password;
+	&setCookies(%write_cookies);
+#	warn ("set cookie $images_admin_password");
+    }
+    elsif ($read_cookies{$settings{'name of admin pw field'}}) {
+	$images_admin_password = $read_cookies{$settings{'name of admin pw field'}}->value;
+#	warn ("read cookie $images_admin_password");
+    }
+
+#    warn ("at the end of isAdmin, \$", $settings{'name of admin pw field'} ," is ", mkdef($images_admin_password));
+
+    die with Critical_error(-text=>$lang{'admin disabled'}) unless ($settings{'content admin password'});
+  
+    if ($images_admin_password eq $settings{'content admin password'}) {
+	return 1;
+    }
+    # else
+    0;    # somehow this seems more dramatically false.
+}
+
+#######################################################################################################################
+##   
+##      mySQL code used to create tables:
+##   
+##   
+##   CREATE TABLE `tags` (
+##     `tagID` INT( 6 ) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+##     `tag_sortname` VARCHAR( 20 ) NOT NULL ,
+##     `tag_displayname` VARCHAR( 25 ) NOT NULL ,
+##   INDEX ( `tag_sortname` ) ,
+##   UNIQUE ( `tag_displayname` )) TYPE = MYISAM COMMENT = 'tags created with phpMyAdmin 13 June 2006';
+##   
+#######################################################################################################################
+

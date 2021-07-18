@@ -1,0 +1,778 @@
+#!/usr/bin/perl -w
+
+######################################################################
+#
+# maps will display previously saved maps, and allows plotting points on a (new) map.  Coordinates can be displayed.
+#
+# Copyright (C) 2005-2006 Rob Nugen
+# 
+#    This program is free software; you can redistribute it and/or
+#    modify it under the same terms as Perl itself.
+#
+######################################################################
+#
+# version 0.8   30 Aug 2006 pretty decent, still needs some gui cleanup, and prettier coord display
+# version 0.0  8 Aug 2006 copied from imagesadmin
+#
+######################################################################
+
+######################################################################
+#
+# Plans: 
+# clean up GUI
+# clean up code
+# make coordinate display more legible
+# 
+######################################################################
+
+# to use modules installed in my user space
+use lib "/home/thunderrabbit/perlmods/share/perl"; 
+use lib "/home/thunderrabbit/perlmods/share/perl/5.8"; 
+
+# load in the modules
+use strict;
+use CGI 3.20;  # new version is only in my local space.  It corrects a bug with hidden fields not displaying id
+use CGI::Ajax;
+use CGI::Cookie;
+use Image::Magick;
+use Error qw(:try);
+use Switch;
+# use HTML::GoogleMaps;
+use Geo::Coordinates::UTM;
+
+
+##################################################################################
+#
+# This is the shortest technique I've found to create specifically named objects
+# Note "package main" after all the definitions
+#
+##################################################################################
+package Critical_error;            use base "Error";
+package mustCreateTablesError;     use base "Error";
+
+package main;
+
+require "mkdef.pl";
+require "allowSource.pl";
+require "DB_CDE.pl";  #  DBI code from Mike Schienle
+require "setCookies.pl";
+require "hash_io.pl";
+require "draw_navigation.pl";
+require "log_writer.pl";
+
+
+my $debug = 0;
+my $q = new CGI;      # will be used for params, cookies, Ajax, html output
+
+my @allowable_actions;  # this will be set initially after we do crititcal_settings_check and check_tables_in_db
+
+# general settings for images, output language, and db access are stored in text files that will be read into hashes, starting with %settings
+my $settings_file = "/home/thunderrabbit/settings/maps.settings";
+my %settings;   # specifies where various files and things are located, the password to get into the system, default sizes for pics
+my %lang;       # all the language we output to users; allows various languages to be available
+my %dbHash;     # information on how to log in to the images database
+
+try {
+    push (@allowable_actions, "create routes");  # this is a hack, but I don't have the overview to see where this should go.
+    push (@allowable_actions, "load routes");  # this is a hack, but I don't have the overview to see where this should go.
+    &critical_settings_check;
+    &check_tables_in_db;
+}
+catch Critical_error with { &critical_error_handler }
+catch mustCreateTablesError with { @allowable_actions = ("create routes", "admin must create tables") }  # wipe out everything else; we can only wait for admin before we can load routes
+# catch mustCreateTablesError with { } # actually we don't need this until this code can save something
+otherwise { &generic_error_handler; }
+finally {  };
+
+# DBI handles
+my ($sth, $sql, $rv, $dbh, $dbData);
+
+my $pjx = CGI::Ajax->new( 
+			  'create_table' => \&create_table,
+			  'saveData' => \&saveData
+			  );
+
+
+#--			  'tag_search' => \&tag_search,
+#--			  'refresh_SRS_pointlist' => \&refresh_SRS_pointlist,
+
+
+my $ajax_javascript_debug = 1;
+my $ajax_general_debug = 0;
+$pjx->JSDEBUG($ajax_javascript_debug);
+$pjx->DEBUG($ajax_general_debug);
+
+# this outputs the html for the page.
+
+print $q->header;  # not sure why this can't go inside sub main.
+
+print $pjx->build_html($q,\&main,""); # The extra "" keeps Ajax.pm from causing "Use of uninitialized value" warnings.
+#print &main;
+sub main {
+    my $html = "";
+
+    $html .= $q->start_html(-title=>$lang{'title'},
+			    -onLoad=>"load();",
+			    -onUnload=>"GUnload()",
+			    -script=>[{-language=>'JAVASCRIPT', -src=>$settings{'tabber js filename URL'}},     # creates the navigation tabs on the left
+				      {-language=>'JAVASCRIPT', -src=>$settings{'boxover js filename URL'}},    # creates the tooltip items on tab labels
+				      {-language=>'JAVASCRIPT',
+				       -code=>"var tabberOptions= {'manualStartup':true}"},
+				      {-language=>'JAVASCRIPT', -code=>&map_editing_javascript} ],
+			    -style=>{-src=>'/css/example.css',
+				     -code=>'.tabber{display:none}'}
+			    ) . "\n";
+    
+    $html .= &draw_AJAX_navigation("0main&images");
+
+    $html .= "\n" . "<table width='100%' border='1' resize='true'><tr><td width='20%' valign='top'>\n";
+
+    # begin search sidebar
+    $html .= &sidebar_content;
+    # end search sidebar
+    $html .= "\n" . "</td> <td width='80%' valign='top'>\n";
+
+    # begin main bar
+    $html .= "\n" . $q->start_div({-id=>"mainbar", -style=>"border:1px solid green; width: 100%; height: 100%"}) . "\n";
+    $html .= "\n" . $q->start_div({-id=>"mainmap", -style=>"width: 900px; height: 600px"}) . "\n"; # must be in px, not percent.  Why?
+    $html .= $settings{'actual map code'} . "\n";
+    $html .= $q->end_div . $q->comment("ends (id=\"mainmap\")") . "\n";
+
+    $html .= "\n" . $q->start_div({-id=>"mainsrc", -style=>"width: 100%; height: 100%"}) . "\n"; # displays all the source points data
+    $html .= "\n" . $q->start_div({-id=>"htmlsrc", -style=>"width: 100%; height: 30%"}) . "\n";  # displays data to make plain ol' html
+    $html .= $q->end_div . $q->comment("ends (id=\"htmlsrc\")") . "\n";
+
+    $html .= "\n" . $q->start_div({-id=>"htmlfields", -style=>"width: 100%; height: 30%"}) . "\n";  # displays data to make plain ol' html
+    $html .= &map_source_fields;
+    $html .= $q->end_div . $q->comment("ends (id=\"htmlfields\")") . "\n";
+
+    $html .= "\n" . $q->start_div({-id=>"mySQLsrc", -style=>"width: 100%; height: 30%"}) . "\n";  # displays data to make plain ol' html
+    $html .= $q->end_div . $q->comment("ends (id=\"mySQLsrc\")") . "\n";
+    $html .= $q->end_div . $q->comment("ends (id=\"mainsrc\")") . "\n";
+
+    $html .= $q->end_div . $q->comment("ends (id=\"mainbar\")") . "\n";
+    # end main bar
+
+    $html .= "\n" . "</td></tr></table>\n";
+
+    $html .= &allowAjaxSource;
+    $html .= <<END_script;
+<script type="text/javascript">
+
+/* Since we specified manualStartup=true, tabber will not run after
+   the onload event. Instead we run it now, to prevent any delay
+   while images load.
+*/
+
+tabberAutomatic(tabberOptions);
+
+</script>
+END_script
+
+    $html .= $q->end_html;
+    return $html;
+}
+
+# These fields will tell what data we need to save the source points.
+# perhaps javascript can write into a textarea here and thereby we can save directly using this form!
+sub map_source_fields {
+    # this code should read the db to see what routeIDs have been used, and default to the next one
+    my $html;
+    
+    $html .= $q->start_form;
+    $html .= $q->textfield(-id=>'mySQLrouteID', -value=>'readSQL', -onChange=>'refresh()') . "\n";
+    $html .= $q->textfield(-id=>'mySQLrouteTitle', -value=>'title', -onChange=>'refresh()') . "\n";
+    $html .= $q->textfield(-id=>'mySQLstartDate', -value=>'2006-04-03 09:30:00', -onChange=>'refresh()') . "\n";
+    $html .= $q->textfield(-id=>'mySQLendDate', -value=>'2006-04-03 11:30:00', -onChange=>'refresh()') . "\n";
+    $html .= $q->textarea(-id=>'mySQLrouteComment', -default=>'route comment') . "\n";
+    $html .= $q->textarea(-id=>'mySQLtextArea') . "\n";
+
+    $html .= $q->end_form;
+
+    return $html;
+}
+
+sub map_editing_javascript {
+my $javascript = q|
+		   var lastpoint;
+		   var OV;
+		   var map;
+                   var points = [];
+
+                   var mapClickListener;
+
+		   function load() {
+
+		       // push points here
+			   
+		       if (GBrowserIsCompatible()) {
+			   map = new GMap2(document.getElementById("mainmap"), {draggableCursor: 'crosshair', draggingCursor: 'pointer'});
+			   map.addControl(new GLargeMapControl());
+			   map.addControl(new GMapTypeControl());
+			   map.addControl(new GOverviewMapControl());
+			   // add zoom and center here     // (17 is zoomiest)
+			   map.setMapType(G_SATELLITE_TYPE);
+			   refresh();
+			   toggle_map_and_source();
+		       }
+		   }
+
+                   function drawRoute() {
+		       mapClickListener = GEvent.addListener(map, "click", function(overlay,point) {
+			   if(lastpoint && lastpoint.x==point.x && lastpoint.y==point.y) return;
+			   lastpoint = point;
+			   map.setCenter(point);
+			   points.push(point);
+			   refresh();
+		       });
+		   }
+
+                   function newRouteFromHere() {
+		       var startPoint = points.pop();
+		       points = [];
+		       points.push(startPoint);
+		       drawRoute();
+		       refresh();
+		   }
+
+                   function noDraw() {
+                       GEvent.removeListener(mapClickListener);
+                   }
+
+                   function toggle_map_and_source () {
+		       var mainmap = document.getElementById("mainmap");
+		       var mainsrc = document.getElementById("mainsrc");
+		       if (mainmap.style.display == 'block') {
+			   mainmap.style.display = 'none';
+			   mainsrc.style.display = 'block';
+		       } else {
+			   mainmap.style.display = 'block';
+			   mainsrc.style.display = 'none';
+		       }
+		   }
+
+                   function push() {
+		       points.push(point);
+		       store_point([point],['']);
+
+		   }
+
+		   function refresh() {
+		       refreshMap();
+		       refreshSrc();
+
+		       var meters = 0;
+		       var msg = "<p>num points: " + points.length + "</p>";
+		       for(var i=0; i<points.length-1; i++){
+			   meters += points[i].distanceFrom(points[i+1]);
+		       }
+		       msg += Math.round(meters * 100) / 100000 + " km";
+		       document.getElementById("pointlist").innerHTML = msg;
+		       
+
+		   }
+
+                   function refreshMap() {
+		       map.removeOverlay(OV);
+		       if (points.length > 1) {
+			   OV = new GPolyline(points);
+			   map.addOverlay(OV);
+		       }
+		   }
+
+                   function refreshSrc() {
+		       var msg = "";
+		       var routeID =      '"' + document.getElementById("mySQLrouteID").value + '"';
+		       var startDate =    '"' + document.getElementById("mySQLstartDate").value + '"';
+		       var endDate =      '"' + document.getElementById("mySQLendDate").value + '"';
+		       var routeTitle =   '"' + document.getElementById("mySQLrouteTitle").value + '"';
+		       var routeComment = '"' + document.getElementById("mySQLrouteComment").value + '"';
+
+//+		       msg += "<p>This code will display a map on your site: "
+//+			   +  "(if you replace YOUROWNAPICODE with <a href=''>your own API code</a>)</p>";
+		       msg += "<form><textarea cols='100' rows='15'>";
+		       for(var i=0; i<points.length; i++){
+			   msg += 'points.push(new GLatLng(' + points[i].lat() + ', ' + points[i].lng() + '));\n';
+		       }
+		       msg += "</textarea></form>";
+
+		       document.getElementById("htmlsrc").innerHTML = msg;
+		       document.getElementById("mySQLtextArea").innerHTML = "phase two puts points in this textarea and submits directly to mySQL";
+
+		       msg = "";
+		       msg += "<p>This code can store points in mySQL ";
+		       msg += "<form><textarea cols='100' rows='15'>";
+
+		       var crapcenter = map.getCenter();
+		       var crapzoom = map.getZoom();
+
+		       msg += "INSERT INTO `routes` (`routeID`, `startDate`, `endDate`, `lat`, `lng`, `zoom`, `title`, `comment`) VALUES\n";
+		       msg += "(" + routeID + ", " + startDate + ", " + endDate + ", " + crapcenter.lat() + ", " + crapcenter.lng() + ", " + crapzoom + ", " + routeTitle + ", " + routeComment + ");\n\n";
+
+		       msg += "INSERT INTO `route_coords` (routeID, sort, lat, lng) VALUES\n";
+		       for(var i=0; i<points.length-1; i++){
+			   msg += '(' + routeID + ', ' + i + ', ' + points[i].lat() + ', ' + points[i].lng() + '),\n';
+		       }
+		       msg += '(' + routeID + ', ' + i + ', ' + points[points.length-1].lat() + ', ' + points[points.length-1].lng() + ');\n';
+
+		       msg += "</textarea></form>";
+
+		       document.getElementById("mySQLsrc").innerHTML = msg;
+		   }
+
+		   function removePoint () {
+		       points.pop();
+		       map.setCenter(points[points.length-1]);
+		       refresh();
+		   }
+
+    |;
+
+    my $routeID;         # there may or may not be a routeID or journeyID
+    my $journeyID;       # only a routeID OR a journeyID can be sent.  Not both.
+    my $points_pushed;   # a string listing all the "points.push(new GLatLng(35.50038666419623, 139.5000171661377));" lines
+    my $zoom_and_center;
+
+    if ($routeID = $q->param("routeID")) {
+	&write_log("maps", "loading route " . $routeID);
+	$points_pushed = &list_of_pushed_route_points($routeID);
+	$zoom_and_center = &get_zoom_and_center("routes", $routeID);
+    }
+      # Journeys are multiple routes.
+    elsif ($journeyID = $q->param("journeyID")) {
+	&write_log("maps", "loading journey " . $journeyID);
+	$points_pushed = &list_of_pushed_journey_points($journeyID);
+	$zoom_and_center = &get_zoom_and_center("journeys", $journeyID);
+    }
+
+    if ($points_pushed) {
+	$javascript =~ s|// push points here|$points_pushed|m;
+    }
+    else
+    {
+	$javascript =~ s|// push points here|// no points here|m;
+    }
+
+    # $zoom_and_center should be created when an exisiting route is loaded
+    if ($zoom_and_center) {
+	$javascript =~ s|// add zoom and center here|$zoom_and_center|;
+    }
+    else
+    {
+	# default to Tokyo area
+	$javascript =~ s|// add zoom and center here|map.setCenter(new GLatLng(35.66, 139.77), 10);|;
+    }
+
+    return $javascript;
+
+}
+
+
+sub get_zoom_and_center {
+
+    my ($whichDB, $routeID) = @_;
+
+    my $zoom_and_center;
+    my $select_query;
+    # This is a hack due to the primary keys having different names.  trying to save some code and reuse this subroutine.
+    if ($whichDB eq "journeys") {
+	$select_query = qq{SELECT lat, lng, zoom FROM $whichDB WHERE journeyID = $routeID;};
+    }
+    elsif ($whichDB eq "routes") {
+	$select_query = qq{SELECT lat, lng, zoom FROM $whichDB WHERE routeID = $routeID;};
+    }
+
+    my $sth = $dbh->prepare ( $select_query );
+    $sth->execute;
+    my $count_routes = $sth->rows();
+
+    if ($count_routes == 1) {
+	my ($lat, $lng, $zoom) = $sth->fetchrow();
+	$zoom_and_center = "map.setCenter(new GLatLng($lat, $lng), $zoom);";
+	warn($zoom_and_center);
+    } else {
+	warn ("count_routes should be 1, but in get_zoom_and_center for routeID " . $routeID . " it is " . $count_routes);
+    }
+
+    return $zoom_and_center;
+}
+
+sub list_of_pushed_journey_points {
+    my ($journeyID) = @_;
+
+    my $points_pushed;
+    my $select_query = qq{SELECT * FROM journey_routes WHERE journeyID = $journeyID ORDER BY sort;};
+
+    my $sth = $dbh->prepare ( $select_query );
+    $sth->execute;
+    my $count_routes = $sth->rows();
+    my $all_routes = $sth->fetchall_arrayref();
+
+    unless ($count_routes) {
+	warn ("journey " . $journeyID . " has no routes");
+	&write_log("maps", "journey " . $journeyID . " has no routes");
+    } else {
+	foreach my $journey (@$all_routes) {
+	    my (undef, undef, $routeID) = @$journey;
+	    $points_pushed .= &list_of_pushed_route_points($routeID);
+	}
+    }
+    return $points_pushed;
+}
+
+sub list_of_pushed_route_points {
+    my ($routeID) = @_;
+
+    my $points_pushed;
+    my $select_query = qq{SELECT routeID, sort, lat, lng FROM route_coords WHERE routeID = $routeID ORDER BY sort;};
+
+    warn ($select_query);
+    my $sth = $dbh->prepare ( $select_query );
+    $sth->execute;
+    my $count_points = $sth->rows();
+    my $all_points = $sth->fetchall_arrayref();
+
+    unless ($count_points) {
+	warn ("route " . $routeID . " is empty");
+	&write_log("maps", "route " . $routeID . " has no points");
+    } else {
+	foreach my $point (@$all_points) {
+	    my (undef, undef, $lat, $lng) = @$point;
+	    $points_pushed .= "points.push(new GLatLng($lat, $lng)); ";
+	}
+    }
+    return $points_pushed;
+}
+sub sidebar_content {
+    my $html;
+    if ($#allowable_actions > 0) {   # this would mean there is more than one option
+	$html .= "\n" . $q->start_div({-class=>"tabber", -id=>"sidebartabs", -style=>"border:1px solid blue; width: 100%; height: 100%"}) . "\n";
+    }
+
+    foreach (@allowable_actions) {
+	switch ($_) {
+	    case "create routes"             { $html .= &sidebar_content_tab("SRS",\&SRS_html); }
+	    case "load routes"               { $html .= &sidebar_content_tab("LOAD",\&load_routes_and_journeys_html); }
+	    case "admin must create tables"  { $html .= &sidebar_content_tab("NO_LOAD",\&print_recoverable_oops); }
+#	    case "add routes"                { $html .= &sidebar_route_smurfer }
+	    case "admin must create tables"  { $html .= &sidebar_add_tables }
+	    else                             { warn ("maps' sidebar_content() can't $_") }
+	}
+    }
+
+    if ($#allowable_actions == -1)
+    {
+	$html .= "nothing to do";
+    }
+
+    if ($#allowable_actions > 0) {
+	$html .= $q->end_div . $q->comment("ends (class=\"tabber\" id=\"sidebartabs\")") . "\n";
+    }
+
+    return $html;
+}
+
+# This basically returns the output of function, but wraps it in a tab if there is more than one tab to draw.  Tab attributes are identified with $code
+sub sidebar_content_tab {
+    my ($code,$function) = @_;
+    my $html;
+
+    if ($#allowable_actions > 0) {
+	# Use -title=>"header=[hoverbox title] body=[hoverbox body]" to get a hoverbox.  use <h2> tag to label the tab
+	$html .= "\n" . $q->start_div({-class=>"tabbertab", -id=>$code . "tab", 
+				       -style=>"border: 1px solid black; width: 100%; height: 480px; overflow: none", # THESE VALS NOT CAREFULLY CHOSEN
+				       -title=>"header=[$lang{$code . ' tab hover title'}] body=[$lang{$code . ' tab hover body'}]"}) . "\n";
+	$html .= "\n" . $q->h2($lang{"$code tab"}) . "\n";
+
+	$html .= "\n" . $q->start_div({-id=>"rdiv$code", 
+				       -style=>"border: 1px solid black; width: 100%; height: 460px; overflow: auto"}  # THESE VALS NOT CAREFULLY CHOSEN
+				      );
+    }
+
+    $html .= &$function;
+
+    if ($#allowable_actions > 0) {
+	$html .= $q->end_div . $q->comment("ends (id=\"rdiv$code\")") . "\n";
+
+	$html .= "\n" . $q->end_div . $q->comment("ends (class=\"tabbertab\" id=\"" . $code . "tab\")") . "\n";
+    }
+
+    return $html;
+
+} # sidebar_content_tab
+
+sub print_recoverable_oops {
+    return $q->p($lang{'recoverable oops'} . " " . $q->a({href=>"mapsadmin"}, "mapsadmin"));
+}
+
+
+sub load_routes_and_journeys_html {
+    return &load_route_html . &load_journey_html;
+}
+
+sub load_route_html {
+    my $html = $q->p($lang{"load route:"});
+
+    my $select_query = qq{SELECT * FROM routes ORDER BY routeID};
+
+    my $sth = $dbh->prepare ( $select_query );
+    $sth->execute;
+    my $count_routes = $sth->rows();
+    my $all_routes = $sth->fetchall_arrayref();
+
+    unless ($count_routes) {
+	$html = "\n" . $q->p ($lang{"Sorry; no routes"}) . "\n";  # overwrite "load route:" above
+    } else {
+	$html .= "\n<table border='1'>";
+	foreach my $route (@$all_routes) {
+	    my ($routeID, $startdate, $enddate, $title, undef, undef, undef, $comment) = @$route;  # undefs are lat, lng, zoom
+	    $html .= "\n<tr><td>\n";
+	    $html .= $q->start_form;
+	    $html .= $q->button(-name=>"load", -value=>"$routeID", -label=>"$title", 
+				-onClick=>"getElementById(\"routeID$routeID\").value='$routeID'; submit()");
+	    $html .= $q->hidden(-id=>"routeID$routeID", -name=>"routeID", -value=>"");
+	    $html .= $q->end_form;
+	    $html .= "</td></tr>\n";
+	}
+	$html .= "</table>\n";
+    }
+
+    return $html;
+}
+
+sub load_journey_html {
+    my $html = $q->p($lang{"load journey:"});
+
+    my $select_query = qq{SELECT * FROM journeys ORDER BY title};
+
+    my $sth = $dbh->prepare ( $select_query );
+    $sth->execute;
+    my $count_journeys = $sth->rows();
+    my $all_journeys = $sth->fetchall_arrayref();
+
+    unless ($count_journeys) {
+	$html = "\n" . $q->p ($lang{"Sorry; no journeys"}) . "\n";  # overwrite "load route:" above
+    } else {
+	$html .= "\n<table border='1'>";
+	foreach my $journey (@$all_journeys) {
+	    my ($journeyID, $title) = @$journey; 
+	    $html .= "\n<tr><td>\n";
+	    $html .= $q->start_form;
+	    $html .= $q->button(-name=>"loadjourney", -value=>"$journeyID", -label=>"$title", 
+				-onClick=>"getElementById(\"journeyID$journeyID\").value='$journeyID'; submit()");
+	    $html .= $q->hidden(-id=>"journeyID$journeyID", -name=>"journeyID", -value=>"");
+	    $html .= $q->end_form;
+	    $html .= "</td></tr>\n";
+	}
+	$html .= "</table>\n";
+    }
+
+    return $html;
+}
+
+### SRS_html creates the base html div tags to be used in the sidebar
+sub SRS_html {
+
+    return q{
+
+<br /><a onClick="drawRoute();">draw_route</a> | <a onClick="noDraw();">stop_drawing</a>
+<br /><a onClick="newRouteFromHere();">new route from here</a>
+<br /><a onClick="removePoint();">remove_last_point</a>
+<br /><a onClick="toggle_map_and_source();">toggle_points_view</a>
+
+<!-- br /><a onClick="saveData([points],['SRS_messages'])">save</a -->
+
+<div id="SRS_messages" style="border: thin solid #00FFFF; padding: 1px 5px 1px 5px;"></div>
+<div id="pointlist" style="border: thin solid #00FF00; padding: 1px 5px 1px 5px;"></div>
+};
+
+}
+
+sub saveData {
+    my @points = @_;
+    my $html;
+
+    $html .= $q->p("Saving... (not)");
+
+    return $html;
+}
+
+
+
+############################################################################################################
+##
+##  &critical_settings_check is supposed to make sure the system is fit for use whatsoever.
+##
+##  Basically:
+##  *  We must be able to read the settings files into hashes
+##  *  tabber.js and boxover.js are required
+##  *  We must be able to access the database
+##
+##  If NO to any of the above, it's a critical failure from which this program cannot recover.
+##    
+##  But, try to fail gracefully; errors here will most likely fail during initial setup, 
+##  so the user (admin) should be given an idea of which file didn't exist or had a problem, etc..
+##
+##  &hash_read and &DBConnect will throw errors if they fail.
+##    
+############################################################################################################
+sub critical_settings_check {
+
+    # this is the root of all settings in the images project
+    &hash_read(\%settings,$settings_file);
+
+    # this allows the user interface to be in different languages
+    unless ($settings{'language file'}) {
+	die with Critical_error(-text=>"No 'language file' entry in $settings_file.  It should point to a file with text output lines in your preferred language.");
+    }
+    &hash_read(\%lang,$settings{'language file'});
+
+    # info on how to connect to the database
+    unless ($settings{'dbHash file'}) {
+	my $err_txt = $lang{'no dbHash file'} || "No 'dbHash file' entry in $settings_file.  It should point to a file with mySQL connection settings.";
+	die with Critical_error(-text=>$err_txt);
+    }
+    &hash_read(\%dbHash,$settings{'dbHash file'});
+
+    unless (-f $settings{'URL file base'} . $settings{'tabber js filename URL'}) {
+	my $err_txt = $lang{'no tabber.js file'} || "No 'tabber js filename URL' entry in $settings_file.  It should point to publicly available tabber.js";
+	die with Critical_error(-text=>$err_txt);
+    }
+
+    unless (-f $settings{'URL file base'} . $settings{'boxover js filename URL'}) {
+	my $err_txt = $lang{'no boxover.js file'} || "No 'boxover js filename URL' entry in $settings_file.  It should point to publicly available boxover.js";
+	die with Critical_error(-text=>$err_txt);
+    }
+
+    # Make sure we can get to the database.
+    $dbh = &DBConnect(%dbHash);
+
+}  # &critical_settings_check
+
+sub admin_password_exists {
+   return mkdef($settings{'maps admin password'}) ? 1 : 0;
+}
+
+sub isAdmin {
+    my %read_cookies = fetch CGI::Cookie;
+    my %write_cookies;
+    my $admin_password;
+    $debug && warn ("in isAdmin");
+    if ($admin_password = $q->param($settings{'name of admin pw field'})) {
+	$write_cookies{$settings{'name of admin pw field'}} = $admin_password;
+	&setCookies(%write_cookies);
+    }
+    elsif ($read_cookies{$settings{'name of admin pw field'}}) {
+	$admin_password = $read_cookies{$settings{'name of admin pw field'}}->value;
+    }
+
+    if ($admin_password eq $settings{'maps admin password'}) {
+	return 1;
+    }
+    # else
+    0;    # somehow this seems more dramatically false.
+}
+
+######################################################
+##
+##  We have come to a problem that cannot be resolved by this script.
+##  Exit and display hopefully useful information.
+##
+######################################################
+sub critical_error_handler {
+    my $err = shift;
+
+    print $q->header;
+    print $q->start_html($lang{'title'});
+    print $q->p("Sorry.. ", $err->{"-text"});
+    print $q->p("This is a critical error from which I cannot recover.");
+    print $q->end_html;
+
+    warn ("A critical error occured: ", $err->{"-text"});
+    exit;
+}
+
+
+sub generic_error_handler {
+    warn ("imagesadmin error handling is in otherwise-BLOCK, which means we are catching an unexpected error.");
+    my $err = shift;
+    warn ($err->{"-text"});
+
+    print $q->header;
+    print $q->start_html("imagesadmin");
+    print $q->p($err);
+    print $q->end_html;
+    exit;
+}
+
+
+
+#! use this I::M and DBI code     # convert image to thumbnail
+#! use this I::M and DBI code     $img = new Image::Magick;
+#! use this I::M and DBI code     $err = $img->Read($file{'image'});
+#! use this I::M and DBI code     die "Can't read image file: $err\n" if $err;
+#! use this I::M and DBI code     $imageData = $img->ImageToBlob();
+#! use this I::M and DBI code     $err = $img->Scale(geometry=>"200x200");
+#! use this I::M and DBI code     die "Can not scale image file: $err" if $err;
+#! use this I::M and DBI code     $thumbData = $img->ImageToBlob();
+#! use this I::M and DBI code     
+#! use this I::M and DBI code     # build, prepare and execute SQL command
+#! use this I::M and DBI code     $sql = "REPLACE INTO Gallery 
+#! use this I::M and DBI code       (Date, Image, Thumb, Type, Title, 
+#! use this I::M and DBI code       Comments, Category)
+#! use this I::M and DBI code       VALUES (NOW(), ?, ?, ?, ?, ?, ?)";
+#! use this I::M and DBI code     $sth = $dbh->prepare($sql)
+#! use this I::M and DBI code       or DBError("Died in prepare");
+#! use this I::M and DBI code     $sth->execute($imageData, $thumbData, 
+#! use this I::M and DBI code       $content_type, $title, $comments, 
+#! use this I::M and DBI code       $category)
+#! use this I::M and DBI code       or DBError("Died in execute");
+#! use this I::M and DBI code 
+#! use this I::M and DBI code     # get the last inserted ID to build a URL
+#! use this I::M and DBI code     $sql = "SELECT ID FROM Gallery 
+#! use this I::M and DBI code       WHERE ID=LAST_INSERT_ID()";
+#! use this I::M and DBI code     $sth = $dbh->prepare($sql)
+#! use this I::M and DBI code       or DBError("Died in prepare");
+#! use this I::M and DBI code     $sth->execute()
+#! use this I::M and DBI code       or DBError("Died in execute");
+#! use this I::M and DBI code     $dbData = $sth->fetchrow_hashref();
+#! use this I::M and DBI code     $sth->finish();
+#! use this I::M and DBI code     $id = $dbData->{'ID'};
+#! use this I::M and DBI code 
+
+############################################################################################################
+#
+#  &check_tables_in_db ensures all tables exist.  In version 2 of this code, we will start looking a bit more subtley
+#
+############################################################################################################
+sub check_tables_in_db {
+    
+    my @row;
+    my %table_exists;
+    my @have_useful_table;
+    my %num_rows;
+    my @these_required_tables_DNE;  # if we need to create tables, they will go here.  This code cannot create them, so the array is local to this sub
+
+    $sth = $dbh->prepare("show table status;"); 
+    $sth->execute;
+
+    # keep track of tables that exist
+    while (@row = $sth->fetchrow_array) {
+	my $tablename = $row[0];
+	my $numrows = $row[4];
+	$debug && warn ($tablename . ":" . $numrows);
+	$table_exists{$tablename} = 1;
+	$num_rows{$tablename} = $numrows;
+    }
+
+    # compare existing tables (%table_exists) to list of required tables ($settings{'required tables'})
+    foreach my $needed_table (split " ", $settings{'required tables'}) {
+	unless ($table_exists{$needed_table}) {
+	    push (@these_required_tables_DNE, $needed_table);
+	}
+    }
+
+    unless ($#these_required_tables_DNE == -1) {
+	throw mustCreateTablesError();
+    }
+}
