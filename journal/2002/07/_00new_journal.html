@@ -1,0 +1,25 @@
+<p class=date>9:06am CDT Sunday 14 July 2002</p>
+
+<p>Read through the directory for files that begin with date.</p>
+
+<p>Ignore * or _ as part of date in URL.</p>
+
+<p>- - - -</p>
+
+<p>Write index of years and month on left.  #links to particular days
+at top, using the titles or filenames as the text.  All the files for
+a particular day will be on the right.  Most recent on top.</p>
+
+<p>I'm guessing the functions below will be helpful</p>
+
+<pre>
+sub getTitle {
+  given filename of file
+  parse to find what's in its title tags
+  if missing, then use its name (dropping the first two digits and
+  convert _ to SPC)
+}
+</pre>
+
+
+<p><img src="/images/rob/wL-ROB.gif"/></p>

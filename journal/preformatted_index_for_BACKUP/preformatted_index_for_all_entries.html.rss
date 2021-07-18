@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<rdf:RDF
+ xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+ xmlns="http://purl.org/rss/1.0/"
+ xmlns:taxo="http://purl.org/rss/1.0/modules/taxonomy/"
+ xmlns:dc="http://purl.org/dc/elements/1.1/"
+ xmlns:syn="http://purl.org/rss/1.0/modules/syndication/"
+ xmlns:admin="http://webns.net/mvcb/"
+>
+
+<channel rdf:about="http://robnugen.com">
+<title>Keep pushing the limits.</title>
+<link>http://robnugen.com</link>
+<description>day by day from the mind of Rob Nugen</description>
+<dc:language>en-us</dc:language>
+<dc:rights>Copyright 1985, 1987, 1988, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2016, Rob Nugen</dc:rights>
+<dc:date>2000-08-23T07:00+00:00</dc:date>
+<dc:publisher>rob@robnugen.com</dc:publisher>
+<dc:creator>rob@robnugen.com</dc:creator>
+<dc:subject>Rob's Life</dc:subject>
+<syn:updatePeriod>hourly</syn:updatePeriod>
+<syn:updateFrequency>7</syn:updateFrequency>
+<syn:updateBase>1970-03-25T12:15+00:00</syn:updateBase>
+<items>
+ <rdf:Seq>
+ </rdf:Seq>
+</items>
+</channel>
+
+</rdf:RDF>

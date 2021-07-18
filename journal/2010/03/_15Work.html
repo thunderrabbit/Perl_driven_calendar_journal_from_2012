@@ -1,0 +1,41 @@
+<!-- tags: -->
+<!-- events: -->
+<!-- people: Alfonzo -->
+<!-- locations: Ebisu, work -->
+<p class="date">pm JST Monday 15 March 2010 (day 14600)</p>
+
+<p class="note">(written 8:05am JST Tuesday 16 March 2010 (day 14601))</p>
+
+<p>Work yesterday featured a pounding headache, which is quite unusual for me.  One difference from
+previous days was my watching Alfonzo do some coding; he doesn't draw things out before hand, but
+goes straight to the code cause he has a huge code repository in his brain (or something) BUT he
+was distracted by various other code repos in his brain and kept changing his mind til my little
+brain was like &quot;dood i give up,&quot; just before it overheated.</p>
+
+<p>Lunchtime came and went and then  I went to grab some granola and yogurt for lunch, hoping the
+cool yogurt would cool my brain.  It helped a bit.</p>
+
+<p>But *then*, once I got all the code changes in place to account for Alfonzo's changes, I
+realized there was one more issue for which we hadn't accounted: that using a big array would kill
+the process when run as a cron job.  &quot;Um, dood, I'm going to have to kill you,&quot; I
+said.</p>
+
+<p>&quot;Why, did you drop the database?&quot;</p>
+
+<p>&quot;No, then you'd have to kill me, but I have to kill you.&quot;</p>
+
+<p>&quot;Why?&quot;</p>
+
+<p>&quot;Because of the new functions, we have to run the results of this mysql query through an
+array to get all the data, and that's going to kill the process when it runs as a cron
+job.&quot;</p>
+
+<p>&quot;Okay,&quot; and he thought for a moment, looked at my class that takes a query or array and
+filename, then outputs the query or array as a CSV file.  (the query runs and then calls the array
+outputter).  He added a method that writes a single line to the CSV file and made the array
+outputter repeatedly call it.</p>
+
+<p>&quot;Now, you can just process a single row at a time, calling the single line method each time,
+and mysql will deal with all the caching.&quot;</p>
+
+<p>I tell ya, that man is a genius.</p>
