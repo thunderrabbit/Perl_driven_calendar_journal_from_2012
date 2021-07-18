@@ -1,5 +1,9 @@
 require "single_navigation_bar.pl";
 
+use Cwd qw( abs_path );     # allows Perl 5.26 to include local module date_smurfer.pm
+use File::Basename qw( dirname );
+use lib dirname(abs_path(__FILE__));
+
 sub draw_AJAX_navigation {
 
     # Parameters are sent as a &-delimited string like
