@@ -1,0 +1,10 @@
+<html>
+<head>
+<link rel="openid2.provider" href="https://www.google.com/accounts/o8/ud?source=profiles" >
+<link rel="openid2.local_id" href="http://www.google.com/profiles/RobNugen" >
+<meta http-equiv="refresh" content="0;url=http://www.robnugen.com">
+<script language=Javascript1.0>
+  window.location.href="http://www.robnugen.com"
+</script>
+</head>
+</html>

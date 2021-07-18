@@ -1,0 +1,11 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>
+   401 authorization required
+  </title>
+ </head>
+ <body bgcolor="#ffffff" text="#000000">
+<!--#include virtual="/cgi-bin/draw_navigation_for_static_pages.pl?0main&nada" -->
+  <h2>401 authorization required</h2></body></html>
