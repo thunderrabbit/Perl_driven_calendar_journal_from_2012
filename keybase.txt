@@ -1,0 +1,72 @@
+==================================================================
+https://keybase.io/thunderrabbit
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of http://robnugen.com
+  * I am thunderrabbit (https://keybase.io/thunderrabbit) on keybase.
+  * I have a public key with fingerprint 7D79 6ECE 0434 1608 5F0D  FB2B 540A 67A9 C4E3 F653
+
+To claim this, I am signing this object:
+
+{
+    "body": {
+        "key": {
+            "fingerprint": "7d796ece043416085f0dfb2b540a67a9c4e3f653",
+            "host": "keybase.io",
+            "key_id": "540a67a9c4e3f653",
+            "kid": "0101bba5ab2a551621ecf62f0b9ec09099bdb93083e1ef32795ca3f3e1eb04b148450a",
+            "uid": "3eba317b883abc4559b60bd5b26ca000",
+            "username": "thunderrabbit"
+        },
+        "service": {
+            "hostname": "robnugen.com",
+            "protocol": "http:"
+        },
+        "type": "web_service_binding",
+        "version": 1
+    },
+    "ctime": 1422671197,
+    "expire_in": 157680000,
+    "prev": "733dd99992db9867188aed35aeae5e92444d79c86b804a26de6902c1500d036b",
+    "seqno": 6,
+    "tag": "signature"
+}
+
+which yields the PGP signature:
+
+-----BEGIN PGP MESSAGE-----
+Comment: GPGTools - https://gpgtools.org
+
+owFtUn1QFGUYv/MEhwMEZlBwJih3GKg8cb9v9xhgJGlShukDGBUJ3Hf3vbvlYvfc
+24MYIEJCYkgEq+OYtIbRqbS0DAoZQoMQFbFLqZxqGhINkLQSEgIp2mXsv95/3nme
+5/f7PZ/N4SaD2ZhrdhwbuDGbY7x0Cxhyh1PtFQiQhXLEVoG44PJnFyUHVNyKKKmI
+DbEKVpaGPERJgsRolKHsqGAHOKBIlKOtHMuTkLDTFIFYEKfs0RmaDOA8MFmUNZ9m
+FImC5v0fvGs5gGIoBgBHcQDnKAqjcQzydhq3o4CFPMqiLAsEwBIoQ0AM2gncylI8
+R9h1C6AkwEiGpFBOk/MuyxEQcARmBQxDcIAnKYoFNAoECuA0z6EoqgM9UJG4Eqih
+VadXEqCicACIKlJlQbRQqchDfQ56Ow9gigwkrwNKybxcogm4FVmVefkFLeJUVbdN
+J6rlbh1ZBkHRA40iIEqCNkuNUAoVjyhLiA3TkLwq6qIYieO0FcNYqwWBL7pFBRaJ
+OoKy0oxWJ6qngaX6BghCEFjt4docGI3CMBwUCIqDHKQgi5Mkqe2IZ2jAoCSH0wKk
+WRTnMQpFBZSgAaJ3tUeSERutlck5NEmP6JA4NdirQKTK3LDioZUGo9kQHLRCvweD
+OSTyvyOJ3RaxGBGyo8bX1vV1V02FWM2YEtTmV2O6xxtbXv4mw490XlwK9a0ZvfFd
+/+x0VunUiaGRp/jeYWPmUlTCV/XJBVsb5gaDH26aP569Y1U3crblYKwtd1/H9rWL
+H4Q5E3aFXP/9t81ztlaq5tx0Z2L84iv+2k0NlZ5SZNel7789v7Nn4+HX+xb8GSe/
+3DjvDW+vJqrTCyZ8jbfLjp162nI7JW5GfGMyMrAQ2F+SPXzzyv2/KjZMp6ybCjXl
+i0GTTVti7qXVRqVPPPozWzmAvtfUkRo442xxVbUVpiSFJUTPbvksZ2b9Hnotwxzt
+irxvOD10bVXN6Oi+1jHfTWNiQveaxTT/kconYn8xkn0rsw744j4fry1r/eiqHL7h
+cPydhbKR/jQ3/fhM5LqWHouSt/6nu/7VAfWTq0h98bv0pj8uBzcM1FufdWb359/p
+M0Wc+uG4o9mqjrw1Ku/eZv04b4Jvn3st/RlLwPVY592h9PqjbeNY74e/dvzZM2vO
+Cg/svxJxjhuJP7lUsB32d0QHnX2nN8l+uTIvrP3TzFB/aGHcka3zFybn7Jk+KnCt
+Lo5R7tUlSY2DrrcTnSHnp+pa/17BZNwixgTT0GBO8fB4asbFRnnG0dlZ3GOqfG6z
+90mP27XX/eMjYzEH3V8U5p8JxF+YOf3Smyew1EPvR5YX7C5+/vpqh7c66p+haGnn
+Xu+hfwE=
+=8OdO
+-----END PGP MESSAGE-----
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/thunderrabbit
+
+==================================================================
