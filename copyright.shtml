@@ -1,0 +1,41 @@
+<!--#include virtual="/cgi-bin/draw_navigation_for_static_pages.pl?0main&none" -->
+
+<!-- Creative Commons License -->
+<p><a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/2.5/"><img alt="Creative Commons License" border="0" src="http://creativecommons.org/images/public/somerights20.gif" align="left" /></a>
+My journal and other prose is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/2.5/">Creative Commons License</a>.
+<br>Basically, you can copy it as long as you 1) don't change it, 2) don't sell it, 3) do give me credit.</p>
+<!-- /Creative Commons License -->
+
+<!--
+
+<rdf:RDF xmlns="http://web.resource.org/cc/"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+<Work rdf:about="">
+   <dc:title>Rob's Life</dc:title>
+   <dc:description>This is my journal, used to record my daily ramblings and occassional rantings.</dc:description>
+   <dc:creator><Agent>
+      <dc:title>Rob Nugen</dc:title>
+   </Agent></dc:creator>
+   <dc:rights><Agent>
+      <dc:title>Rob Nugen</dc:title>
+   </Agent></dc:rights>
+   <dc:type rdf:resource="http://purl.org/dc/dcmitype/Text" />
+   <license rdf:resource="http://creativecommons.org/licenses/by-nc-nd/2.0/" />
+</Work>
+
+<License rdf:about="http://creativecommons.org/licenses/by-nc-nd/2.0/">
+   <permits rdf:resource="http://web.resource.org/cc/Reproduction" />
+   <permits rdf:resource="http://web.resource.org/cc/Distribution" />
+   <requires rdf:resource="http://web.resource.org/cc/Notice" />
+   <requires rdf:resource="http://web.resource.org/cc/Attribution" />
+   <prohibits rdf:resource="http://web.resource.org/cc/CommercialUse" />
+</License>
+
+</rdf:RDF>
+
+-->
+
+<p>My programming code and other HTML is basically available free.
+<br>My perl code is available under the same terms as Perl itself.
+<br>My non-perl code is available under GPL.</p>
