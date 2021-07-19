@@ -327,15 +327,15 @@ foreach $yearmonth (sort keys %list_of_days_per_year_month) {
 #}
 
 # Calculate the first date for this $journal_type
-$first_year_month = (sort keys %list_of_days_per_year_month)[0];
-$first_entry_date = $first_year_month . "/" . (sort keys %{$list_of_days_per_year_month{$first_year_month}})[0];
+my $first_year_month = (sort keys %list_of_days_per_year_month)[0];
+my $first_entry_date = $first_year_month . "/" . (sort keys %{$list_of_days_per_year_month{$first_year_month}})[0];
 print HTML_OUTPUT "<p>\nFIRST ENTRY DATE: $first_entry_date\n\n</p>";
 
 print HTML_OUTPUT "<p>\nCURRENT ENTRY DATE: $current_yyyy/$current_mm/$current_dd\n\n</p>";
 
 # Calculate the last date for this $journal_type
-$last_year_month = (sort keys %list_of_days_per_year_month)[-1];
-$latest_entry_date = $last_year_month . "/" . (sort keys %{$list_of_days_per_year_month{$last_year_month}})[-1];
+my $last_year_month = (sort keys %list_of_days_per_year_month)[-1];
+my $latest_entry_date = $last_year_month . "/" . (sort keys %{$list_of_days_per_year_month{$last_year_month}})[-1];
 print HTML_OUTPUT "<p>\nLATEST ENTRY DATE: $latest_entry_date\n\n</p>";
 
 print HTML_OUTPUT "</body></html>\n";
