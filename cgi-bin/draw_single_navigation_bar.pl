@@ -3,7 +3,7 @@ sub single_navigation_bar {
     require "mkdef.pl";
     require "hash_io.pl";
     my %settings;
-    &hash_read(\%settings,"/home/thunderrabbit/settings/navigation.settings");
+    &hash_read(\%settings,"/home/barefoot_rob/settings/navigation.settings");
 
     my $html;
 

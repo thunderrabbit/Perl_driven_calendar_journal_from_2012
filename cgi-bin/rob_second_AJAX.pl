@@ -6,7 +6,7 @@
 # NB The CGI::Ajax object DOES NOT need to follow the function
 # declarations, as it does in the coderef example
 
-use lib "/home/thunderrabbit/lib/perl5/site_perl/";  # to use modules installed in my user space (in this case Ajax)
+use lib "/home/barefoot_rob/lib/perl5/site_perl/";  # to use modules installed in my user space (in this case Ajax)
 use strict;
 use CGI::Ajax;
 use CGI;

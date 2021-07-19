@@ -5,7 +5,7 @@ $query = new CGI;
 
 $THIS_FILE = "/cgi-bin/images.cgi";
 $WEB_BASE_DIR = "/images";
-$BASE_DIR = "/home/thunderrabbit/robnugen.com$WEB_BASE_DIR";
+$BASE_DIR = "/home/barefoot_rob/temp.robnugen.com$WEB_BASE_DIR";
 
 $BIG = 1;
 $THUMB = 2;

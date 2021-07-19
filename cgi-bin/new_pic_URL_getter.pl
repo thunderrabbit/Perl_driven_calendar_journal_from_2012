@@ -5,8 +5,8 @@ use CGI qw(:all);
 # use File::Basename;
 
 use mkdef;
-my $directory_base = "/home/thunderrabbit/robnugen.com/images";  # all directorying should start here
-my $last_pic_URLs_snagged = "/home/thunderrabbit/settings/last_new_pic_URLs_snagged.txt";   # file to remember when this code was last run
+my $directory_base = "/home/barefoot_rob/temp.robnugen.com/images";  # all directorying should start here
+my $last_pic_URLs_snagged = "/home/barefoot_rob/settings/last_new_pic_URLs_snagged.txt";   # file to remember when this code was last run
 my @image_directory_array;   # directories to scan recursively
 my @directory_contents;   # what we find in the directories
 

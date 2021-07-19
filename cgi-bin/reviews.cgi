@@ -126,7 +126,7 @@ BeginTableContents
 
 if ($file = $query->param('file'))   # true if file parameter is in URL
 {
-    $req_file = "/home/thunderrabbit/robnugen.com/ktru/reviews/$dir/$file";
+    $req_file = "/home/barefoot_rob/temp.robnugen.com/ktru/reviews/$dir/$file";
 }
 else
 {
@@ -164,7 +164,7 @@ foreach $file (@files_in_dir)   # for each file that matches file specification 
 	    $description_exists = $file;    # a description exists.  remember the filename and use it if no file was chosen
 	}
 	else {
-	    $fullname = "/home/thunderrabbit/robnugen.com/ktru/reviews/$dir/$file";
+	    $fullname = "/home/barefoot_rob/temp.robnugen.com/ktru/reviews/$dir/$file";
 	    if (-d $fullname)    # the file is a directory
 	    { 
 		# in the next line "$monthNames{$dir}" means using $dir as key in $monthNames, print the value.  

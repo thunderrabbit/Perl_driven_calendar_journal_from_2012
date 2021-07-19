@@ -76,7 +76,7 @@ require "hash_io.pl";
 
 my $q = new CGI;      # will be used for params, cookies, Ajax, html output
 
-use lib "/home/thunderrabbit/lib/perl5/site_perl";  # to use modules installed in my user space (in this case Ajax and Error)
+use lib "/home/barefoot_rob/lib/perl5/site_perl";  # to use modules installed in my user space (in this case Ajax and Error)
 use strict;
 use CGI qw(:all fatalsToBrowser);
 use CGI::Cookie;
@@ -97,8 +97,8 @@ my ($env_var,$next_action,$pass,%write_cookies,%read_cookies);
 
 # general settings for images, output language, and db access are stored in text files that will be read into hashes, starting with %settings
 my ($settings_file,%settings,%lang,%dbHash);
-$settings_file = "/home/thunderrabbit/settings/rob_updates.settings";
-my $nav_settings_file = "/home/thunderrabbit/settings/navigation.settings";  # this semi-hack allows one definition of location of navigation_definitions.txt
+$settings_file = "/home/barefoot_rob/settings/rob_updates.settings";
+my $nav_settings_file = "/home/barefoot_rob/settings/navigation.settings";  # this semi-hack allows one definition of location of navigation_definitions.txt
 
 # DBI handles
 my ($sth, $sql, $rv, $dbh, $dbData);
@@ -596,7 +596,7 @@ sub write_email_to_disk {
     # directory.  Indexing for the journal is done with its own mechanism,
     # so we don't need to worry about it.  The indexing for the rest
     # of my site has been done by hand (until now) by updating the
-    # file /home/thunderrabbit/setup_journal/navigation_definitions.txt.
+    # file /home/barefoot_rob/setup_journal/navigation_definitions.txt.
     # Keeping that updated fell to the wayside; I would send out Rob
     # Updates, but never update that file, nor even write these to the
     # appropriate directory.
@@ -606,13 +606,13 @@ sub write_email_to_disk {
     # I've created for that directory.  I will use symlinks for those.
     #
     # In conclusion, I will write the file two times:
-    # /home/thunderrabbit/robnugen.com/journal/yyyy/mm/dd$subject.html     (JOURNAL)
-    # /home/thunderrabbit/robnugen.com/travel/peace_boat/49/yyyy-mm-dd_$subject.shtml  (UPDATE)
+    # /home/barefoot_rob/temp.robnugen.com/journal/yyyy/mm/dd$subject.html     (JOURNAL)
+    # /home/barefoot_rob/temp.robnugen.com/travel/peace_boat/49/yyyy-mm-dd_$subject.shtml  (UPDATE)
     #
     # and then symlinks at all subdirectories of $settings{'update_directory'}
-    # /home/thunderrabbit/robnugen.com/travel/peace_boat/49/index.shtml ---> UPDATE
-    # /home/thunderrabbit/robnugen.com/travel/peace_boat/index.shtml    ---> UPDATE
-    # /home/thunderrabbit/robnugen.com/travel/index.shtml               ---> UPDATE
+    # /home/barefoot_rob/temp.robnugen.com/travel/peace_boat/49/index.shtml ---> UPDATE
+    # /home/barefoot_rob/temp.robnugen.com/travel/peace_boat/index.shtml    ---> UPDATE
+    # /home/barefoot_rob/temp.robnugen.com/travel/index.shtml               ---> UPDATE
     # 
     ##########################################################################
 

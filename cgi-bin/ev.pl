@@ -2,8 +2,8 @@
 
 use lib qw (.);  # allows these to be used with switch  -T (taint mode)
 # to use modules installed in my user space
-use lib "/home/thunderrabbit/perlmods/share/perl"; 
-use lib "/home/thunderrabbit/perlmods/share/perl/5.8"; 
+use lib "/home/barefoot_rob/perlmods/share/perl"; 
+use lib "/home/barefoot_rob/perlmods/share/perl/5.8"; 
 
 # load in the modules
 use strict;

@@ -12,7 +12,7 @@
 ######################################################################
 
 # load in the modules
-use lib "/home/thunderrabbit/perlmods/share/perl";  # to use modules installed in my user space (in this case Ajax)
+use lib "/home/barefoot_rob/perlmods/share/perl";  # to use modules installed in my user space (in this case Ajax)
 use strict;
 use CGI;
 use CGI::Ajax;
@@ -43,7 +43,7 @@ my %system_status; # this will tell us what we can do in the main menu.  (what t
 
 # general settings for images, output language, and db access are stored in text files that will be read into hashes, starting with %settings
 my ($settings_file,%settings,%lang,%dbHash);
-$settings_file = "/home/thunderrabbit/setup_journal/images.settings";
+$settings_file = "/home/barefoot_rob/setup_journal/images.settings";
 
 try {
     &critical_settings_check;

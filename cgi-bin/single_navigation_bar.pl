@@ -6,7 +6,7 @@ sub single_navigation_bar {
 
     my $html;
     my %settings;
-    &hash_read(\%settings,"/home/thunderrabbit/settings/navigation.settings");
+    &hash_read(\%settings,"/home/barefoot_rob/settings/navigation.settings");
 
     open (IN, $settings{"index_definition_file"}) or die "Can't open " . $settings{"index_definition_file"} . " for reading";
 

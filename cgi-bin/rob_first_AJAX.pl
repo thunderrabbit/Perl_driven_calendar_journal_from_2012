@@ -18,7 +18,7 @@
 #
 ######################################################################
 
-use lib "/home/thunderrabbit/lib/perl5/site_perl/";  # to use modules installed in my user space (in this case CGI::Ajax)
+use lib "/home/barefoot_rob/lib/perl5/site_perl/";  # to use modules installed in my user space (in this case CGI::Ajax)
 use strict;
 use CGI::Ajax;
 use CGI;

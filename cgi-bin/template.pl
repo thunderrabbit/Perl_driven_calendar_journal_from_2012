@@ -17,7 +17,7 @@ require "mkdef.pl";
 
 ## daysold.pl does a decent job of handling cookies, parameters and form fields
 
-use lib "/home/thunderrabbit/perlmods/share/perl";  # to use modules installed in my user space (in this case Ajax)
+use lib "/home/barefoot_rob/perlmods/share/perl";  # to use modules installed in my user space (in this case Ajax)
 use strict;
 use CGI;
 use CGI::Ajax;
