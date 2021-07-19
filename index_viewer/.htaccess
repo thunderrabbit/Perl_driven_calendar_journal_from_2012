@@ -1,0 +1,12 @@
+AuthUserFile /home/thunderrabbit/.passwerds
+AuthGroupFile /dev/null
+AuthName "Cookie Monster"
+AuthType Basic
+
+require user sniffsniff
+
+<Files .htaccess>
+order allow,deny
+deny from all
+</Files>
+
