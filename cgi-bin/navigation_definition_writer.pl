@@ -18,8 +18,8 @@ use strict;
     present them, by day or by name or what.
 =cut
 
-my $directory_base = "/home/thunderrabbit/public_html";  # all directorying should start here
-my $db_directory_list = "/home/thunderrabbit/setup_journal/db_directory_list.txt";  # list of directories that are okay to index (based in $directory_base)
+my $directory_base = "/home/barefoot_rob/public_html";  # all directorying should start here
+my $db_directory_list = "/home/barefoot_rob/setup_journal/db_directory_list.txt";  # list of directories that are okay to index (based in $directory_base)
 my @db_directory_array;   # directories to scan recursively
 my @directory_contents;   # what we find in the directories
 

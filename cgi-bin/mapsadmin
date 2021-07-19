@@ -31,8 +31,8 @@
 ######################################################################
 
 # to use modules installed in my user space
-use lib "/home/thunderrabbit/perlmods/share/perl"; 
-use lib "/home/thunderrabbit/perlmods/share/perl/5.8"; 
+use lib "/home/barefoot_rob/perlmods/share/perl"; 
+use lib "/home/barefoot_rob/perlmods/share/perl/5.8"; 
 
 # load in the modules
 use strict;
@@ -75,7 +75,7 @@ my @these_tables_need_data;     # the tables listed here must have data, or ther
 my @these_helpful_tables_DNE;   # some tables will give more functionality if they exist.  If they do not exist they are listed in this array
 
 # general settings for images, output language, and db access are stored in text files that will be read into hashes, starting with %settings
-my $settings_file = "/home/thunderrabbit/settings/maps.settings";
+my $settings_file = "/home/barefoot_rob/settings/maps.settings";
 my %settings;   # specifies where various files and things are located, the password to get into the system, default sizes for pics
 my %lang;       # all the language we output to users; allows various languages to be available
 my %dbHash;     # information on how to log in to the images database

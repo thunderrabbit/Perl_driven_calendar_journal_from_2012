@@ -1,4 +1,4 @@
-AuthUserFile /home/thunderrabbit/.passwerds
+AuthUserFile /home/barefoot_rob/.passwerds
 AuthGroupFile /dev/null
 AuthName "Cookie Monster"
 AuthType Basic

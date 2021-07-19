@@ -50,7 +50,7 @@
 require "draw_navigation.pl";
 
 # WAS: @dirs = ('/usr/www/foo/scripts/dir1/','/usr/www/foo/scripts/dir2/*');
-@dirs = ('/home/thunderrabbit/robnugen.com/journal/*+');
+@dirs = ('/home/barefoot_rob/temp.robnugen.com/journal/*+');
 
 $DEBUG = 0;
 
@@ -81,7 +81,7 @@ $cgiurl = 'http://robnugen.com/cgi-bin/websearch.pl';
 ###  # values below (minus '(.*)' in 2 cases).  The tokens were being evaluated in ways I didn't like and couldn't seem to 
 ###  # control with single or double quotes, etc.   So I just replaced them overtly.
 ###  
-###  $basepath = "/home/thunderrabbit/robnugen.com/journal/(\d\d\d\d)/(\d\d)/(\d\d)(.*)";
+###  $basepath = "/home/barefoot_rob/temp.robnugen.com/journal/(\d\d\d\d)/(\d\d)/(\d\d)(.*)";
 ###  $baseurl = 'http://robnugen.com/cgi-bin/journal.pl?date=$1/$2/$3';
 
 # %otherurls = (
@@ -107,7 +107,7 @@ $SplitNames = 0;
 $bodyspec = "BGCOLOR=\"#ffffff\" TEXT=\"#000000\"";
 $meta_file = "";
 $header_file = "";
-# 2006 may 22 (can't find header.txt, probably since I moved from shell1) $header_file = "/home/thunderrabbit/robnugen.com/journal/search/header.txt";
+# 2006 may 22 (can't find header.txt, probably since I moved from shell1) $header_file = "/home/barefoot_rob/temp.robnugen.com/journal/search/header.txt";
 # $footer_file = "/usr/www/foo/footer.txt";
 
 undef $keyword_log_file;
@@ -290,7 +290,7 @@ if ($ListOnly) {
 					$INCLUDEDDIR =~ s/$path/$otherurls{$path}/i;
 				}
 			}
-			$INCLUDEDDIR =~ s{/home/thunderrabbit/robnugen.com/journal/(\d\d\d\d)/(\d\d)/(\d\d)(.*)}{http://robnugen.com/cgi-bin/journal.pl?date=$1/$2/$3}i;
+			$INCLUDEDDIR =~ s{/home/barefoot_rob/temp.robnugen.com/journal/(\d\d\d\d)/(\d\d)/(\d\d)(.*)}{http://robnugen.com/cgi-bin/journal.pl?date=$1/$2/$3}i;
 			print "$INCLUDEDDIR\n";
 		}
 		print "\nFor all text files:\n\n";
@@ -301,7 +301,7 @@ if ($ListOnly) {
 					$INCLUDEDDIR =~ s/$path/$otherurls{$path}/i;
 				}
 			}
-			$INCLUDEDDIR =~ s{/home/thunderrabbit/robnugen.com/journal/(\d\d\d\d)/(\d\d)/(\d\d)(.*)}{http://robnugen.com/cgi-bin/journal.pl?date=$1/$2/$3}i;
+			$INCLUDEDDIR =~ s{/home/barefoot_rob/temp.robnugen.com/journal/(\d\d\d\d)/(\d\d)/(\d\d)(.*)}{http://robnugen.com/cgi-bin/journal.pl?date=$1/$2/$3}i;
 			print "$INCLUDEDDIR\n";
 		}
 	}
@@ -432,7 +432,7 @@ if ($ListOnly) {
 				$FILE =~ s/$path/$otherurls{$path}/i;
 			}
 		}
-		$FILE =~ s{/home/thunderrabbit/robnugen.com/journal/(\d\d\d\d)/(\d\d)/(\d\d)}{http://robnugen.com/cgi-bin/journal.pl?date=$1/$2/$3}i;
+		$FILE =~ s{/home/barefoot_rob/temp.robnugen.com/journal/(\d\d\d\d)/(\d\d)/(\d\d)}{http://robnugen.com/cgi-bin/journal.pl?date=$1/$2/$3}i;
 		print "$FILE\n";
 		$filecount++;
 	}
@@ -473,7 +473,7 @@ if ($ListOnly) {
 					$AVOIDEDFILE =~ s/$path/$otherurls{$path}/i;
 				}
 			}
-			$AVOIDEDFILE =~ s{/home/thunderrabbit/robnugen.com/journal/(\d\d\d\d)/(\d\d)/(\d\d)}{http://robnugen.com/cgi-bin/journal.pl?date=$1/$2/$3}i;
+			$AVOIDEDFILE =~ s{/home/barefoot_rob/temp.robnugen.com/journal/(\d\d\d\d)/(\d\d)/(\d\d)}{http://robnugen.com/cgi-bin/journal.pl?date=$1/$2/$3}i;
 			print "$AVOIDEDFILE\n";
 			$avoidedfilecount++;
 		}
@@ -873,12 +873,12 @@ sub PrintEntry {
 			$title{$key} =~ s/$path/$otherurls{$path}/i;
 		}
 	}
-	$DEBUG && print "<br>DEBUG: /home/thunderrabbit/robnugen.com/journal/(\d\d\d\d)/(\d\d)/(\d\d)(.*)";
+	$DEBUG && print "<br>DEBUG: /home/barefoot_rob/temp.robnugen.com/journal/(\d\d\d\d)/(\d\d)/(\d\d)(.*)";
 	$DEBUG && print "<br>DEBUG: http://robnugen.com/cgi-bin/journal.pl?date=$1/$2/$3";
 	$DEBUG && print "<br>DEBUG: $fileurl";
-	$fileurl =~ s{/home/thunderrabbit/robnugen.com/journal/(\d\d\d\d)/(\d\d)/(\d\d)(.*)}{http://robnugen.com/cgi-bin/journal.pl?date=$1/$2/$3}i;
+	$fileurl =~ s{/home/barefoot_rob/temp.robnugen.com/journal/(\d\d\d\d)/(\d\d)/(\d\d)(.*)}{http://robnugen.com/cgi-bin/journal.pl?date=$1/$2/$3}i;
 	$DEBUG && print "<br>DEBUG: $fileurl";
-	$title{$key} =~ s{/home/thunderrabbit/robnugen.com/journal/(\d\d\d\d)/(\d\d)/(\d\d)(.*)}{http://robnugen.com/cgi-bin/journal.pl?date=$1/$2/$3}i;
+	$title{$key} =~ s{/home/barefoot_rob/temp.robnugen.com/journal/(\d\d\d\d)/(\d\d)/(\d\d)(.*)}{http://robnugen.com/cgi-bin/journal.pl?date=$1/$2/$3}i;
 	print "<DT>$Count. <STRONG><A HREF=\"$fileurl\">";
 	print "$title{$key}</A></STRONG>";
 	if ($poster{$key}) { print " (message posted by $poster{$key})"; }

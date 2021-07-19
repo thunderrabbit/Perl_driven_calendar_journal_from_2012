@@ -24,8 +24,8 @@ use CGI qw(:all);
 my ($NAVIGATION_SOURCE_FILE,$INDEX_DEFINITION_FILE);
 
 # require "setup_navigation.pl";
-$NAVIGATION_SOURCE_FILE = "/home/thunderrabbit/setup_journal/navigation_data_source.txt";
-$INDEX_DEFINITION_FILE = "/home/thunderrabbit/setup_journal/navigation_definitions.txt";
+$NAVIGATION_SOURCE_FILE = "/home/barefoot_rob/setup_journal/navigation_data_source.txt";
+$INDEX_DEFINITION_FILE = "/home/barefoot_rob/setup_journal/navigation_definitions.txt";
 
 
 $INDEX_DEFINITION_FILE .= "test_automagical";

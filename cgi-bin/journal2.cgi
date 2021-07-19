@@ -5,7 +5,7 @@
 use CGI;
 $query = new CGI;
 
-$BASE_DIR='/home/thunderrabbit/robnugen.com/journal';
+$BASE_DIR='/home/barefoot_rob/temp.robnugen.com/journal';
 
 $write_index=0;   # the tentative beginning of showing only the file contents
 
@@ -288,7 +288,7 @@ sub drawPrevNextFile
 #  This subroutine is designed to find the latest year and latest month in that year in my journal directory
 #
 #  It assumes a few things:   
-#  1) The script is being run from /home/thunderrabbit/robnugen.com/cgi-bin
+#  1) The script is being run from /home/barefoot_rob/temp.robnugen.com/cgi-bin
 #  2) ../journal is my journal directory
 #
 ###############################################3333
@@ -308,7 +308,7 @@ sub getLatestDir
 	(-d $entry) && (0 != $entry) && ($lastM = $entry);         # if it's a dir and numeric then we want it
     }
 
-    chdir("/home/thunderrabbit/robnugen.com/cgi-bin");                     # go back to start so script can work normally
+    chdir("/home/barefoot_rob/temp.robnugen.com/cgi-bin");                     # go back to start so script can work normally
     $last .= "/$lastM";                                           # return $last concatenated with "/" and $lastM
 }
 

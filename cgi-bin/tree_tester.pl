@@ -13,7 +13,7 @@
 
 require "allowSource.pl";
 
-use lib "/home/thunderrabbit/perlmods/share/perl";   # to use modules installed in my user space
+use lib "/home/barefoot_rob/perlmods/share/perl";   # to use modules installed in my user space
 use strict;
 use CGI;
 
@@ -23,7 +23,7 @@ use Tree::Simple::Visitor::LoadDirectoryTree;
   
   # create a Tree::Simple object whose
   # node is path to a directory
-my $tree = Tree::Simple->new("/home/thunderrabbit/robnugen.com/images");
+my $tree = Tree::Simple->new("/home/barefoot_rob/temp.robnugen.com/images");
 
   # create an instance of our visitor
 my $visitor = Tree::Simple::Visitor::LoadDirectoryTree->new();
@@ -77,7 +77,7 @@ print $query->header, $query->start_html("title");
 print $html_tree->javascript();
 
 $html_tree->includeTrunk(1);
-print $html_tree->expandPath(("/home/thunderrabbit/robnugen.com/images"));
+print $html_tree->expandPath(("/home/barefoot_rob/temp.robnugen.com/images"));
 
 &allowSource;
 

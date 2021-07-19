@@ -20,7 +20,7 @@ require "mkdef.pl";
 
 # require "rob_update_setup.pl";   # I don't know how to do this and use strict.  So the next couple lines are the contents of this file
 # BEGIN rob_update_setup.pl
-my $public_html_dir = "/home/thunderrabbit/public_html";
+my $public_html_dir = "/home/barefoot_rob/public_html";
 my $update_directory = "/travel/japan/pre-pb52";
 my $opt_out_q_filename = "$public_html_dir$update_directory/DO_NOT_DELETE_opt_outs.txt";
 my $opt_out_done_filename = "$public_html_dir/DO_NOT_DELETE_opted_out_of_rob_updates.txt";

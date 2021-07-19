@@ -13,8 +13,8 @@
 
 require "allowSource.pl";
 
-use lib "/home/thunderrabbit/perlmods/share/perl";  # to use modules installed in my user space (in this case Ajax)
-use lib "/home/thunderrabbit/perlmods/lib/perl/";
+use lib "/home/barefoot_rob/perlmods/share/perl";  # to use modules installed in my user space (in this case Ajax)
+use lib "/home/barefoot_rob/perlmods/lib/perl/";
 
 use strict;
 use HTML::GoogleMaps;

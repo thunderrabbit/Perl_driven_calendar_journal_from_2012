@@ -42,7 +42,7 @@ print $query->header, $query->start_html("title");
 my ($full_dir,$path,$env_var,$user,$pass,$name,%write_cookies,%read_cookies,%query_string_hash);
 
 my $WEB_BASE_DIR = "/images";
-my $BASE_DIR = "/home/thunderrabbit/robnugen.com$WEB_BASE_DIR";
+my $BASE_DIR = "/home/barefoot_rob/temp.robnugen.com$WEB_BASE_DIR";
 
 # my $query = new CGI;
 

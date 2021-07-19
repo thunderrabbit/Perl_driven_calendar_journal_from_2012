@@ -15,7 +15,7 @@ require "allowSource.pl";
 require "setCookies.pl";
 require "mkdef.pl";
 
-use lib "/home/thunderrabbit/lib/perl5/site_perl";  # to use modules installed in my user space (in this case Ajax and Error)
+use lib "/home/barefoot_rob/lib/perl5/site_perl";  # to use modules installed in my user space (in this case Ajax and Error)
 use strict;
 use CGI;
 use CGI::Ajax;

@@ -5,7 +5,7 @@
 print "Content-type: text/html\n\n";
 
 $DOMAIN = "robnugen.com";
-$EMAIL_USERNAME_FILE = "/home/thunderrabbit/robnugen.com/random_email_usernames.txt";
+$EMAIL_USERNAME_FILE = "/home/barefoot_rob/temp.robnugen.com/random_email_usernames.txt";
 
 open (IN, "$EMAIL_USERNAME_FILE") or die "Can't open $EMAIL_USERNAME_FILE for reading";
 while (<IN>) {

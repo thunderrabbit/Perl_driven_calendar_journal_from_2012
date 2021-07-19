@@ -206,8 +206,8 @@ if ($ENV{"HTTP_REFERER"} && $match_quality ne "nicely") {
     }
 
     foreach (@results) {
-	if (m!/home/thunderrabbit/robnugen.com/!) {
-	    s!/home/thunderrabbit/robnugen.com/!!;
+	if (m!/home/barefoot_rob/temp.robnugen.com/!) {
+	    s!/home/barefoot_rob/temp.robnugen.com/!!;
 	    $body .= "\n " . "http://robnugen.com/$_";
 	}
     }

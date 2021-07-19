@@ -18,12 +18,12 @@ require "mkdef.pl";
 
 my %filenames_hash = 
     (
-     journal => "/home/thunderrabbit/robnugen.com/safe/journal_log.txt",
-     source => "/home/thunderrabbit/robnugen.com/safe/source_log.txt",
-     daysold => "/home/thunderrabbit/robnugen.com/safe/daysold_log.txt",
-     spam => "/home/thunderrabbit/robnugen.com/safe/spam_log.txt",
-     "images.v0.003" => "/home/thunderrabbit/robnugen.com/safe/images.v0.003_log.txt",
-     general => "/home/thunderrabbit/robnugen.com/safe/general_log.txt"
+     journal => "/home/barefoot_rob/temp.robnugen.com/safe/journal_log.txt",
+     source => "/home/barefoot_rob/temp.robnugen.com/safe/source_log.txt",
+     daysold => "/home/barefoot_rob/temp.robnugen.com/safe/daysold_log.txt",
+     spam => "/home/barefoot_rob/temp.robnugen.com/safe/spam_log.txt",
+     "images.v0.003" => "/home/barefoot_rob/temp.robnugen.com/safe/images.v0.003_log.txt",
+     general => "/home/barefoot_rob/temp.robnugen.com/safe/general_log.txt"
      );
 
 sub write_log {

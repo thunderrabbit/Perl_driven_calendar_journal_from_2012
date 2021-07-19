@@ -8,8 +8,8 @@
 use strict;
 use MIME::Parser;
 
-my $logfile='/home/thunderrabbit/attaches.log';
-my $attachdir='/home/thunderrabbit';
+my $logfile='/home/barefoot_rob/attaches.log';
+my $attachdir='/home/barefoot_rob';
 
 my $parser=new MIME::Parser;
 $parser->ignore_errors(1);
