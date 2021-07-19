@@ -72,16 +72,18 @@ sub mainbar {
 		print ("<a name=\"", $this_entrys_href, "\"></a>\n");
 		$this_entrys_title = shift @list_of_titles;
 		print ("<p class=\"entry_title\">", $this_entrys_title , "</p>\n");
-		if ($file =~ m/.*\.txt$/) {
-		    print "<pre>\n";
-		}
-		open (FILE,"$file");
-		while(<FILE>) {
-		    print;
-		}
-		if ($file =~ m/.*\.txt$/) {
-		    print "</pre>\n";
-		}
+      
+    my $istext = 1  if ($file =~ m/\.txt$/i);
+    my $ismd   = 1  if ($file =~ m/\.md$/i);
+      
+		print "<pre>\n" if ($istext || $ismd);  
+		if (open (FILE, "$file")) {
+		  while(<FILE>) {
+		      print;
+		  }
+      close FILE;
+    }
+		print "</pre>\n" if ($istext || $ismd);
 
 		# print a link to allow comments
 		$filename = shift @list_of_filenames;
