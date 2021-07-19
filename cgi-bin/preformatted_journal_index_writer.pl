@@ -319,12 +319,12 @@ foreach $yearmonth (sort keys %list_of_days_per_year_month) {
 }
 
 # Write empty blocks for non-existant past / future months and years.
-#foreach my $when qw(prev next) {    <---- this gives a syntax error in Perl 5.26
+foreach my $when (qw(prev next)) {    
     print HTML_OUTPUT "\nNO prev YEAR:\n<pre class='calendar'>\n \n \n \n \n</pre>\n\n";
     print HTML_OUTPUT "\nNO prev MONTH:\n<pre class='calendar'>\n \n \n \n \n \n \n</pre>\n\n";
     print HTML_OUTPUT "\nNO next YEAR:\n<pre class='calendar'>\n \n \n \n \n</pre>\n\n";
     print HTML_OUTPUT "\nNO next MONTH:\n<pre class='calendar'>\n \n \n \n \n \n \n</pre>\n\n";
-#}
+}
 
 # Calculate the first date for this $journal_type
 my $first_year_month = (sort keys %list_of_days_per_year_month)[0];
