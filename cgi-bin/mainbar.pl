@@ -46,10 +46,10 @@ sub mainbar {
 	unless ($file =~ m/.*\.comment~*$/) {      # keep comments from being displayed
 	    unless ($file =~ m/.*\~$/) {      # keep backups from being displayed
 		$debug && print "<br>file is \"$file\"\n";
-		($title) = $file =~ m!.*/_?\d\d(.*)\.(?:html|txt)$!;
+		($title) = $file =~ m!.*/_?\d\d(.*)\.(?:html|txt|md)$!;
 		$debug && print "<br>title is \"$title\"\n";
 		# $filename is the filename only with no path info.  This name is sent to comment.pl to hide the path of my filesystem.
-		($filename) = $file =~ m!.*/(\d\d.*\.(?:html|txt))$!;
+		($filename) = $file =~ m!.*/(\d\d.*\.(?:html|txt|md))$!;
 		$title_no_spaces = $title;
 		$title_no_spaces =~ s/_/ /g;  # basically the title of the entry
 		push (@list_of_titles, $title_no_spaces);
