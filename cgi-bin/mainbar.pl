@@ -30,6 +30,9 @@ sub mainbar {
     }
 ## end ADDRESSING private entries using security through obscurity
 
+    $debug && print "<p>$journal_base/$year/$month/$day</p>";
+    $debug && print "\n\n<pre>" . @all_files_for_date . "</pre>\n\n";
+
     # prune this list to only files that match regex
     foreach $full_file_path (@all_files_for_date) {
 	my ($file_only) = $full_file_path =~ m!/(?:(?:.*?)/)*(.*)!;
