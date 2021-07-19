@@ -1,5 +1,9 @@
 #!/usr/bin/perl -w
 
+use Cwd qw( abs_path );     # allows Perl 5.26 to include local file setup_journal.pl
+use File::Basename qw( dirname );
+use lib dirname(abs_path(__FILE__));
+
 require "setup_journal.pl";
 
 
