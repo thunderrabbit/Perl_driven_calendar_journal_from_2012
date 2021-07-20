@@ -282,59 +282,9 @@ print "</pre>";
 
 print "\n";
 
-# ffbprint<<FACEBOOKBADGE;
-# ffb<!-- Facebook Badge START --><a href="http://www.facebook.com/people/Rob-Nugen/816205715" title="Rob Nugen&#039;s Facebook profile" target="_TOP" style="font-family: &quot;lucida grande&quot;,tahoma,verdana,arial,sans-serif; font-size: 11px; font-variant: normal;font-style: normal; font-weight: normal; color: #3B5998; text-decoration: none;">Rob Nugen's Profile</a><br /><a href="http://www.facebook.com/people/Rob-Nugen/816205715" title="title" target="_TOP"><img src="http://badge.facebook.com/badge/816205715.2207.1099938675.png" alt="Rob Nugen&#039;s Facebook profile" style="border: 0px;" /></a><br /><a href="http://www.facebook.com/badges.php" title="Make your own badge!" target="_TOP" style="font-family: &quot;lucida grande&quot;,tahoma,verdana,arial,sans-serif; font-size: 11px; font-variant: normal;font-style: normal; font-weight: normal; color: #3B5998; text-decoration: none;">Create Your Badge</a><!-- Facebook Badge END -->
-# ffbFACEBOOKBADGE
-
 # <p><a href="http://www.nanowrimo.org/NanowrimoUtils/ProgressReport/260012.html"><img src="http://www.nanowrimo.org/NanowrimoUtils/NanowrimoGraph/260012.png" /></a>
 # <br/>Click for my detailed 2008 <a href="http://www.nanowrimo.org/">NaNoWriMo</a> stats!</p>
 
-
-print<<GREENDREAM;
-
-<p>
-<a href="http://www.dreamhost.com/r.cgi?204388">
-<img class="nada" alt="Awesome Web Hosting! This site hosted by DreamHost."
-src="/125x125-a.gif" /></a>
-<br/>Get 
-<a href="http://www.dreamhost.com/r.cgi?204388">
-<b>unlimited</b> storage for \$8.95 per month</a>.</p>
-
-
-GREENDREAM
-
-
-
-# only $35 in a hella long timeprint<<GOOGLESTUFF;
-# only $35 in a hella long time
-# only $35 in a hella long time<script type="text/javascript"><!--
-# only $35 in a hella long timegoogle_ad_client = "pub-8968158139273573";
-# only $35 in a hella long timegoogle_ad_width = 120;
-# only $35 in a hella long timegoogle_ad_height = 60;
-# only $35 in a hella long timegoogle_ad_format = "120x60_as_rimg";
-# only $35 in a hella long timegoogle_cpa_choice = "CAAQ5ZaazgEaCFpxEHuGkQUbKIHD93M";
-# only $35 in a hella long time//--></script>
-# only $35 in a hella long time<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-# only $35 in a hella long time</script>
-# only $35 in a hella long time<br />
-# only $35 in a hella long time<script type="text/javascript"><!--
-# only $35 in a hella long timegoogle_ad_client = "pub-8968158139273573";
-# only $35 in a hella long timegoogle_alternate_color = "FFFFFF";
-# only $35 in a hella long timegoogle_ad_width = 120;
-# only $35 in a hella long timegoogle_ad_height = 600;
-# only $35 in a hella long timegoogle_ad_format = "120x600_as";
-# only $35 in a hella long timegoogle_ad_channel ="3596883238";
-# only $35 in a hella long timegoogle_ad_type = "text_image";
-# only $35 in a hella long timegoogle_color_border = ["B4D0DC","DFF2FD","B0E0E6"];
-# only $35 in a hella long timegoogle_color_bg = ["ECF8FF","DFF2FD","FFFFFF"];
-# only $35 in a hella long timegoogle_color_link = ["0000CC","0000CC","000000"];
-# only $35 in a hella long timegoogle_color_url = ["008000","008000","336699"];
-# only $35 in a hella long timegoogle_color_text = ["6F6F6F","000000","333333"];
-# only $35 in a hella long time//--></script>
-# only $35 in a hella long time<script type="text/javascript"
-# only $35 in a hella long time  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-# only $35 in a hella long time</script>
-# only $35 in a hella long timeGOOGLESTUFF
 
 }
 
