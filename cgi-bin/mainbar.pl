@@ -52,6 +52,10 @@ sub mainbar {
 		($filename) = $file =~ m!.*/(\d\d.*\.(?:html|txt|md))$!;
 		$title_no_spaces = $title;
 		$title_no_spaces =~ s/_/ /g;  # basically the title of the entry
+
+		# Fixes #9, but a better fix is #8 get title from Frontmatter if this is a markdown file
+		$title_no_spaces =~ s/-/ /g;  # Markdown files have hyphens like this
+
 		push (@list_of_titles, $title_no_spaces);
 
 		$name_for_href_on_this_page = $title;
