@@ -24,3 +24,6 @@ cat *.patch | git am --directory journal
 rm *.patch
 
 echo "BE SURE TO git push"
+echo
+echo "Update temp journal site https://temp.robnugen.com/cgi-bin/preformatted_journal_index_writer.pl"
+echo
