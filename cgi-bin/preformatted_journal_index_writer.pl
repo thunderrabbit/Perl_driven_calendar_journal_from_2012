@@ -15,28 +15,28 @@ use Date::Manip qw(ParseDate UnixDate);  # used in creating RSS feed below
 # I put a zero as the zeroth element, so $months[1] means January = 31
 # I put a zero as the second element, cause it will be either 28 or 29
 @month_lengths = (0, 31, 0, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
-@month_titles_spaced_for_month_summaries = ( "         ", 
-  "      Jan", "      Feb", "      Mar", "      Apr", 
-        "      May", "     June", "     July", "      Aug", 
+@month_titles_spaced_for_month_summaries = ( "         ",
+  "      Jan", "      Feb", "      Mar", "      Apr",
+        "      May", "     June", "     July", "      Aug",
         "     Sept", "      Oct", "      Nov", "      Dec",
 );
-@month_titles_no_spacing = ( "", 
-        "jan", "feb", "mar", "apr", "may", "jun", 
+@month_titles_no_spacing = ( "",
+  "jan", "feb", "mar", "apr", "may", "jun",
   "jul", "aug", "sep", "oct", "nov", "dec",
 );
 
 sub setFeb {
     local($year) = @_;
 
-    if (&isLeap($year)) { $month_lengths[2]=29; }                      
-    else { $month_lengths[2]=28; }                      
+    if (&isLeap($year)) { $month_lengths[2]=29; }
+    else { $month_lengths[2]=28; }
 }
 
 sub isLeap {
     local($year) = @_;
     if ($year % 4 == 0) {
         if ($year % 100 == 0) {
-            if ($year % 400 == 0) { 1; } 
+            if ($year % 400 == 0) { 1; }
             else { 0; }
         } else { 1; }
     } else { 0; }
@@ -73,7 +73,7 @@ sub dayofweek {
     # And how far after that are we?
     my $on = $day - $base[$month - 1];
     $on = $on % 7;
-    
+
     # So, the day of the week should be doomsday, plus however far on we are
     return ($doomsday + $on) % 7;
 }
@@ -85,22 +85,22 @@ system "ls -1R $journal_directory > ls-1R2.txt";
 open (LSONER, "ls-1R2.txt");
 $ls1r = <LSONER>;
 
-@pre_month_whitespace = ( "", 
-#       jan             feb   mar   apr  
-        "&nbsp;&nbsp;", "  ", "  ", "  ", 
+@pre_month_whitespace = ( "",
+#       jan             feb   mar   apr
+        "&nbsp;&nbsp;", "  ", "  ", "  ",
 #       may             jun   jul   aug
-        "&nbsp;&nbsp;", "  ", "  ", "  ", 
-#       sep             oct   nov   dec  
-        "&nbsp;&nbsp;", "  ", "  ", "  ", 
+        "&nbsp;&nbsp;", "  ", "  ", "  ",
+#       sep             oct   nov   dec
+        "&nbsp;&nbsp;", "  ", "  ", "  ",
 );
 
 @post_month_whitespace = ( "",
-#       jan  feb  mar  apr  
-        "",  "",  "",  "  \n", 
+#       jan  feb  mar  apr
+        "",  "",  "",  "  \n",
 #       may  jun  jul  aug
-        "",  "",  "",  "  \n", 
-#       sep  oct  nov  dec  
-        "",  "",  "",  "  \n", 
+        "",  "",  "",  "  \n",
+#       sep  oct  nov  dec
+        "",  "",  "",  "  \n",
 );
 
 my $HOURS_FROM_CALI_TO_TOKYO = 16;  # add N hours worth of seconds to get from California time to Japan time.  This will have to change at Daylight Saving shifts, but we actually don't care about just 1 hour.
@@ -142,7 +142,7 @@ my $rfc822_date   = UnixDate($today,$rfc822_format);
 		      updateBase       => "Wed, 25 Mar 1970 00:00:00 EST",
 		  }   # need comma if next structure is used but,
 		  );
-    
+
 
     # these hashes will basically store all the results of scanning through ls-1R.txt looking for matching filenames
     # At the end, we can loop through these hashes and produce all the preformatted HTML journal.pl needs.
@@ -167,15 +167,15 @@ my $rfc822_date   = UnixDate($today,$rfc822_format);
 	see if they match the $journal_regex_type{$journal_type}, and if
 	they do, we know it should be included in this output.
 =cut
-	while($ls1r =~ m!^\./(\d\d\d\d)/([^:]*?):.*?$(.*?\n\n)!smg) 
+ 	while($ls1r =~ m!^\./(\d\d\d\d)/([^:]*?):.*?$(.*?\n\n)!smg)
 {
     $year = $1;
     $month = $2;
     $files = $3;
 
     # An array of all the files in this yyyy/mm combination that match the regex
-    undef @files_of_this_type;
-    undef @files_of_ANY_type;
+    @files_of_this_type = ();
+    @files_of_ANY_type = ();
 
     # doing this so we don't match \d\d in the middle of words
     @files_of_ANY_type = split(/\n/,$files);
@@ -187,7 +187,7 @@ my $rfc822_date   = UnixDate($today,$rfc822_format);
 	}
     }
 
-    if (@files_of_this_type) 
+    if (@files_of_this_type)
     {
 
 	my $filename;
@@ -206,34 +206,34 @@ my $rfc822_date   = UnixDate($today,$rfc822_format);
 
 	    unless ($filename =~ m/.*\.comment~*$/) {      # keep comments from being displayed
 		unless ($filename =~ m/.*\~$/) {      # keep backups from being displayed
-		    
+
 		    ($dd) = $filename =~ m!_?(\d\d)!m;
 		    # add this day to this year_months list
 		    $list_of_days_per_year_month{"$year/$month"}->{$dd} = "Y";
-		    
+
 		    # pop an item off if there are already 15 items
 		    pop (@{$rss->{'items'}}) if (@{$rss->{'items'}} == 15);
-		    
+
 		    $file = $filename;
 		    ($title) = $file =~ m!_?\d\d(.*)\.(?:html|txt)$!;
-		    
+
 		    $title_no_spaces = $title;
 		    $title_no_spaces =~ s/_/ /g;  # basically the title of the entry
-		    
+
 		    unless ($year > $JST_yyyy ) {      # there is one entry dated 2016
-			
+
 			$rss->add_item(title => "$year/$month/$dd: $title_no_spaces",
 				       link  => $www_journal_pl . "?type=" . $journal_type . "&amp;date=" . $year . "/" . $month . "/" . $dd . "#" . $title,
 				       guid  => $www_journal_pl . "?type=" . $journal_type . "&amp;date=" . $year . "/" . $month . "/" . $dd . "#" . $title,
 				       mode => "insert"  # put them so that most recent shows up first
 				       );
-		    } # unless year > this year
-		    
+ 		    } # unless year > this year
+
 		    # (in $current_xxxx), keep track of the date closest to, but not beyond, today ($JST_xxxx).
-		    ($current_yyyy,$current_mm,$current_dd) = ($year,$month,$dd) unless ($year > $JST_yyyy || 
-											 ($year == $JST_yyyy && $month > $JST_mm) || 
+		    ($current_yyyy,$current_mm,$current_dd) = ($year,$month,$dd) unless ($year > $JST_yyyy ||
+											 ($year == $JST_yyyy && $month > $JST_mm) ||
 											 ($year == $JST_yyyy && $month == $JST_mm && $dd > $JST_dd));
-		    
+
 		    if ($dd > 31) {
 			$error_message .= "<p><b>for $year/$month we got day = $dd from $filename</b></p>";
 		    }
@@ -247,7 +247,7 @@ print HTML_OUTPUT "<p><!-- $journal_type journal entries match m!$journal_regex_
 
 print HTML_OUTPUT "YEARS: ";
 print HTML_OUTPUT join ", ", (sort keys %list_of_years_per_journal_type);
-print HTML_OUTPUT "\n\n";    
+print HTML_OUTPUT "\n\n";
 
 print HTML_OUTPUT "<p><!-- YEAR SUMMARIES --></p>\n\n";
 ####### PRINT HTML_OUTPUT YEAR SUMMARIES ##################
@@ -280,12 +280,12 @@ print HTML_OUTPUT "<p><!-- MONTH SUMMARIES --></p>\n\n";
 ####### PRINT HTML_OUTPUT MONTH SUMMARIES ##################
 foreach $yearmonth (sort keys %list_of_days_per_year_month) {
     ($year,$month) = $yearmonth =~ m!(\d\d\d\d)/(\d\d)!;
-    unless ($month =~ m/^\d\d$/) {next;}  
+    unless ($month =~ m/^\d\d$/) {next;}
     # Make sure month is exactly two digits before continuing.
     # (Month could be "costarica" or "images", for example.)
-    
+
     # Now we are sure we have found a good month.
-    
+
     setFeb($year);                             # 28 or 29 days depending on Leap Year
     $day_of_week = dayofweek(1,$month,$year);
 
@@ -298,11 +298,11 @@ foreach $yearmonth (sort keys %list_of_days_per_year_month) {
     # Split off the leading whitespace to keep it outside the link.
     $month_titles_spaced_for_month_summaries[$month] =~ m/(\s*)(.*)/;
     print HTML_OUTPUT "&nbsp;$1<a href=\"$journal_pl?type=$journal_type&amp;date=$year/$month\">$2 $year</a>\n";
-    print HTML_OUTPUT "&nbsp;";     
+    print HTML_OUTPUT "&nbsp;";
     print HTML_OUTPUT "   " x $day_of_week;
     foreach $i (1..$month_lengths[$month]) {
 	$day = sprintf "%2.2d", $i;
-	# Here is where we print HTML_OUTPUT the day number.  
+	# Here is where we print HTML_OUTPUT the day number.
 	# This needs to include newlines after each Saturday.
 	if($list_of_days_per_year_month{"$year/$month"}->{$day}) {
 	    print HTML_OUTPUT "<a href='$journal_pl?type=$journal_type&amp;date=$year/$month/$day'>$day</a>";
@@ -319,7 +319,7 @@ foreach $yearmonth (sort keys %list_of_days_per_year_month) {
 }
 
 # Write empty blocks for non-existant past / future months and years.
-foreach my $when (qw(prev next)) {    
+foreach my $when (qw(prev next)) {
     print HTML_OUTPUT "\nNO $when YEAR:\n<pre class='calendar'>\n \n \n \n \n</pre>\n\n";
     print HTML_OUTPUT "\nNO $when MONTH:\n<pre class='calendar'>\n \n \n \n \n \n \n</pre>\n\n";
 }
