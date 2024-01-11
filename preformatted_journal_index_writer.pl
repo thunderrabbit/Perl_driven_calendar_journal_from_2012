@@ -25,6 +25,32 @@ use Date::Manip qw(ParseDate UnixDate);  # used in creating RSS feed below
   "jul", "aug", "sep", "oct", "nov", "dec",
 );
 
+sub iMayRunYet {
+    # open a file to see if it's been at least an hour since last run
+    my $filename = "/home/dh_r2ixxd/preformatted_last_run.txt";
+    my $last_run = 0;
+    if (-e $filename) {
+        open (LASTRUN, $filename);
+        $last_run = <LASTRUN>;
+        close LASTRUN;
+    }
+    my $now = time;
+    if ($now - $last_run > 1*60*60) {
+        open (LASTRUN, ">$filename");
+        print LASTRUN $now;
+        close LASTRUN;
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+if (!&iMayRunYet) {
+    print "Content-type: text/html\n\n";
+    print "Wait an hour before running again.";
+    exit;
+}
+
 sub setFeb {
     local($year) = @_;
 
