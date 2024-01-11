@@ -54,7 +54,7 @@ exit if ($date eq "nil" || $require_reload);   # if date is nil, then header dre
 #&write_log("journal","$date $journal_type");
 
 print "<body>\n";
-#&draw_navigation("0main&1journal&2$journal_type");
+&draw_navigation("0main&1journal&2$journal_type");
 
 #print "<p><b>Oops.</b>  I just broke my journal in a bad way.  ETA = ?  <br/>for now, use <a href=\"http://m.robnugen.com/j\">my mobile journal</a> - Rob!</p>";
 print "\n<table border=\"1\" width=\"100%\"><tr>\n";
