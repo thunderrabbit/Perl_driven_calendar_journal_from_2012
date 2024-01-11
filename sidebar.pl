@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-$more_years_prefix = "/cgi-bin/journal.pl?date=";
+$more_years_prefix = "/journal.pl?date=";
 
 sub sidebar {
   ($date,$ls1rfile) = @_;

@@ -1,10 +1,10 @@
 $style = "/journal/style.css";       # this is used in draw_header.pl
-$journal_pl = "/cgi-bin/journal.pl";
+$journal_pl = "/journal.pl";
 $www_journal_pl = "http://perl.robnugen.com$journal_pl";
-$comment_pl = "/cgi-bin/comment_sender_for_my_homies.pl";
-$comment_pl = "/cgi-bin/comment_sender2Boi.pl";  # 2Bo to stop spam  # Ctrl-x d comment_sender.pl to stop spam.   delete this line/file altogether to stop anonymous comments
+$comment_pl = "/comment_sender_for_my_homies.pl";
+$comment_pl = "/comment_sender2Boi.pl";  # 2Bo to stop spam  # Ctrl-x d comment_sender.pl to stop spam.   delete this line/file altogether to stop anonymous comments
 $journal_base = "/home/dh_r2ixxd/perl.robnugen.com/journal";
-$quicklist_file = "/home/dh_r2ixxd/perl.robnugen.com/cgi-bin/quicklist_for_journal.txt";
+$quicklist_file = "/home/dh_r2ixxd/perl.robnugen.com/quicklist_for_journal.txt";
 $journal_log_file = "/home/dh_r2ixxd/perl.robnugen.com/safe/journal_log.txt";
 $between_file_text = "<hr />";  # printed between files on mainbar
 
