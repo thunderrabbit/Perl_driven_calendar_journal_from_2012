@@ -1,17 +1,6 @@
 #  This  file  may  be  maintained  by  hand.  But as of 2005 May 5, rob_updater_mailer.pl will be adding lines to the end of this file
 
 0main           1journal            <b>journal</b>          journal         /journal.pl
-0main           images            <b>images</b>             images          /zenphoto
-0main	        travel	           <b>travel</b>	          travel          /travel/
-#  0main           1writing            <b>writing</b>          writing         /writing/thepin/index.shtml
-#  0main	        1yruu		   <b>YRUU</b>		  YRUU		/yruu/rallies_i_attended.shtml
-0main	        1yruu		   <b>YRUU</b>		  YRUU		/yruu/sf/index.shtml
-#  0main           1wtf	           <b>wtf</b>		  wtf		/wtf/index.shtml
-0main	        1resume		   <b>resume</b>		  resume		/resume/index.shtml
-0main	        1blog		   <b>blog</b>		  blog		/blog/
-0main           1daysold            <b>days&nbsp;old</b>    days&nbsp;old   /daysold.pl
-#  0main	        1oldStuff	   <b>old&nbsp;Stuff</b>	  old&nbsp;Stuff
-#  0main	        1etcetera	   <b>etcetera</b>	  etcetera	/
 
 1journal	  2all		     <b>all</b>+<a+href="/journal/all_entries.rss"><img+class="nada"+src="/images/software/website/com.robnugen/feed-icon-12x12.png"+alt="all+entries+rss"+/></a>		    all		   /journal.pl?type=all
 1journal	  2SoML		     <b>SoML</b>+<a+href="/journal/SoML_entries.rss"><img+class="nada"+src="/images/software/website/com.robnugen/feed-icon-12x12.png"+alt="SoML+entries+rss"+/></a>		    SoML		   /journal.pl?type=SoML
