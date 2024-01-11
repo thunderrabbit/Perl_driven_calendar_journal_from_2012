@@ -18,7 +18,6 @@ sub draw_AJAX_navigation {
 
     # this allows any number of navigation bars to be displayed easily
 
-    use date_smurfer;
     # grab parameters
     @param_nav_set = split(/&/, $_[0]);
 #    warn "|" . join (", ", @param_nav_set) . "|\n";
@@ -33,7 +32,26 @@ sub draw_AJAX_navigation {
 
     $html .=  "</td><td align='left' valign='top'>";
 
-    $html .=  "Rob is " . &date_difference("1970/3/25") . " <a href='/cgi-bin/daysold.pl'>days old</a> ";
+    use DateTime;
+    use Number::Format;
+
+    my $date = DateTime->new(
+        year     => 1985,
+        month    => 9,
+        day      => 30,
+        hour     => 0,
+        minute   => 0,
+        second   => 0,
+        nanosecond => 0,
+        time_zone => 'Asia/Tokyo'
+    );
+
+    my $today = DateTime->now(time_zone => 'Asia/Tokyo');
+
+    my $days_since = $today->delta_days($date)->in_units('days') + 5668;
+
+    my $formatter = Number::Format->new();
+    $html .= "Rob is " . $formatter->format_number($days_since) . " days old today.";
 
 # change journal.pl at the bottom as well
     $html .=  "</td>\n";
