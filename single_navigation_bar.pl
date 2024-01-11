@@ -1,14 +1,12 @@
 sub single_navigation_bar {
-    
+
     require "mkdef.pl";
-    require "hash_io.pl";
     local ($param_nav_set, $param_item_name) = @_;
 
     my $html;
-    my %settings;
-    &hash_read(\%settings,"/home/barefoot_rob/settings/navigation.settings");
+    my $nav_settings_file = "/home/dh_r2ixxd/perl.robnugen.com/navigation_definitions.txt";
 
-    open (IN, $settings{"index_definition_file"}) or die "Can't open " . $settings{"index_definition_file"} . " for reading";
+    open (IN, $nav_settings_file) or die "Can't open " . $nav_settings_file . " for reading";
 
     while (<IN>) {
 	# separate the line using the space character as separator
@@ -23,8 +21,8 @@ sub single_navigation_bar {
 		if ($on =~ m/(gif$|jpg$)/) {
 		    # yes, then print it as an inline image
 		    $html .= "<img src='$on'>\n";
-		} 
-		else 
+		}
+		else
 		{
 		    $html .= "$on\n";
 		}
@@ -36,10 +34,10 @@ sub single_navigation_bar {
 		} else {
 		    $html .= "<a href=\"$url\">$off</a>\n";
 		}
-	    }	
+	    }
 	}   # ($param_nav_set eq $nav_set)
     }
-    close IN or die "Can't close " . $settings{"index_definition_file"};
+    close IN or die "Can't close " . $nav_settings_file;
     return $html;
 }
 1;

@@ -1,0 +1,189 @@
+#  This  file  may  be  maintained  by  hand.  But as of 2005 May 5, rob_updater_mailer.pl will be adding lines to the end of this file
+
+0main           1journal            <b>journal</b>          journal         /cgi-bin/journal.pl
+0main           images            <b>images</b>             images          /zenphoto
+0main	        travel	           <b>travel</b>	          travel          /travel/
+#  0main           1writing            <b>writing</b>          writing         /writing/thepin/index.shtml
+#  0main	        1yruu		   <b>YRUU</b>		  YRUU		/yruu/rallies_i_attended.shtml
+0main	        1yruu		   <b>YRUU</b>		  YRUU		/yruu/sf/index.shtml
+#  0main           1wtf	           <b>wtf</b>		  wtf		/wtf/index.shtml
+0main	        1resume		   <b>resume</b>		  resume		/resume/index.shtml
+0main	        1blog		   <b>blog</b>		  blog		/blog/
+0main           1daysold            <b>days&nbsp;old</b>    days&nbsp;old   /cgi-bin/daysold.pl
+#  0main	        1oldStuff	   <b>old&nbsp;Stuff</b>	  old&nbsp;Stuff
+#  0main	        1etcetera	   <b>etcetera</b>	  etcetera	/
+
+1journal	  2all		     <b>all</b>+<a+href="/journal/all_entries.rss"><img+class="nada"+src="/images/software/website/com.robnugen/feed-icon-12x12.png"+alt="all+entries+rss"+/></a>		    all		   /cgi-bin/journal.pl?type=all
+1journal	  2SoML		     <b>SoML</b>+<a+href="/journal/SoML_entries.rss"><img+class="nada"+src="/images/software/website/com.robnugen/feed-icon-12x12.png"+alt="SoML+entries+rss"+/></a>		    SoML		   /cgi-bin/journal.pl?type=SoML
+1journal	  2excited	     <b>excited</b>+<a+href="/journal/excited_entries.rss"><img+class="nada"+src="/images/software/website/com.robnugen/feed-icon-12x12.png"+alt="excited+entries+rss"+/></a>	    excited	   /cgi-bin/journal.pl?type=excited
+1journal	  2dreams	     <b>dreams</b>+<a+href="/journal/dreams_entries.rss"><img+class="nada"+src="/images/software/website/com.robnugen/feed-icon-12x12.png"+alt="dreams+entries+rss"+/></a>	    dreams	   /cgi-bin/journal.pl?type=dreams
+1journal	  2runes  	     <b>runes</b>+<a+href="/journal/runes_entries.rss"><img+class="nada"+src="/images/software/website/com.robnugen/feed-icon-12x12.png"+alt="runes+entries+rss"+/></a>	    runes	   /cgi-bin/journal.pl?type=runes
+1journal	  2YRUU	             <b>YRUU</b>+<a+href="/journal/YRUU_entries.rss"><img+class="nada"+src="/images/software/website/com.robnugen/feed-icon-12x12.png"+alt="YRUU+entries+rss"+/></a>		    YRUU		   /cgi-bin/journal.pl?type=YRUU
+1journal	  2ultimate	     <b>ultimate</b>+<a+href="/journal/ultimate_entries.rss"><img+class="nada"+src="/images/software/website/com.robnugen/feed-icon-12x12.png"+alt="ultimate+entries+rss"+/></a>	    ultimate	   /cgi-bin/journal.pl?type=ultimate
+1journal	  2KTRU	             <b>KTRU</b>+<a+href="/journal/KTRU_entries.rss"><img+class="nada"+src="/images/software/website/com.robnugen/feed-icon-12x12.png"+alt="KTRU+entries+rss"+/></a>		    KTRU		   /cgi-bin/journal.pl?type=KTRU
+1journal	  2skate		     <b>skate</b>+<a+href="/journal/skate_entries.rss"><img+class="nada"+src="/images/software/website/com.robnugen/feed-icon-12x12.png"+alt="skate+entries+rss"+/></a>	    skate	   /cgi-bin/journal.pl?type=skate
+1journal	  2sleepy	     <b>sleepy</b>+<a+href="/journal/sleepy_entries.rss"><img+class="nada"+src="/images/software/website/com.robnugen/feed-icon-12x12.png"+alt="sleepy+entries+rss"+/></a>	    sleepy	   /cgi-bin/journal.pl?type=sleepy
+1journal	  2nihongo	     <b>nihongo</b>+<a+href="/journal/nihongo_entries.rss"><img+class="nada"+src="/images/software/website/com.robnugen/feed-icon-12x12.png"+alt="nihongo+entries+rss"+/></a>	    nihongo	   /cgi-bin/journal.pl?type=nihongo
+
+1writing        2thePIN             <b>the&nbsp;PIN</b>   the&nbsp;PIN         /writing/thepin/index.shtml
+1writing        synchronicities     <b>Synchronicities</b>   Synchronicities    /writing/synchronicities/index.shtml
+
+1yruu	        2sf                 <b>Silent&nbsp;Football</b>    Silent&nbsp;Football   /yruu/sf/index.shtml
+1yruu	        attended	   <b>Rallies&nbsp;I&nbsp;Attended</b>    Rallies&nbsp;I&nbsp;Attended    /yruu/rallies_i_attended.shtml
+
+2sf    basics      <b>Basics</b>                 Basics			      /yruu/sf/rules.shtml
+2sf    wormholes   <b>Wormholes</b>              Wormholes	                      /yruu/sf/wormholes_etc.shtml
+2sf    foot	   <b>Foot&nbsp;Motions</b>     Foot&nbsp;Motions               /yruu/sf/foot_motions.shtml
+2sf    research    <b>Research</b>	       Research                        /yruu/sf/silent_football_research_project.shtml
+
+1resume	   main		  <b>resume</b>		      resume		      /resume/index.shtml
+1resume	   volunteer	  <b>volunteer</b>	      volunteer		      /resume/volunteer.shtml
+1resume	   warrior	  <b>warrior</b>		      warrior		      /resume/warrior.shtml
+1resume	   websites	  <b>websites</b>	      websites		      /resume/websites.shtml
+1resume	   extra		  <b>extracurricular</b>	      extracurricular	      /resume/extracurricular.shtml
+1resume    wt2-6           <b>travel</b>                travel                   /resume/world_travel_2002-2006.shtml
+
+travel    2CostaRica      <b>Costa&nbsp;Rica</b>        Costa&nbsp;Rica          /travel/costa_rica/1998/index.shtml
+travel    Europe    <b>Europe</b>                 Europe       /images/travel/2002_march_london_paris/the_rest
+travel    japan          <b>Japan</b>		      Japan                    /travel/japan/index.shtml
+travel    thailand          <b>Thailand</b>   Thailand                    /travel/thailand/index.shtml
+travel    pb      <b>PB</b>       PB          /travel/pb/
+travel    Palestine      <b>Palestine</b>              Palestine                /travel/Palestine/index.shtml
+travel    tjbike    <b>TJ&nbsp;Bike</b>   TJ&nbsp;Bike    /travel/tjbike/kyoto2006/
+travel    Bali2006      <b>Bali</b>   Bali                 /images/travel/world/Indonesia/Bali/June2006/Elephant_safari/
+
+Bali2006  komeng   <b>Elephant&nbsp;safari</b>   Elephant&nbsp;safari        /images/travel/world/Indonesia/Bali/June2006/Elephant_safari/
+Bali2006  balizoo  <b>Zoo</b>   Zoo  /images/travel/world/Indonesia/Bali/June2006/zoo/
+Bali2006    beach   <b>Beautiful&nbsp;Bali&nbsp;Beach</b>  Beautiful&nbsp;Bali&nbsp;Beach  /images/travel/world/Indonesia/Bali/June2006/Bali_beach
+Bali2006    lawah   <b>Goa&nbsp;Lawah&nbsp;temple&nbsp;(bat&nbsp;cave)</b>  Goa&nbsp;Lawah&nbsp;temple&nbsp;(bat&nbsp;cave)  /images/travel/world/Indonesia/Bali/June2006/Goa_Lawah
+Bali2006    kat   <b>Kintamani&nbsp;and&nbsp;tea&nbsp;terraces</b>  Kintamani&nbsp;and&nbsp;tea&nbsp;terraces  /images/travel/world/Indonesia/Bali/June2006/Kintamani_and_tea
+Bali2006    monkeys   <b>Monkey&nbsp;Forest</b>  Monkey&nbsp;Forest  /images/travel/world/Indonesia/Bali/June2006/Monkey_Forest
+Bali2006    tanah   <b>Tanah&nbsp;Lot&nbsp;sunset</b>  Tanah&nbsp;Lot&nbsp;sunset  /images/travel/world/Indonesia/Bali/June2006/Tanah_Lot
+Bali2006    water   <b>Tirtagangga&nbsp;(water&nbsp;palace)</b>  Tirtagangga&nbsp;(water&nbsp;palace)  /images/travel/world/Indonesia/Bali/June2006/Tirtagangga
+Bali2006    signs   <b>bali&nbsp;signs</b>  bali&nbsp;signs  /images/travel/world/Indonesia/Bali/June2006/bali_signs
+Bali2006    kuta   <b>near&nbsp;hotel</b>  near&nbsp;hotel  /images/travel/world/Indonesia/Bali/June2006/near_hotel
+Bali2006    odd   <b>oddities</b>  oddities  /images/travel/world/Indonesia/Bali/June2006/oddities
+Bali2006    knife   <b>pocket&nbsp;knife</b>  pocket&nbsp;knife  /images/travel/world/Indonesia/Bali/June2006/pocket_knife
+
+Europe    lpbryn    <b>London+Paris</b>           London+Paris   /images/travel/2002_march_london_paris/the_rest
+
+pb  49             <b>49</b>                    49			      /travel/pb/49/
+pb  52             <b>52</b>                    52			      /travel/pb/52/
+pb  54             <b>54</b>                    54			      /travel/pb/54/
+
+Palestine   2005		  <b>2005</b>                  2005                     /travel/Palestine/2005/index.shtml
+
+#  THESE  ARE  DUPLICATED  AS  A  BAND-AID:   some  flat  files  use  2Japan  and  some  use  japan.   From  now  on,  we  will  be  going  with  japan,  because  that's  how  rob_update_mailer.pl  will  write  them:  according  to  the  directory  name.   If  you  ever  wanna  make  these  consistent,  remember  there  are  files  in  images  directory  that  need  to  be  changed  as  well.
+2Japan     3Japan1	  <b>First&nbsp;Year</b>       First&nbsp;Year          /travel/japan/Nova/index.shtml
+2Japan     3Japan2	  <b>Second&nbsp;Year</b>      Second&nbsp;Year          /travel/japan/Gaba/index.shtml
+2Japan     pre-pb52        <b>Before&nbsp;PB52</b>      Before&nbsp;PB52          /travel/japan/pre-pb52/index.shtml
+japan     3Japan1	  <b>First&nbsp;Year</b>       First&nbsp;Year          /travel/japan/Nova/index.shtml
+japan     3Japan2	  <b>Second&nbsp;Year</b>      Second&nbsp;Year          /travel/japan/Gaba/index.shtml
+japan     pre-pb52        <b>Before&nbsp;PB52</b>      Before&nbsp;PB52          /travel/japan/pre-pb52/index.shtml
+japan     2006            <b>2006</b>                  2006                      /travel/japan/2006/index.shtml
+japan     2007            <b>2007</b>                  2007                      /travel/japan/2007/index.shtml
+japan     2008            <b>2008</b>                  2008                      /travel/japan/2008/index.shtml
+japan     2009            <b>2009</b>                  2009                      /travel/japan/2009/index.shtml
+japan     2010            <b>2010</b>                  2010                      /travel/japan/2010/index.shtml
+
+3Japan1     before          <b>Pre&nbsp;Japan</b>        Pre&nbsp;Japan           /travel/japan/Nova/2003_03_24.Before_leaving.shtml
+3Japan1     first_days      <b>First&nbsp;Days</b>       First&nbsp;Days          /travel/japan/Nova/2003_04_04.first_few_days.shtml
+3Japan1     first_week      <b>Week&nbsp;1&nbsp;pics</b>  Week&nbsp;1&nbsp;pics   /images/travel/japan2003-2004/001_first_week/index.shtml
+3Japan1     cherries        <b>Hanami&nbsp;Pics</b>      Hanami&nbsp;pics         /images/travel/japan2003-2004/002_cherries/index.shtml
+3Japan1     cherry          <b>Cherry&nbsp;Blossoms</b>  Cherry&nbsp;Blossoms     /travel/japan/Nova/2003_04_05.cherry_blossoms.shtml
+3Japan1     stability       <b>Feeling&nbsp;Stable</b>   Feeling&nbsp;Stable      /travel/japan/Nova/2003_05_21.stable.shtml
+3Japan1     hakone_pics     <b>Hakone&nbsp;pics</b>      Hakone&nbsp;pics         /images/travel/japan2003-2004/003hakone/index.shtml
+3Japan1     success         <b>Awesome</b>		      Awesome		      /travel/japan/Nova/2003.07.25Over_the_hump.shtml
+3Japan1     fujikyu_pics    <b>Fujikyu&nbsp;pics</b>     Fujikyu&nbsp;pics        /images/travel/japan2003-2004/004fujikyu/index.shtml
+3Japan1     HKN_janette     <b>janette&nbsp;vacation&nbsp;pics</b>  janette&nbsp;vacation&nbsp;pics  /images/travel/japan2003-2004/005_janette-trip/index.shtml
+3Japan1     up_n_down       <b>UP&nbsp;and&nbsp;down</b>  UP&nbsp;and&nbsp;down   /travel/japan/Nova/2003.11.0.shtml
+3Japan1     ma_jon_1        <b>Nikko&nbsp;and&nbsp;Hakone</b>  Nikko&nbsp;and&nbsp;Hakone            /images/travel/japan2003-2004/006ma_n_jon_nikko_hakone/index.shtml
+3Japan1     9months         <b>Decided&nbsp;to&nbsp;Stay</b>  Decided&nbsp;to&nbsp;Stay            /travel/japan/Nova/2003.12.23Decided_to_stay.shtml
+3Japan1     new_years       <b>New&nbsp;Years</b>        New&nbsp;Years           /images/travel/japan2003-2004/008new_years_2003
+3Japan1     janette_fred    <b>for&nbsp;janette!</b>   for&nbsp;janette!  /images/travel/japan2003-2004/janette_fred
+
+3Japan2    1year		   <b>One&nbsp;Year</b>	      One&nbsp;Year            /travel/japan/Gaba/2004.02.26one_year_transition.shtml
+3Japan2    no_bike	   <b>No&nbsp;Bike</b>	      No&nbsp;Bike	      /travel/japan/Gaba/2004_May.shtml
+3Japan2    june		   <b>pre-summer-fun</b>        pre-summer-fun          /travel/japan/Gaba/2004_06_02_Rob_update.shtml
+3Japan2    August_Update   <b>August_Update</b>   August_Update                  /travel/japan/Gaba/2004_August_Update.shtml
+3Japan2    Spring_Update   <b>Spring_Update</b>   Spring_Update                  /travel/japan/Gaba/2005_Spring_Update.shtml
+3Japan2   PB   <b>PB_Acceptance!</b>   PB_Acceptance!   /travel/japan/Gaba/2005_April_PB.shtml
+
+49  itinerary            <b>itinerary</b>                    itinerary			      /travel/pb/49/itinerary.shtml
+#  49   port_info     <b>Port&nbsp;Addresses</b>   Port&nbsp;Addresses   /travel/pb/49/port_address_info.shtml
+49   One_week_to_go...   <b>One_week_to_go...</b>   One_week_to_go...   /travel/pb/49/2005-05-14_One_week_to_go....shtml
+49   tomorrow!   <b>tomorrow!</b>   tomorrow!   /travel/pb/49/2005-05-19_tomorrow!.shtml
+49   Hello_from_Singapore!   <b>Hello_from_Singapore!</b>   Hello_from_Singapore!   /travel/pb/49/2005-06-01_Hello_from_Singapore!.shtml
+49   Sri_Lanka!   <b>Sri_Lanka!</b>   Sri_Lanka!   /travel/pb/49/2005-06-06_Sri_Lanka!.shtml
+49   Aqaba_Jordan   <b>Aqaba_Jordan</b>   Aqaba_Jordan   /travel/pb/49/2005-06-15_Aqaba_Jordan.shtml
+49   Cairo!   <b>Cairo!</b>   Cairo!   /travel/pb/49/2005-06-19_Cairo!.shtml
+49   hello_from_Barcelona!   <b>hello_from_Barcelona!</b>   hello_from_Barcelona!   /travel/pb/49/2005-06-26_hello_from_Barcelona!.shtml
+49   Hello_from_Le_Havre   <b>Hello_from_Le_Havre</b>   Hello_from_Le_Havre   /travel/pb/49/2005-07-03_Hello_from_Le_Havre.shtml
+49   Bergen,_Norway   <b>Bergen,_Norway</b>   Bergen,_Norway   /travel/pb/49/2005-07-05_Bergen,_Norway.shtml
+49   Ireland!   <b>Ireland!</b>   Ireland!   /travel/pb/49/2005-07-09_Ireland!.shtml
+49   New_York_City!   <b>New_York_City!</b>   New_York_City!   /travel/pb/49/2005-07-19_New_York_City!.shtml
+49   Costa_Rica!   <b>Costa_Rica!</b>   Costa_Rica!   /travel/pb/49/2005-07-31_Costa_Rica!.shtml
+49   Acapulco!   <b>Acapulco!</b>   Acapulco!   /travel/pb/49/2005-08-05_Acapulco!.shtml
+49   HI_from_Vancouver!   <b>HI_from_Vancouver!</b>   HI_from_Vancouver!   /travel/pb/49/2005-08-13_HI_from_Vancouver!.shtml
+49   almost_back!   <b>almost_back!</b>   almost_back!   /travel/pb/49/2005-08-28_almost_back!.shtml
+49   end_of_the_voyage   <b>end_of_the_voyage</b>   end_of_the_voyage   /travel/pb/49/2005-09-07_end_of_the_voyage.shtml
+
+#  this  line  added  by  hand;  once  I  leave  Palestine,  I  may  move  this  down  to  the  bottom.
+54  itinerary            <b>itinerary</b>                    itinerary			      /travel/pb/54/itinerary.shtml
+
+52  itinerary            <b>itinerary</b>                    itinerary			      /travel/pb/52/itinerary.shtml
+52  contact              <b>contact&nbsp;info</b>            contact&nbsp;info                   /travel/pb/52/52_contact.shtml
+2005   Tickets_to_Tel_Aviv   <b>Tickets_to_Tel_Aviv</b>   Tickets_to_Tel_Aviv   /travel/Palestine/2005/2005-09-27_Tickets_to_Tel_Aviv.shtml
+2005   Last_hour_in_Japan!   <b>Last_hour_in_Japan!</b>   Last_hour_in_Japan!   /travel/Palestine/2005/2005-10-05_Last_hour_in_Japan!.shtml
+2005   Jerusalem   <b>Jerusalem</b>   Jerusalem   /travel/Palestine/2005/2005-10-09_Jerusalem.shtml
+2005   Jerusalem_update!   <b>Jerusalem_update!</b>   Jerusalem_update!   /travel/Palestine/2005/2005-10-29_Jerusalem_update!.shtml
+2005   Leaving_Palestine_tomorrow...   <b>Leaving_Palestine_tomorrow...</b>   Leaving_Palestine_tomorrow...   /travel/Palestine/2005/2005-11-17_Leaving_Palestine_tomorrow....shtml
+
+pre-pb52   TJ_Bike_to_Atami       <b>TJ&nbsp;Bike&nbsp;to&nbsp;Atami</b>      TJ&nbsp;Bike&nbsp;to&nbsp;Atami          /travel/japan/pre-pb52/2005-12-07_TJ_Bike_to_Atami.shtml
+pre-pb52   Sponging,_Bicycling,_Leaving_soon!       <b>Sponging,_Bicycling,_Leaving_soon!</b>      Sponging,_Bicycling,_Leaving_soon!          /travel/japan/pre-pb52/2005-12-11_Sponging,_Bicycling,_Leaving_soon!.shtml
+pre-pb52   spocha                 <b>packing,&nbsp;spocha&nbsp;w/&nbsp;Hitomi</b>  packing,&nbsp;spocha&nbsp;w/&nbsp;Hitomi  /images/travel/japan2005/pre-pb52/2005_dec_17_packing-spocha
+pre-pb52   Just_before_setting_sail...   <b>Just_before_setting_sail...</b>   Just_before_setting_sail...   /travel/japan/pre-pb52/2005-12-22_Just_before_setting_sail....shtml
+52   Byebye,_Tokyo!   <b>Byebye,_Tokyo!</b>   Byebye,_Tokyo!   /travel/pb/52/2005-12-25_Byebye,_Tokyo!.shtml
+52   Vietnam!   <b>Vietnam!</b>   Vietnam!   /travel/pb/52/2006-01-06_Vietnam!.shtml
+52   Mombasa,_Kenya!   <b>Mombasa,_Kenya!</b>   Mombasa,_Kenya!   /travel/pb/52/2006-01-27_Mombasa,_Kenya!.shtml
+52   preCT   <b>pre&nbsp;Cape&nbsp;Town&nbsp;pics</b>   pre&nbsp;Cape&nbsp;Town&nbsp;pics   /images/travel/Pb/52nd_Dec-Mar_2006/pre-Cape_Town/index.shtml
+52   Cape_Town!   <b>Cape_Town!</b>   Cape_Town!   /travel/pb/52/2006-01-27_Cape_Town!.shtml
+52   Hello_from_Rio!   <b>Hello_from_Rio!</b>   Hello_from_Rio!   /travel/pb/52/2006-02-09_Hello_from_Rio!.shtml
+52   Buenos_Aires!   <b>Buenos_Aires!</b>   Buenos_Aires!   /travel/pb/52/2006-02-13_Buenos_Aires!.shtml
+52   pics_CP-U   <b>Cape&nbsp;Town-Ushuaia&nbsp;pics</b>   Cape&nbsp;Town-Ushuaia&nbsp;pics   /images/travel/Pb/52nd_Dec-Mar_2006/capetown_pre-ushuaia/index.shtml
+52   Valparaiso,_Chile   <b>Valparaiso,_Chile</b>   Valparaiso,_Chile   /travel/pb/52/2006-02-25_Valparaiso,_Chile.shtml
+52   Tahiti!   <b>Tahiti!</b>   Tahiti!   /travel/pb/52/2006-03-12_Tahiti!.shtml
+52   final52   <b>Final&nbsp;PB52&nbsp;pics</b>   Final&nbsp;PB52&nbsp;pics   /images/travel/Pb/52nd_Dec-Mar_2006/final_pb52/index.shtml
+
+tjbike      kyoto2006   <b>Tokyo&nbsp;to&nbsp;Kyoto</b>   Tokyo&nbsp;to&nbsp;Kyoto    /travel/tjbike/kyoto2006/
+
+kyoto2006   back_in_Tokyo,_just_about_to_go_go_go!   <b>back_in_Tokyo,_just_about_to_go_go_go!</b>   back_in_Tokyo,_just_about_to_go_go_go!   /travel/tjbike/kyoto2006/2006-04-03_back_in_Tokyo,_just_about_to_go_go_go!.shtml
+kyoto2006   start              <b>pics:&nbsp;Tokyo&nbsp;to&nbsp;Koji's</b>  pics:&nbsp;Tokyo&nbsp;to&nbsp;Koji's   /images/travel/tjbike/kyoto2006/from_Tokyo_to_Koji's_farm/index.shtml
+kyoto2006   showers_and_no_showers   <b>showers_and_no_showers</b>   showers_and_no_showers   /travel/tjbike/kyoto2006/2006-04-11_showers_and_no_showers.shtml
+kyoto2006   koji_farm          <b>pics:&nbsp;on&nbsp;Koji's&nbsp;farm</b>   pics:&nbsp;on&nbsp;Koji's&nbsp;farm   /images/travel/tjbike/kyoto2006/koji's_farm/index.shtml
+kyoto2006   Okihiki            <b>pics:&nbsp;Okihiki&nbsp;festival</b>   pics:&nbsp;Okihiki&nbsp;festival   /images/travel/tjbike/kyoto2006/Okihiki_log_festival/index.shtml
+kyoto2006   Three_Coin_Tosses   <b>Three_Coin_Tosses</b>   Three_Coin_Tosses   /travel/tjbike/kyoto2006/2006-04-22_Three_Coin_Tosses.shtml
+kyoto2006   toKobe              <b>pics:&nbsp;ride&nbsp;to&nbsp;Kobe</b>   pics:&nbsp;ride&nbsp;to&nbsp;Kobe    /images/travel/tjbike/kyoto2006/Koji_to_Kobe/index.shtml
+kyoto2006   after_Vipassana   <b>after_Vipassana</b>   after_Vipassana   /travel/tjbike/kyoto2006/2006-05-08_after_Vipassana.shtml
+kyoto2006   The_end_of_the_road...   <b>The_end_of_the_road...</b>   The_end_of_the_road...   /travel/tjbike/kyoto2006/2006-05-30_The_end_of_the_road....shtml
+kyoto2006   aeol              <b>pics:&nbsp;almost&nbsp;the&nbsp;end</b>   pics:&nbsp;almost&nbsp;the&nbsp;end    /images/travel/tjbike/kyoto2006/almost_finished/index.shtml
+
+kyoto2006   recovery_road   <b>recovery_road</b>   recovery_road   /travel/tjbike/kyoto2006/2006-06-08_recovery_road.shtml
+kyoto2006   Happy_Summer_Solstice!__(and_my_brother's_birthday!)   <b>Happy_Summer_Solstice!__(and_my_brother's_birthday!)</b>   Happy_Summer_Solstice!__(and_my_brother's_birthday!)   /travel/tjbike/kyoto2006/2006-06-22_Happy_Summer_Solstice!__(and_my_brother's_birthday!).shtml
+
+2006        cosfran         <b>pics:&nbsp;Francois&nbsp;at&nbsp;Cosuplay</b>  pics:&nbsp;Francois&nbsp;at&nbsp;Cosuplay  /images/travel/japan2006/around_town/Harajuku/2006jul16_Francois_watches_cosuplay/index.shtml
+2006   pictures_and_encouragement   <b>pictures_and_encouragement</b>   pictures_and_encouragement   /travel/japan/2006/2006-07-17_pictures_and_encouragement.shtml
+kyoto2006   TJ_Bike_back_in_Tokyo...   <b>TJ_Bike_back_in_Tokyo...</b>   TJ_Bike_back_in_Tokyo...   /travel/tjbike/kyoto2006//2006-08-11_TJ_Bike_back_in_Tokyo....shtml
+2007   Hello,_World!   <b>Hello,_World!</b>   Hello,_World!   /travel/japan/2007/2007-01-02_Hello,_World!.shtml
+2007  Long_Lost_Rob_Update!!  <b>Long_Lost_Rob_Update!!</b>  Long_Lost_Rob_Update!!  /travel/japan/2007/2007-11-07_Long_Lost_Rob_Update!!.shtml
+2008  Happy_February!  <b>Happy_February!</b>  Happy_February!  /travel/japan/2008/2008-02-27_Happy_February!.shtml
+2009  after_many_delays...  <b>after_many_delays...</b>  after_many_delays...  /travel/japan/2009/2009-02-02_after_many_delays....shtml
+2009  poke_poke!  <b>poke_poke!</b>  poke_poke!  /travel/japan/2009/2009-04-16_poke_poke!.shtml
+2010  Thailand!!  <b>Thailand!!</b>  Thailand!!  /travel/japan/2010/2010-05-07_Thailand!!.shtml
+
+thailand t2010  2010  <b>2010</b>   /travel/thailand/2010/index.shtml
+t2010  two_Thailand_weeks  <b>two_Thailand_weeks</b>  two_Thailand_weeks  /travel/thailand/2010/2010-05-21_two_Thailand_weeks.shtml
+03  Update_after_earthquake  <b>Update_after_earthquake</b>  Update_after_earthquake  /journal/2011/03/2011-03-12_Update_after_earthquake.shtml
+03  day_four,_okay_like_before  <b>day_four,_okay_like_before</b>  day_four,_okay_like_before  /journal/2011/03/2011-03-15_day_four,_okay_like_before.shtml
+03  Rob_Update  <b>Rob_Update</b>  Rob_Update  /journal/2011/03/2011-03-19_Rob_Update.shtml
+03  Howdy_from_Tokyo!_  <b>Howdy_from_Tokyo!_</b>  Howdy_from_Tokyo!_  /journal/2011/03/2011-03-24_Howdy_from_Tokyo!_.shtml
