@@ -137,12 +137,5 @@ unless ($printer_version) {
 }
 
 print "</td></tr></table>\n";
-
-# change draw_navigation.pl at the bottom as well
-print<<TWITTER;
-<script type="text/javascript" src="http://twitter.com/javascripts/blogger.js"></script>
-<script type="text/javascript" src="http://twitter.com/statuses/user_timeline/thunderrabbit.json?callback=twitterCallback2&count=1"></script>
-TWITTER
-
 print "</body></html>\n";
 
