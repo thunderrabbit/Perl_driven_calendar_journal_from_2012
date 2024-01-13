@@ -10,7 +10,7 @@ Thank you.   Genki Work for you!
 I know you're reading backwards, but I hope you don't mind a little
 background information: (*)
 
-<a href="/cgi-bin/journal.pl?type=all&date=2007/09/26#zzz_clarity_please">http://robnugen.com/cgi-bin/journal.pl?type=all&date=2007/09/26#zzz_clarity_please</a>
+<a href="/journal.pl?type=all&date=2007/09/26#zzz_clarity_please">http://robnugen.com/journal.pl?type=all&date=2007/09/26#zzz_clarity_please</a>
 
 (*) I'm not sure how to make this funnier.  Basically the joke is that
 something written in the future of what you're reading has become
