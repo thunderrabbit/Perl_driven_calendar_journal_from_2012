@@ -73,7 +73,7 @@ sub mainbar {
 
 
     print <<permaLINK;
-| <a href="$www_journal_pl?type=$journal_type&amp;date=$date#$this_entrys_href">$permalink_text</a>
+<a href="$www_journal_pl?type=$journal_type&amp;date=$date#$this_entrys_href">$permalink_text</a>
 permaLINK
 
 	    print "$between_file_text";
