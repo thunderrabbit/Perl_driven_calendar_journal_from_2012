@@ -1,7 +1,6 @@
 #!/usr/bin/perl
 
 require "setup_journal.pl";
-require "log_writer.pl";
 
 use CGI qw(:all);
 use CGI::Cookie;
@@ -50,8 +49,6 @@ require "mainbar.pl";
 
 &draw_header;
 exit if ($date eq "nil" || $require_reload);   # if date is nil, then header drew a refresh-to-correct-date screen.
-
-#&write_log("journal","$date $journal_type");
 
 print "<body>\n";
 &draw_navigation("0main&1journal&2$journal_type");
