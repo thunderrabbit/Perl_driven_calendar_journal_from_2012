@@ -26,59 +26,59 @@ sub mainbar {
     # print the entries for this day so people can click on links
     print "<p>Entries this day: ";
     foreach $file (sort @files_for_date) {       # sort puts the files in A..Za..z order
-	unless ($file =~ m/.*\.comment~*$/) {      # keep comments from being displayed
-	    unless ($file =~ m/.*\~$/) {      # keep backups from being displayed
-		$debug && print "<br>file is \"$file\"\n";
-		($title) = $file =~ m!.*/_?\d\d(.*)\.(?:html|txt|md)$!;
-		$debug && print "<br>title is \"$title\"\n";
-		# $filename is the filename only with no path info.  This name is sent to comment.pl to hide the path of my filesystem.
-		($filename) = $file =~ m!.*/(\d\d.*\.(?:html|txt|md))$!;
-		$title_no_spaces = $title;
-		$title_no_spaces =~ s/_/ /g;  # basically the title of the entry
+		unless ($file =~ m/.*\.comment~*$/) {      # keep comments from being displayed
+			unless ($file =~ m/.*\~$/) {      # keep backups from being displayed
+				$debug && print "<br>file is \"$file\"\n";
+				($title) = $file =~ m!.*/_?\d\d(.*)\.(?:html|txt|md)$!;
+				$debug && print "<br>title is \"$title\"\n";
+				# $filename is the filename only with no path info.  This name is sent to comment.pl to hide the path of my filesystem.
+				($filename) = $file =~ m!.*/(\d\d.*\.(?:html|txt|md))$!;
+				$title_no_spaces = $title;
+				$title_no_spaces =~ s/_/ /g;  # basically the title of the entry
 
-		# Fixes #9, but a better fix is #8 get title from Frontmatter if this is a markdown file
-		$title_no_spaces =~ s/-/ /g;  # Markdown files have hyphens like this
+				# Fixes #9, but a better fix is #8 get title from Frontmatter if this is a markdown file
+				$title_no_spaces =~ s/-/ /g;  # Markdown files have hyphens like this
 
-		push (@list_of_titles, $title_no_spaces);
+				push (@list_of_titles, $title_no_spaces);
 
-		$name_for_href_on_this_page = $title;
-		push (@list_of_hrefs, $name_for_href_on_this_page);  # append title + sequence number to the list
+				$name_for_href_on_this_page = $title;
+				push (@list_of_hrefs, $name_for_href_on_this_page);  # append title + sequence number to the list
 
-		print "<a href=\"#$name_for_href_on_this_page\">$title</a>\n";
-	    }
-	}
+				print "<a href=\"#$name_for_href_on_this_page\">$title</a>\n";
+			}
+		}
     }
     print "</p> <!-- matches Entries this day: -->\n";
 
     foreach $file (sort @files_for_date) {       # sort puts the files in A..Za..z order
-	unless ($file =~ m/.*\.comment~*$/) {      # keep comments from being displayed
-	    unless ($file =~ m/.*\~$/) {      # keep backups from being displayed
-		# print "<! filename: $file >\n";
-		$this_entrys_href = shift @list_of_hrefs;
-		print ("<a name=\"", $this_entrys_href, "\"></a>\n");
-		$this_entrys_title = shift @list_of_titles;
-		print ("<p class=\"entry_title\">", $this_entrys_title , "</p>\n");
+		unless ($file =~ m/.*\.comment~*$/) {      # keep comments from being displayed
+			unless ($file =~ m/.*\~$/) {      # keep backups from being displayed
+				# print "<! filename: $file >\n";
+				$this_entrys_href = shift @list_of_hrefs;
+				print ("<a name=\"", $this_entrys_href, "\"></a>\n");
+				$this_entrys_title = shift @list_of_titles;
+				print ("<p class=\"entry_title\">", $this_entrys_title, "</p>\n");
 
-		my $istext = 1  if ($file =~ m/\.txt$/i);
-		my $ismd   = 1  if ($file =~ m/\.md$/i);
+				my $istext = 1  if ($file =~ m/\.txt$/i);
+				my $ismd   = 1  if ($file =~ m/\.md$/i);
 
-		print "<pre>\n" if ($istext || $ismd);
-		if (open (FILE, "$file")) {
-		  while(<FILE>) {
-		      print;
-		  }
-		  close FILE;
-		}
-		print "</pre>\n" if ($istext || $ismd);
+				print "<pre>\n" if ($istext || $ismd);
+				if (open (FILE, "$file")) {
+					while(<FILE>) {
+						print;
+					}
+					close FILE;
+				}
+				print "</pre>\n" if ($istext || $ismd);
 
 
-    print <<permaLINK;
+				print <<permaLINK;
 <a href="$www_journal_pl?type=$journal_type&amp;date=$date#$this_entrys_href">$permalink_text</a>
 permaLINK
 
-	    print "$between_file_text";
-	    }
-	}
+				print "$between_file_text";
+			}
+		}
     }
 }
 1;
