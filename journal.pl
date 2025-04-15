@@ -4,6 +4,7 @@ require "setup_journal.pl";
 
 use CGI qw(:all);
 use CGI::Cookie;
+use Text::Markdown qw( markdown );
 use Cwd qw( abs_path );     # allows Perl 5.26 to include local module date_smurfer.pm
 use File::Basename qw( dirname );
 use lib dirname(abs_path(__FILE__));
@@ -62,7 +63,7 @@ print "\n<table border=\"1\" width=\"100%\"><tr>\n";
 #  $printer_version is a pretty rough hack, the code below was copied from sidebar.  It should actually NOT be in sidebar, but calculated up above and
 #  then sidebar is called or not depending on the results.
 #
-#  THE CODE IS ALSO COPIED TO draw_heder.pl, FURTHER PROVING IT SHOULD BE DONE FIRST BEFORE EITHER draw_header OR sidebar IS RUN.
+#  THE CODE IS ALSO COPIED TO draw_header.pl, FURTHER PROVING IT SHOULD BE DONE FIRST BEFORE EITHER draw_header OR sidebar IS RUN.
 #
 #########################
 if ($printer_version) {
