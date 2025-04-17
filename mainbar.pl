@@ -62,15 +62,39 @@ sub mainbar {
 				my $istext = 1  if ($file =~ m/\.txt$/i);
 				my $ismd   = 1  if ($file =~ m/\.md$/i);
 
-				print "<pre>\n" if ($istext || $ismd);
+				# process file with markdown if it's a markdown file
+				if ($ismd) {
+					eval {
+						require Text::RobMiniMarkdown;
+						$md = Text::RobMiniMarkdown->new;
+						my $markdown_content = do {
+							local $/;
+							open my $fh, '<', $file or die "Could not open $file: $!";
+							<$fh>;
+						};
+
+						$md_text = $md->markdown($markdown_content);
+						if ($md_text) {
+							print $md_text;
+						} else {
+							print "<p>!-- Markdown parser returned nothing for $file --\n</p>";
+						}
+					1;
+					} or do {
+						my $error = $@ || 'Unknown error';
+						print "<pre>Markdown processing error: $error</pre>\n";
+					};
+				}
+				else {
+				print "<pre>\n" if ($istext);
 				if (open (FILE, "$file")) {
 					while(<FILE>) {
 						print;
 					}
 					close FILE;
 				}
-				print "</pre>\n" if ($istext || $ismd);
-
+				print "</pre>\n" if ($istext);
+				}
 
 				print <<permaLINK;
 <a href="$www_journal_pl?type=$journal_type&amp;date=$date#$this_entrys_href">$permalink_text</a>
