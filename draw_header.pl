@@ -15,10 +15,13 @@ sub draw_header {
 
     print "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n";
 #    print "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n";
-#    print "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">\n";	
+#    print "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">\n";
     print "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n";
     print "<head>\n";
     print "<link rel=\"stylesheet\" type=\"text/css\" href=\"$style\" />\n";
+    print "<link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css\">";
+    print "<script src=\"https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js\"></script>";
+    print "<script>hljs.highlightAll();</script>";
 
     #### GROSS HACK #### GROSS HACK #### GROSS HACK #### GROSS HACK #### GROSS HACK
     #
@@ -28,7 +31,7 @@ sub draw_header {
     #
     #### GROSS HACK #### GROSS HACK #### GROSS HACK #### GROSS HACK #### GROSS HACK
 
-    
+
 
     print "\n<title>Keep pushing the limits.</title>\n";
 
