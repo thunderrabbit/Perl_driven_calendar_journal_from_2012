@@ -1,5 +1,7 @@
 #!/usr/bin/perl
 
+print "Content-type: text/html\n\n";
+
 require "setup_journal.pl";
 
 use CGI qw(:all);
@@ -40,8 +42,6 @@ unless ($journal_regex_type{$journal_type}) {
 }
 
 $indexname = "$journal_base/preformatted_index_for_" . $journal_type . "_entries.html";
-
-print "Content-type: text/html\n\n";
 
 require "displayFile.pl";
 require "draw_header.pl";
