@@ -378,9 +378,9 @@ print "<body>\n";
 
 print $error_message if $error_message;
 foreach $journal_type (keys %journal_regex_type) {
-    my  $longname = "/journal/preformatted_index_for_" . $journal_type . "_entries.html";
+    my  $longname = "/journal/journal/preformatted_index_for_" . $journal_type . "_entries.html";
 print "<br><a href=\"$longname\">$journal_type index</a>";
 print "<br><a href=\"$journal_pl?type=$journal_type\">$journal_type journal</a>";
-print "<br><a href=\"/journal/" . $journal_type . "_entries.rss\">$journal_type RSS</a>";
+print "<br><a href=\"/journal/journal/" . $journal_type . "_entries.rss\">$journal_type RSS</a>";
 }
 
