@@ -1,7 +1,0 @@
-RewriteEngine on
-RewriteRule ^alice.html(.*)$      /journal/index_shell.php?date=$1&type=
-# RewriteRule   ^/journal/(\d\d\d/\d\d/\d\d)/([^/])
-# RewriteRule   ^/journal/index_shell.php?type=([^&]+)&date=(.*)    /u/$1/$2  [R]
-# RewriteRule   ^/~([^/]+)/?(.*)    /u/$1/$2  [R]
-
-
