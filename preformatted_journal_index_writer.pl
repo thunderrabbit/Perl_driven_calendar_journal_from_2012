@@ -153,7 +153,7 @@ my $rfc822_date   = UnixDate($today,$rfc822_format);
     $rss = new XML::RSS (version => '2.0');
     $rss->channel(
 		  title        => "Keep pushing the limits.",
-		  link         => "http://robnugen.com",
+		  link         => "https://robnugen.com",
 		  description  => "$journal_type entries by Rob Nugen",
 		  dc => {
 		      lastbuilddate       => $rfc822_date,
