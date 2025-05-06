@@ -104,12 +104,13 @@ sub dayofweek {
     return ($doomsday + $on) % 7;
 }
 
+
 chdir ("$journal_base");
 local $/;     # $/ is the eoln marker.  This makes file reads be file slurps!
-$journal_directory = <>;
-system "ls -1R $journal_directory > ls-1R2.txt";
-open (LSONER, "ls-1R2.txt");
-$ls1r = <LSONER>;
+system "ls -1R > ls-1R.txt";
+open (LSONER, "ls-1R.txt");
+$ls1r = <LSONER> . "\n";  # Add \n to the end of the file or regex misses the current month
+
 
 @pre_month_whitespace = ( "",
 #       jan             feb   mar   apr
