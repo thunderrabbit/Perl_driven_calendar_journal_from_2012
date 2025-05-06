@@ -7,7 +7,8 @@ use CGI::Cookie;
 use Cwd qw( abs_path );     # allows Perl 5.26 to include local module date_smurfer.pm
 use File::Basename qw( dirname );
 use lib dirname(abs_path(__FILE__));
-use lib "/home/dh_r2ixxd/dev/Text-RobMiniMarkdown/lib";  # CPAN-friendly development directory
+use lib "/home/barefoot_rob/dev/Text-RobMiniMarkdown/lib";  # CPAN-friendly development directory
+
 
 my($query);
 $require_reload = 0; # this will be set if the parameters had to be tweaked and the URL needs to be refreshed

@@ -27,7 +27,7 @@ use Date::Manip qw(ParseDate UnixDate);  # used in creating RSS feed below
 
 sub iMayRunYet {
     # open a file to see if it's been at least an hour since last run
-    my $filename = "/home/dh_r2ixxd/preformatted_last_run.txt";
+    my $filename = "/home/barefoot_rob/preformatted_last_run.txt";
     my $last_run = 0;
     if (-e $filename) {
         open (LASTRUN, $filename);
