@@ -53,7 +53,7 @@ sub draw_header {
 
     if($requested_date < $utf8_began_on_date || $requested_date == $parser->parse_datetime( '2016/03/24'))
     {
-	print "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=EUC-JP\" />";
+	print "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />";
     }
     else
     {
