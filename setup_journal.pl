@@ -1,9 +1,9 @@
-$style = "/journal/style.css";       # this is used in draw_header.pl
-$journal_pl = "/journal.pl";
-$www_journal_pl = "http://perl.robnugen.com$journal_pl";
-$journal_base = "/home/dh_r2ixxd/perl.robnugen.com/journal";
-$quicklist_file = "/home/dh_r2ixxd/perl.robnugen.com/quicklist_for_journal.txt";
-$journal_log_file = "/home/dh_r2ixxd/perl.robnugen.com/safe/journal_log.txt";
+$style = "/journal/journal/style.css";       # this is used in draw_header.pl
+$journal_pl = "/journal/journal.pl";
+$www_journal_pl = "http://www.robnugen.com/journal$journal_pl";
+$journal_base = "/home/barefoot_rob/robnugen.com/journal/journal";    # first journal is Perl; second are entries with backwards story
+$quicklist_file = "/home/barefoot_rob/robnugen.com/quicklist_for_journal.txt";
+$journal_log_file = "/home/barefoot_rob/robnugen.com/safe/journal_log.txt";
 $between_file_text = "<hr />";  # printed between files on mainbar
 
 =pod

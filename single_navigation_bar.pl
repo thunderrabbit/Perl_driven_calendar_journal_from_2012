@@ -4,7 +4,7 @@ sub single_navigation_bar {
     local ($param_nav_set, $param_item_name) = @_;
 
     my $html;
-    my $nav_settings_file = "/home/dh_r2ixxd/perl.robnugen.com/navigation_definitions.txt";
+    my $nav_settings_file = "/home/barefoot_rob/robnugen.com/journal/navigation_definitions.txt";
 
     open (IN, $nav_settings_file) or die "Can't open " . $nav_settings_file . " for reading";
 
