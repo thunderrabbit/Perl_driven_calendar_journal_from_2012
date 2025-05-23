@@ -35,7 +35,7 @@ sub iMayRunYet {
         close LASTRUN;
     }
     my $now = time;
-    if ($now - $last_run > 1*60*60) {
+    if ($now - $last_run > 5) {
         open (LASTRUN, ">$filename");
         print LASTRUN $now;
         close LASTRUN;
