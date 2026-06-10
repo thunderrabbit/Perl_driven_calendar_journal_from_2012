@@ -1,10 +1,31 @@
-#/bin/bash
+#!/bin/bash
 
+DEST_USER="barefoot_rob"
+DEST_HOST="drc"
+DEST_PATH="/home/$DEST_USER/robnugen.com/journal/"
 
-DEST_USER="dh_r2ixxd"
-DEST_HOST="perl.robnugen.com"
-DEST_PATH="/home/$DEST_USER/perl.robnugen.com/"
-SSH_KEY="/home/thunderrabbit/.ssh/perl.robnugen.com"
+# Monitor file and directory changes
+inotifywait --exclude '.git/*' -mr -e close_write,create --format '%e %w%f' . | while read EVENT FULLPATH; do
+    RELPATH="${FULLPATH#./}"  # remove leading './'
+    REMOTE="$DEST_PATH$RELPATH"
 
-# This will watch for changes in the source directory and scp them to the destination
-inotifywait --exclude '.git/*' -mr -e close_write . | sed -ue 's/ CLOSE_WRITE,CLOSE //' | xargs -d$'\n' -I% scp  -P 22 -i $SSH_KEY % $DEST_USER@$DEST_HOST:$DEST_PATH%
+    # Skip temporary files created by editors (including Claude Code)
+    if [[ "$FULLPATH" == *.tmp.* ]] || [[ "$FULLPATH" == *~ ]] || [[ "$FULLPATH" == *.swp ]] || [[ "$FULLPATH" == *.swo ]]; then
+        # echo "Skipping temporary file: $FULLPATH"
+        continue
+    fi
+
+    # Skip if file doesn't exist (was a temporary file that got cleaned up)
+    if [[ ! -f "$FULLPATH" ]]; then
+        # echo "Skipping non-existent file: $FULLPATH"
+        continue
+    fi
+
+    if [[ "$EVENT" == *"ISDIR"* ]]; then
+        echo "Creating directory: $RELPATH"
+        ssh $DEST_USER@$DEST_HOST mkdir -p $REMOTE
+    elif [[ "$EVENT" == *"CLOSE_WRITE"* ]]; then
+        echo "Copying file: $RELPATH"
+        scp $FULLPATH $DEST_USER@$DEST_HOST:$REMOTE
+    fi
+done
