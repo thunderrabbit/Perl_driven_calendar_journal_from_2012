@@ -247,11 +247,29 @@ my $rfc822_date   = UnixDate($today,$rfc822_format);
 		    $title_no_spaces = $title;
 		    $title_no_spaces =~ s/_/ /g;  # basically the title of the entry
 
-		    unless ($year > $JST_yyyy ) {      # there is one entry dated 2016
+		    unless ($year > $JST_yyyy ||
+			     ($year == $JST_yyyy && $month > $JST_mm) ||
+			     ($year == $JST_yyyy && $month == $JST_mm && $dd > $JST_dd)) {      # exclude future entries only
+
+			# Read file content for RSS description
+			my $file_path = "$year/$month/$filename";
+			my $description = "";
+			if (open(my $fh, '<', $file_path)) {
+			    local $/;
+			    my $content = <$fh>;
+			    close($fh);
+
+			    # Extract first 200 characters as description, strip HTML tags
+			    $description = $content;
+			    $description =~ s/<[^>]*>//g;  # Remove HTML tags
+			    $description =~ s/\s+/ /g;     # Collapse whitespace
+			    $description = substr($description, 0, 200) . "..." if length($description) > 200;
+			}
 
 			$rss->add_item(title => "$year/$month/$dd: $title_no_spaces",
 				       link  => $www_journal_pl . "?type=" . $journal_type . "&amp;date=" . $year . "/" . $month . "/" . $dd . "#" . $title,
 				       guid  => $www_journal_pl . "?type=" . $journal_type . "&amp;date=" . $year . "/" . $month . "/" . $dd . "#" . $title,
+				       description => $description,
 				       mode => "insert"  # put them so that most recent shows up first
 				       );
  		    } # unless year > this year
