@@ -1,4 +1,5 @@
-$style = "/journal/journal/css/journal.css";       # this is used in draw_header.pl
+$style_css = "/journal/journal/css/style.css";       # this is used in draw_header.pl
+$journal_css = "/journal/journal/css/journal.css";       # this is used in draw_header.pl
 $journal_pl = "/journal/journal.pl";
 $www_journal_pl = "http://www.robnugen.com/journal$journal_pl";
 $journal_base = "/home/barefoot_rob/robnugen.com/journal/journal";    # first journal is Perl; second are entries with backwards story

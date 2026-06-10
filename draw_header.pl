@@ -18,7 +18,8 @@ sub draw_header {
 #    print "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">\n";
     print "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n";
     print "<head>\n";
-    print "<link rel=\"stylesheet\" type=\"text/css\" href=\"$style\" />\n";
+    print "<link rel=\"stylesheet\" type=\"text/css\" href=\"$style_css\" />\n";
+    print "<link rel=\"stylesheet\" type=\"text/css\" href=\"$journal_css\" />\n";
     print "<link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css\">";
     print "<script src=\"https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js\"></script>";
     print "<script>hljs.highlightAll();</script>";
