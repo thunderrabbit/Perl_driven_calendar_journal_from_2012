@@ -1,3 +1,5 @@
+use CGI ();   # for CGI::escape() used below to URL-encode reflected values
+
 sub draw_header {
     $new_date = $date;  # if $require_reload = 1, then $new_date will be used below to refresh to new URL
     if ($date eq "nil") {
@@ -37,10 +39,14 @@ sub draw_header {
     print "\n<title>Keep pushing the limits.</title>\n";
 
     if ($date eq "nil" || $require_reload) {
-	# After the header is drawn, journal.pl will die due to "nil" date and this refresh will occur
-	print "<meta http-equiv=\"refresh\" content=\"0;url=journal.pl?type=$journal_type&date=$new_date\" />\n";
-	print "<script language=Javascript1.0>\n";
-	print "window.location.href=\"journal.pl?type=$journal_type&date=$new_date\"\n";
+	# After the header is drawn, journal.pl will die due to "nil" date and this refresh will occur.
+	# URL-encode the interpolated values so a crafted "date" cannot break out of
+	# the HTML attribute or the JavaScript string literal (reflected XSS).
+	my $safe_journal_type = CGI::escape($journal_type);
+	my $safe_new_date = CGI::escape($new_date);
+	print "<meta http-equiv=\"refresh\" content=\"0;url=journal.pl?type=$safe_journal_type&amp;date=$safe_new_date\" />\n";
+	print "<script type=\"text/javascript\">\n";
+	print "window.location.href=\"journal.pl?type=$safe_journal_type&date=$safe_new_date\";\n";
 	print "</script>\n";
     }
 
