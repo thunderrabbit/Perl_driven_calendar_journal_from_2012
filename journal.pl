@@ -24,9 +24,16 @@ $debug = $query->param('debug');
 
 if($date = $query->param('date'))
 {
-    $date =~ s!^[\./~]*!!;   # chop off any number of . / or ~ chars at start of $date
-    $date =~ s!/\.\.!!g;     # chop out any number of /.. within $date
-    $date =~ s!/$!!;         # chop off very end / if it exists
+    $date =~ s!/$!!;         # tolerate a trailing slash on the URL
+
+    # Whitelist: a valid date is YYYY, YYYY/MM, or YYYY/MM/DD and nothing else.
+    # Reject anything else here (path traversal like ../, glob metacharacters
+    # like * ? ~, HTML/JS payloads) so it can never reach the file glob in
+    # mainbar.pl or be reflected into the page. Rejected input falls back to
+    # "nil", which draw_header.pl turns into a redirect to the current entry.
+    unless ($date =~ m{^\d{4}(?:/\d\d(?:/\d\d)?)?$}) {
+        $date = "nil";
+    }
 }
 else {
     $date = "nil";
