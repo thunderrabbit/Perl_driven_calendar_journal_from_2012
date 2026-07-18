@@ -10,7 +10,14 @@ sub mainbar {
     $debug && print "<p>$date: $year/$month/$day\n\n";
     $debug && print "<br>$journal_type";
 
-	@all_files_for_date = <$journal_base/$year/$month/$day\*>;
+	# Defense in depth: neutralize glob metacharacters in the date-derived
+	# components before building the pattern, so a value such as "*" or
+	# "~user" cannot turn this into a wildcard sweep (e.g. bulk-harvesting
+	# private "_"-prefixed entries across a whole year) or a home-directory
+	# escape. Legitimate numeric date components are unaffected.
+	my $glob_prefix = "$journal_base/$year/$month/$day";
+	$glob_prefix =~ s/([\\*?\[\]{}~ ])/\\$1/g;
+	@all_files_for_date = glob("$glob_prefix*");
 ## end ADDRESSING private entries using security through obscurity
 
     $debug && print "<p>$journal_base/$year/$month/$day</p>";
