@@ -42,11 +42,11 @@ sub draw_header {
 	# After the header is drawn, journal.pl will die due to "nil" date and this refresh will occur.
 	# URL-encode the interpolated values so a crafted "date" cannot break out of
 	# the HTML attribute or the JavaScript string literal (reflected XSS).
-	my $safe_type = CGI::escape($journal_type);
-	my $safe_date = CGI::escape($new_date);
-	print "<meta http-equiv=\"refresh\" content=\"0;url=journal.pl?type=$safe_type&amp;date=$safe_date\" />\n";
+	my $safe_journal_type = CGI::escape($journal_type);
+	my $safe_new_date = CGI::escape($new_date);
+	print "<meta http-equiv=\"refresh\" content=\"0;url=journal.pl?type=$safe_journal_type&amp;date=$safe_new_date\" />\n";
 	print "<script type=\"text/javascript\">\n";
-	print "window.location.href=\"journal.pl?type=$safe_type&date=$safe_date\";\n";
+	print "window.location.href=\"journal.pl?type=$safe_journal_type&date=$safe_new_date\";\n";
 	print "</script>\n";
     }
 
