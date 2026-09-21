@@ -5,7 +5,13 @@ served at https://robnugen.com/journal/
 
 ## Commit guard
 Claude CANNOT commit/merge/push on `master` — a git wrapper blocks it
-(exit 77). Do work on a feature branch; Rob integrates to master.
+(exit 77). In this OUTER repo, do work on a feature branch; Rob integrates
+to master.
+
+In the INNER `journal/` (entries) repo, **Claude never commits at all** —
+not on master, not on a branch. Every commit subject there is the next word
+of Rob's x0x0x0 story (the word-per-commit history described below), so a commit Claude writes breaks the
+sentence. Edit entries, leave them in the working tree, and tell Rob.
 
 ## Two nested `journal/` directories — TWO SEPARATE GIT REPOS
 
