@@ -1,0 +1,49 @@
+# One journal.pl query string per line. All dates before 2025 so content
+# drift stays out of it. Blank lines and # comments are ignored.
+# year pages
+type=all&date=1999
+type=all&date=2008
+type=dreams&date=2006
+type=SoML&date=1998
+# month pages
+type=all&date=2004/03
+type=all&date=2021/10
+type=dreams&date=1987/03
+type=nihongo&date=2002/05
+type=ultimate&date=1999/04
+type=YRUU&date=2000/12
+# day pages: .txt era
+type=all&date=2004/03/27
+type=all&date=2006/02/10
+type=all&date=2007/09/26
+# day pages: .html
+type=all&date=1987/03/30
+type=all&date=1994/05/30
+type=all&date=1996/05/07
+type=all&date=2003/01/05
+type=all&date=2008/01/05
+type=all&date=2013/01/10
+type=dreams&date=2006/09/08
+type=all&date=2004/01/01
+type=all&date=2005/04/01
+type=nihongo&date=2004/10/21
+type=all&date=2002/05/02
+type=SoML&date=1998/03/13
+type=all&date=2010/05/10
+type=all&date=2016/03/24
+# day pages: .md
+type=all&date=2020/01/02
+type=all&date=2021/10/09
+type=all&date=2024/02/27
+# print mode
+type=all&date=2004/03/27&print=1
+type=all&date=2003/01/05&print=1
+type=all&date=2020/01/02&print=1
+type=dreams&date=2006/09/08&print=1
+type=all&date=2016/03/24&print=1
+type=all&date=1999&print=1
+type=nihongo&date=2004/10/21&print=1
+# redirect paths (../etc is answered 418 by the server firewall, so 20x1 stands in)
+type=all
+type=all&date=20x1
+type=bogus&date=2003/01/05
