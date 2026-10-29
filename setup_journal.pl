@@ -1,3 +1,10 @@
+use strict;
+use warnings;
+
+our ($VERSION, $style_css, $journal_css, $journal_pl, $www_journal_pl,
+     $journal_base, $quicklist_file, $journal_log_file, $between_file_text,
+     %journal_regex_type);
+
 $VERSION = "0.9.1";
 $style_css = "/journal/journal/css/style.css";       # this is used in draw_header.pl
 $journal_css = "/journal/journal/css/journal.css";       # this is used in draw_header.pl
