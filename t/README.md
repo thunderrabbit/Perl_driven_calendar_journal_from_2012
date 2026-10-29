@@ -73,7 +73,9 @@ entries by design.
 ## Lint
 
 `./lint.sh` at the repo root runs perlcritic (severity 5, `.perlcriticrc`)
-and the whitespace rules. To run it before every commit:
+and the whitespace rules, and prints the severity-4 violation count as
+information (30 at the end of the 2026-10-29 pass, the baseline for the next
+one). To run it before every commit:
 
     ln -s ../../lint.sh .git/hooks/pre-commit
 

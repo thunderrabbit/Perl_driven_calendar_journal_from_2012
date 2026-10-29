@@ -1,0 +1,4 @@
+severity = 5
+# The engine is a set of require'd script fragments ("setup_journal.pl")
+# sharing package main. Turning them into modules is the deeper pass.
+[-Modules::RequireBarewordIncludes]
