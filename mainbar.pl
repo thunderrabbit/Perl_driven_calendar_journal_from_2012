@@ -76,8 +76,8 @@ sub mainbar {
                 my $this_entrys_title = shift @list_of_titles;
                 print ("<p class=\"entry_title\">", $this_entrys_title, "</p>\n");
 
-                my $istext = 1  if ($file =~ m/\.txt$/i);
-                my $ismd   = 1  if ($file =~ m/\.md$/i);
+                my $istext = ($file =~ m/\.txt$/i) ? 1 : 0;
+                my $ismd   = ($file =~ m/\.md$/i) ? 1 : 0;
 
                 # process file with markdown if it's a markdown file
                 if ($ismd) {
