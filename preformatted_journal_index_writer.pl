@@ -15,10 +15,10 @@ our ($journal_base, $journal_pl, $www_journal_pl, %journal_regex_type);
 # localtime() call below declares a file-scope lexical $year that shadows
 # the rest of the file, and declaring it here as well would warn.
 our (@month_lengths, @month_titles_spaced_for_month_summaries, @month_titles_no_spacing,
-     @pre_month_whitespace, @post_month_whitespace, $ls1r);
+    @pre_month_whitespace, @post_month_whitespace, $ls1r);
 our ($month, $day, $dd, $files, @files_of_this_type, @files_of_ANY_type,
-     %list_of_years_per_journal_type, %list_of_months_per_year, %list_of_days_per_year_month,
-     $file, $title, $title_no_spaces, $error_message, $day_of_week);
+    %list_of_years_per_journal_type, %list_of_months_per_year, %list_of_days_per_year_month,
+    $file, $title, $title_no_spaces, $error_message, $day_of_week);
 
 
 # create an RSS 1.0 file (http://purl.org/rss/1.0/)
@@ -185,8 +185,8 @@ foreach my $journal_type (keys %journal_regex_type) {
     );
 
 
-# these hashes will basically store all the results of scanning through ls-1R.txt looking for matching filenames
-# At the end, we can loop through these hashes and produce all the preformatted HTML journal.pl needs.
+    # these hashes will basically store all the results of scanning through ls-1R.txt looking for matching filenames
+    # At the end, we can loop through these hashes and produce all the preformatted HTML journal.pl needs.
     undef %list_of_years_per_journal_type;
     undef %list_of_months_per_year;
     undef %list_of_days_per_year_month;
@@ -214,14 +214,14 @@ foreach my $journal_type (keys %journal_regex_type) {
         $month = $2;
         $files = $3;
 
-    # An array of all the files in this yyyy/mm combination that match the regex
+        # An array of all the files in this yyyy/mm combination that match the regex
         @files_of_this_type = ();
         @files_of_ANY_type = ();
 
         # doing this so we don't match \d\d in the middle of words
         @files_of_ANY_type = split(/\n/,$files);
 
-# Get all the files from this year/month that match the regex for this filetype.
+        # Get all the files from this year/month that match the regex for this filetype.
         foreach (@files_of_ANY_type) {
             if ($_ =~ m!$journal_regex_type{$journal_type}!i) {
                 push (@files_of_this_type, $_);
@@ -230,10 +230,10 @@ foreach my $journal_type (keys %journal_regex_type) {
 
         if (@files_of_this_type)
         {
-          # Now is where the work begins.  We know what year/month we're looking
-          # at, and we have confirmed that there are files in that month that
-          # match the regex.  Remember this year has such files.  Remember this
-          # year/month has files.  Remember this year/month/day has files.
+            # Now is where the work begins.  We know what year/month we're looking
+            # at, and we have confirmed that there are files in that month that
+            # match the regex.  Remember this year has such files.  Remember this
+            # year/month has files.  Remember this year/month/day has files.
 
             # add this year to this journal_types list
             $list_of_years_per_journal_type{$year} = "Y";
@@ -271,7 +271,7 @@ foreach my $journal_type (keys %journal_regex_type) {
                                 my $content = <$fh>;
                                 close($fh);
 
-                  # Extract first 200 characters as description, strip HTML tags
+                                # Extract first 200 characters as description, strip HTML tags
                                 $description = $content;
                                 $description =~ s/<[^>]*>//g;  # Remove HTML tags
                                 $description =~ s/\s+/ /g;     # Collapse whitespace
@@ -286,7 +286,7 @@ foreach my $journal_type (keys %journal_regex_type) {
                             );
                         } # unless year > this year
 
-# (in $current_xxxx), keep track of the date closest to, but not beyond, today ($JST_xxxx).
+                        # (in $current_xxxx), keep track of the date closest to, but not beyond, today ($JST_xxxx).
                         ($current_yyyy,$current_mm,$current_dd) = ($year,$month,$dd) unless ($year > $JST_yyyy ||
                             ($year == $JST_yyyy && $month > $JST_mm) ||
                             ($year == $JST_yyyy && $month == $JST_mm && $dd > $JST_dd));
@@ -359,7 +359,7 @@ foreach my $journal_type (keys %journal_regex_type) {
         print {$html_out} "   " x $day_of_week;
         foreach my $i (1..$month_lengths[$month]) {
             $day = sprintf "%2.2d", $i;
-            # Here is where we print {$html_out} the day number.
+            # Here is where we print HTML_OUTPUT the day number.
             # This needs to include newlines after each Saturday.
             if($list_of_days_per_year_month{"$year/$month"}->{$day}) {
                 print {$html_out} "<a href='$journal_pl?type=$journal_type&amp;date=$year/$month/$day'>$day</a>";

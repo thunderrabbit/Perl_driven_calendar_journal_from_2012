@@ -48,12 +48,12 @@ sub mainbar {
                 $debug && print "<br>file is \"$file\"\n";
                 ($title) = $file =~ m!.*/_?\d\d(.*)\.(?:html|txt|md)$!;
                 $debug && print "<br>title is \"$title\"\n";
-# $filename is the filename only with no path info.  This name is sent to comment.pl to hide the path of my filesystem.
+                # $filename is the filename only with no path info.  This name is sent to comment.pl to hide the path of my filesystem.
                 ($filename) = $file =~ m!.*/(\d\d.*\.(?:html|txt|md))$!;
                 my $title_no_spaces = $title;
                 $title_no_spaces =~ s/_/ /g;  # basically the title of the entry
 
-# Fixes #9, but a better fix is #8 get title from Frontmatter if this is a markdown file
+                # Fixes #9, but a better fix is #8 get title from Frontmatter if this is a markdown file
                 $title_no_spaces =~ s/-/ /g;  # Markdown files have hyphens like this
 
                 push (@list_of_titles, $title_no_spaces);
@@ -70,7 +70,7 @@ sub mainbar {
     foreach my $file (sort @files_for_date) {       # sort puts the files in A..Za..z order
         unless ($file =~ m/.*\.comment~*$/) {      # keep comments from being displayed
             unless ($file =~ m/.*\~$/) {      # keep backups from being displayed
-                                             # print "<! filename: $file >\n";
+                # print "<! filename: $file >\n";
                 my $this_entrys_href = shift @list_of_hrefs;
                 print ("<a name=\"", $this_entrys_href, "\"></a>\n");
                 my $this_entrys_title = shift @list_of_titles;

@@ -20,7 +20,7 @@ sub sidebar {
 
     unless ($date =~ m!^\d\d\d\d(?:/|$)!m)
     {
-# if date does not start with a four digit year, then grab the Latest Date as defined in the ls1R.html file
+        # if date does not start with a four digit year, then grab the Latest Date as defined in the ls1R.html file
         ($date) = $ls1r =~ m/LATEST ENTRY DATE: (.*)/m;
     }
 
@@ -219,8 +219,8 @@ sub sidebar {
     # the expense of continuity.  Everything should still be visible with any
     # reasonable browser window and font size.
 
-# Note that all date variables are fully defined.
-#  print '<p><a href="http://www.nanowrimo.org/eng/user/260012"><img src="http://www.nanowrimo.org/NanowrimoUtils/NanowrimoMiniGraph/260012.png" /></a></p>';
+    # Note that all date variables are fully defined.
+    #  print '<p><a href="http://www.nanowrimo.org/eng/user/260012"><img src="http://www.nanowrimo.org/NanowrimoUtils/NanowrimoMiniGraph/260012.png" /></a></p>';
     if($lastmonth) {
         $ls1r =~ m!^$lastmonth:\ *$(.*?\n\n)!ms;
         print $1;
@@ -291,8 +291,8 @@ sub sidebar {
 
     print "\n";
 
-# <p><a href="http://www.nanowrimo.org/NanowrimoUtils/ProgressReport/260012.html"><img src="http://www.nanowrimo.org/NanowrimoUtils/NanowrimoGraph/260012.png" /></a>
-# <br/>Click for my detailed 2008 <a href="http://www.nanowrimo.org/">NaNoWriMo</a> stats!</p>
+    # <p><a href="http://www.nanowrimo.org/NanowrimoUtils/ProgressReport/260012.html"><img src="http://www.nanowrimo.org/NanowrimoUtils/NanowrimoGraph/260012.png" /></a>
+    # <br/>Click for my detailed 2008 <a href="http://www.nanowrimo.org/">NaNoWriMo</a> stats!</p>
 
 
 }

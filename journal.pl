@@ -85,15 +85,15 @@ print "\n<table border=\"1\" width=\"100%\"><tr>\n";
 #########################
 if ($printer_version) {
     local $/;      # file slurp mode
-    # Deliberately two-argument: $ls1rfile is undef here (it is set only inside
-    # sidebar()), and the three-argument form with undef opens an anonymous temp
-    # file, which would hide that. Fixing the block is for the next pass (see the
-    # spec's non-goals).
+     # Deliberately two-argument: $ls1rfile is undef here (it is set only inside
+     # sidebar()), and the three-argument form with undef opens an anonymous temp
+     # file, which would hide that. Fixing the block is for the next pass (see the
+     # spec's non-goals).
     open(my $lsoner, $ls1rfile); ## no critic (InputOutput::ProhibitTwoArgOpen)
     $ls1r = <$lsoner>;
 
     unless ($date =~ m!^\d\d\d\d(?:/|$)!m) {
-# if date does not start with a four digit year, then grab the Latest Date as defined in the ls1R.html file
+        # if date does not start with a four digit year, then grab the Latest Date as defined in the ls1R.html file
         ($date) = $ls1r =~ m/LATEST ENTRY DATE: (.*)/m;
     }
 

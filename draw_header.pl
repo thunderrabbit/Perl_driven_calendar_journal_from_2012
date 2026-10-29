@@ -10,21 +10,21 @@ our ($style_css, $journal_css);
 sub draw_header {
     my $new_date = $date;  # if $require_reload = 1, then $new_date will be used below to refresh to new URL
     if ($date eq "nil") {
-# this code was jacked from sidebar.pl to force the redirect to happen if the date is not given
-# this code was jacked from sidebar.pl to force the redirect to happen if the date is not given
-# this code was jacked from sidebar.pl to force the redirect to happen if the date is not given
+        # this code was jacked from sidebar.pl to force the redirect to happen if the date is not given
+        # this code was jacked from sidebar.pl to force the redirect to happen if the date is not given
+        # this code was jacked from sidebar.pl to force the redirect to happen if the date is not given
         undef $/;      # file slurp mode
         open my $lsoner, '<', $indexname;
         $ls1r = <$lsoner>;
         $/ = "\n";  # unslurp mode
 
-# if date does not start with a four digit year, then grab the Latest Date as defined in the ls1R.html file
+        # if date does not start with a four digit year, then grab the Latest Date as defined in the ls1R.html file
         ($new_date) = $ls1r =~ m/CURRENT ENTRY DATE: (.*)/m;
     }
 
     print "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n";
-#    print "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n";
-#    print "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">\n";
+    #    print "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n";
+    #    print "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">\n";
     print "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">\n";
     print "<head>\n";
     print "<link rel=\"stylesheet\" type=\"text/css\" href=\"$style_css\" />\n";
@@ -46,9 +46,9 @@ sub draw_header {
     print "\n<title>Keep pushing the limits.</title>\n";
 
     if ($date eq "nil" || $require_reload) {
-# After the header is drawn, journal.pl will die due to "nil" date and this refresh will occur.
-# URL-encode the interpolated values so a crafted "date" cannot break out of
-# the HTML attribute or the JavaScript string literal (reflected XSS).
+        # After the header is drawn, journal.pl will die due to "nil" date and this refresh will occur.
+        # URL-encode the interpolated values so a crafted "date" cannot break out of
+        # the HTML attribute or the JavaScript string literal (reflected XSS).
         my $safe_journal_type = CGI::escape($journal_type);
         my $safe_new_date = CGI::escape($new_date);
         print "<meta http-equiv=\"refresh\" content=\"0;url=journal.pl?type=$safe_journal_type&amp;date=$safe_new_date\" />\n";
@@ -58,8 +58,8 @@ sub draw_header {
     }
 
 
-# This bit of code might ought to be pulled into its own function in case I want to draw the head charset elsewhere
-# for example, on my resume page, which has these characters as well.
+    # This bit of code might ought to be pulled into its own function in case I want to draw the head charset elsewhere
+    # for example, on my resume page, which has these characters as well.
     use DateTime::Format::Strptime;
     my $parser = DateTime::Format::Strptime->new( pattern => '%Y/%m/%d' );
     my $requested_date = $parser->parse_datetime( $new_date );
@@ -74,7 +74,7 @@ sub draw_header {
         print "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />";
     }
 
-# The above code might ought to be pulled into its own function in case I want to draw the head charset elsewhere
+    # The above code might ought to be pulled into its own function in case I want to draw the head charset elsewhere
 
     print "</head>\n";
 }
