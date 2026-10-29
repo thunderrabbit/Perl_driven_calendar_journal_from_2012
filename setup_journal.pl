@@ -20,12 +20,11 @@ $between_file_text = "<hr />";  # printed between files on mainbar
 			 SoML     ^\d\d.*?(?:soml|state.*?(?:of|my).*?life).*
 			 dreams   ^\d\d.*?dream.*
 			 gateway  ^\d\d.*?gateway_data.*
+			 MKP      ^\d\d.*?mkp.*
 			 runes    ^\d\d.*?(?:rune|runes).*
 			 ultimate ^\d\d.*?(?:ultimate|frisbee|centex).*
 			 skate    ^\d\d.*?(?:skate|skating).*
 			 YRUU     ^\d\d.*?(?:yruu|(?:-|_|\d)rally|con.*con|swuusi|(?:spring|fall).*conference|lry).*
 			 KTRU     ^\d\d.*?ktru.*
 			 nihongo  ^\d\d.*?nihongo.*
-			 privvy   ^_\d\d.*?
 			 );
-
