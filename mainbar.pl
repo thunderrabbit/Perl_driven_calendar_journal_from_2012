@@ -104,11 +104,11 @@ sub mainbar {
                 }
                 else {
                     print "<pre>\n" if ($istext);
-                    if (open (FILE, "$file")) {
-                        while(<FILE>) {
+                    if (open(my $fh, '<', $file)) {
+                        while (<$fh>) {
                             print;
                         }
-                        close FILE;
+                        close $fh;
                     }
                     print "</pre>\n" if ($istext);
                 }

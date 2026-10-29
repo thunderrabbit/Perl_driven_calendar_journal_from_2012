@@ -9,9 +9,9 @@ sub single_navigation_bar {
     my $html;
     my $nav_settings_file = $ENV{JOURNAL_NAV_FILE} // "/home/barefoot_rob/robnugen.com/journal/navigation_definitions.txt";
 
-    open (IN, $nav_settings_file) or die "Can't open " . $nav_settings_file . " for reading";
+    open(my $in, '<', $nav_settings_file) or die "Can't open " . $nav_settings_file . " for reading";
 
-    while (<IN>) {
+    while (<$in>) {
         # separate the line using the space character as separator
         my ($nav_set, $item_name, $on, $off, $url) = split;
 
@@ -40,7 +40,7 @@ sub single_navigation_bar {
             }
         }   # ($param_nav_set eq $nav_set)
     }
-    close IN or die "Can't close " . $nav_settings_file;
+    close $in or die "Can't close " . $nav_settings_file;
     return $html;
 }
 1;

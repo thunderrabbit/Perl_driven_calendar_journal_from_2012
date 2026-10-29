@@ -14,8 +14,8 @@ sub draw_header {
 # this code was jacked from sidebar.pl to force the redirect to happen if the date is not given
 # this code was jacked from sidebar.pl to force the redirect to happen if the date is not given
         undef $/;      # file slurp mode
-        open LSONER, $indexname;
-        $ls1r = <LSONER>;
+        open my $lsoner, '<', $indexname;
+        $ls1r = <$lsoner>;
         $/ = "\n";  # unslurp mode
 
 # if date does not start with a four digit year, then grab the Latest Date as defined in the ls1R.html file

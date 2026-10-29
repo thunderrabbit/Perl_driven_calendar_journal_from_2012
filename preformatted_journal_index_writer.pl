@@ -44,15 +44,15 @@ sub iMayRunYet {
     my $filename = $ENV{JOURNAL_LASTRUN_FILE} // "/home/barefoot_rob/preformatted_last_run.txt";
     my $last_run = 0;
     if (-e $filename) {
-        open (LASTRUN, $filename);
-        $last_run = <LASTRUN>;
-        close LASTRUN;
+        open(my $lastrun_in, '<', $filename);
+        $last_run = <$lastrun_in>;
+        close $lastrun_in;
     }
     my $now = time;
     if ($now - $last_run > 5) {
-        open (LASTRUN, ">$filename");
-        print LASTRUN $now;
-        close LASTRUN;
+        open(my $lastrun_fh, '>', $filename);
+        print {$lastrun_fh} $now;
+        close $lastrun_fh;
         return 1;
     } else {
         return 0;
@@ -122,8 +122,8 @@ sub dayofweek {
 chdir ("$journal_base");
 local $/;     # $/ is the eoln marker.  This makes file reads be file slurps!
 system "ls -1R > ls-1R.txt";
-open (LSONER, "ls-1R.txt");
-$ls1r = <LSONER> . "\n";  # Add \n to the end of the file or regex misses the current month
+open(my $lsoner, '<', 'ls-1R.txt');
+$ls1r = <$lsoner> . "\n";  # Add \n to the end of the file or regex misses the current month
 
 
 @pre_month_whitespace = ( "",
@@ -195,11 +195,11 @@ foreach my $journal_type (keys %journal_regex_type) {
 
     # The preformatted HTML will be written to this file.
     my  $indexname = "$journal_base/preformatted_index_for_" . $journal_type . "_entries.html";
-    open HTML_OUTPUT, ">$indexname" or die "can't open $indexname: $!";
+    open(my $html_out, '>', $indexname) or die "can't open $indexname: $!";
 
-    print HTML_OUTPUT "<html><body>\n\n";
+    print {$html_out} "<html><body>\n\n";
 
-    print HTML_OUTPUT "<p>run on yyyy/mm/dd: $JST_yyyy/$JST_mm/$JST_dd</p>";
+    print {$html_out} "<p>run on yyyy/mm/dd: $JST_yyyy/$JST_mm/$JST_dd</p>";
 
 =pod
         For each yyyy/mm: combination in ~/journal/ls-1R.txt, grab all the
@@ -300,40 +300,40 @@ foreach my $journal_type (keys %journal_regex_type) {
         } # there are matching files this year/month
     } # grab all the files from this year/month
 
-    print HTML_OUTPUT "<p><!-- $journal_type journal entries match m!$journal_regex_type{$journal_type}!ig --></p>\n\n";
+    print {$html_out} "<p><!-- $journal_type journal entries match m!$journal_regex_type{$journal_type}!ig --></p>\n\n";
 
-    print HTML_OUTPUT "YEARS: ";
-    print HTML_OUTPUT join ", ", (sort keys %list_of_years_per_journal_type);
-    print HTML_OUTPUT "\n\n";
+    print {$html_out} "YEARS: ";
+    print {$html_out} join ", ", (sort keys %list_of_years_per_journal_type);
+    print {$html_out} "\n\n";
 
-    print HTML_OUTPUT "<p><!-- YEAR SUMMARIES --></p>\n\n";
+    print {$html_out} "<p><!-- YEAR SUMMARIES --></p>\n\n";
 ####### PRINT HTML_OUTPUT YEAR SUMMARIES ##################
     foreach my $year (sort keys %list_of_months_per_year) {
 
-        print HTML_OUTPUT "MONTHS $year: ";
-        print HTML_OUTPUT join ", ", (sort keys %{ $list_of_months_per_year{$year} });
-        print HTML_OUTPUT "\n\n";
+        print {$html_out} "MONTHS $year: ";
+        print {$html_out} join ", ", (sort keys %{ $list_of_months_per_year{$year} });
+        print {$html_out} "\n\n";
 
-        print HTML_OUTPUT "$year:\n";
-        print HTML_OUTPUT "<pre class='calendar'>\n";
-        print HTML_OUTPUT "         <a href=\"$journal_pl?type=$journal_type&amp;date=$year\">$year</a>        \n";
+        print {$html_out} "$year:\n";
+        print {$html_out} "<pre class='calendar'>\n";
+        print {$html_out} "         <a href=\"$journal_pl?type=$journal_type&amp;date=$year\">$year</a>        \n";
         foreach my $i (1..12) {
             $month = sprintf "%2.2d", $i;
-            print HTML_OUTPUT $pre_month_whitespace[$month];
+            print {$html_out} $pre_month_whitespace[$month];
 
             if ($list_of_months_per_year{$year}->{$month}) {
-                print HTML_OUTPUT "<a href=\"$journal_pl?type=$journal_type&amp;date=$year/$month\">".
+                print {$html_out} "<a href=\"$journal_pl?type=$journal_type&amp;date=$year/$month\">".
                     $month_titles_no_spacing[$month]."</a>";
             } else {
-                print HTML_OUTPUT "$month_titles_no_spacing[$month]";
+                print {$html_out} "$month_titles_no_spacing[$month]";
             }
-            print HTML_OUTPUT $post_month_whitespace[$month];
+            print {$html_out} $post_month_whitespace[$month];
         }
-        print HTML_OUTPUT "</pre>\n\n";
+        print {$html_out} "</pre>\n\n";
     }
 
 
-    print HTML_OUTPUT "<p><!-- MONTH SUMMARIES --></p>\n\n";
+    print {$html_out} "<p><!-- MONTH SUMMARIES --></p>\n\n";
 ####### PRINT HTML_OUTPUT MONTH SUMMARIES ##################
     foreach my $yearmonth (sort keys %list_of_days_per_year_month) {
         ($year,$month) = $yearmonth =~ m!(\d\d\d\d)/(\d\d)!;
@@ -346,56 +346,56 @@ foreach my $journal_type (keys %journal_regex_type) {
         setFeb($year);                             # 28 or 29 days depending on Leap Year
         $day_of_week = dayofweek(1,$month,$year);
 
-        print HTML_OUTPUT "DAYS $year/$month: ";
-        print HTML_OUTPUT join ", ", (sort keys %{ $list_of_days_per_year_month{"$year/$month"} });
-        print HTML_OUTPUT "\n\n";
+        print {$html_out} "DAYS $year/$month: ";
+        print {$html_out} join ", ", (sort keys %{ $list_of_days_per_year_month{"$year/$month"} });
+        print {$html_out} "\n\n";
 
-        print HTML_OUTPUT "\n\n$year/$month:\n";
-        print HTML_OUTPUT "<pre class='calendar'>\n";
+        print {$html_out} "\n\n$year/$month:\n";
+        print {$html_out} "<pre class='calendar'>\n";
         # Split off the leading whitespace to keep it outside the link.
         $month_titles_spaced_for_month_summaries[$month] =~ m/(\s*)(.*)/;
-        print HTML_OUTPUT "&nbsp;$1<a href=\"$journal_pl?type=$journal_type&amp;date=$year/$month\">$2 $year</a>\n";
-        print HTML_OUTPUT "&nbsp;";
-        print HTML_OUTPUT "   " x $day_of_week;
+        print {$html_out} "&nbsp;$1<a href=\"$journal_pl?type=$journal_type&amp;date=$year/$month\">$2 $year</a>\n";
+        print {$html_out} "&nbsp;";
+        print {$html_out} "   " x $day_of_week;
         foreach my $i (1..$month_lengths[$month]) {
             $day = sprintf "%2.2d", $i;
-            # Here is where we print HTML_OUTPUT the day number.
+            # Here is where we print {$html_out} the day number.
             # This needs to include newlines after each Saturday.
             if($list_of_days_per_year_month{"$year/$month"}->{$day}) {
-                print HTML_OUTPUT "<a href='$journal_pl?type=$journal_type&amp;date=$year/$month/$day'>$day</a>";
+                print {$html_out} "<a href='$journal_pl?type=$journal_type&amp;date=$year/$month/$day'>$day</a>";
             } else {
-                print HTML_OUTPUT "$day";
+                print {$html_out} "$day";
             }
             if (++$day_of_week >= 7 ) {
-                print HTML_OUTPUT " \n";
-                if ($i != $month_lengths[$month]) { print HTML_OUTPUT "&nbsp;"; }
+                print {$html_out} " \n";
+                if ($i != $month_lengths[$month]) { print {$html_out} "&nbsp;"; }
                 $day_of_week = 0;
-            } else { print HTML_OUTPUT " "; }
+            } else { print {$html_out} " "; }
         }
-        print HTML_OUTPUT "</pre>\n\n";
+        print {$html_out} "</pre>\n\n";
     }
 
     # Write empty blocks for non-existant past / future months and years.
     foreach my $when (qw(prev next)) {
-        print HTML_OUTPUT "\nNO $when YEAR:\n<pre class='calendar'>\n \n \n \n \n</pre>\n\n";
-        print HTML_OUTPUT "\nNO $when MONTH:\n<pre class='calendar'>\n \n \n \n \n \n \n</pre>\n\n";
+        print {$html_out} "\nNO $when YEAR:\n<pre class='calendar'>\n \n \n \n \n</pre>\n\n";
+        print {$html_out} "\nNO $when MONTH:\n<pre class='calendar'>\n \n \n \n \n \n \n</pre>\n\n";
     }
 
     # Calculate the first date for this $journal_type
     my $first_year_month = (sort keys %list_of_days_per_year_month)[0];
     my $first_entry_date = $first_year_month . "/" . (sort keys %{$list_of_days_per_year_month{$first_year_month}})[0];
-    print HTML_OUTPUT "<p>\nFIRST ENTRY DATE: $first_entry_date\n\n</p>";
+    print {$html_out} "<p>\nFIRST ENTRY DATE: $first_entry_date\n\n</p>";
 
-    print HTML_OUTPUT "<p>\nCURRENT ENTRY DATE: $current_yyyy/$current_mm/$current_dd\n\n</p>";
+    print {$html_out} "<p>\nCURRENT ENTRY DATE: $current_yyyy/$current_mm/$current_dd\n\n</p>";
 
     # Calculate the last date for this $journal_type
     my $last_year_month = (sort keys %list_of_days_per_year_month)[-1];
     my $latest_entry_date = $last_year_month . "/" . (sort keys %{$list_of_days_per_year_month{$last_year_month}})[-1];
-    print HTML_OUTPUT "<p>\nLATEST ENTRY DATE: $latest_entry_date\n\n</p>";
+    print {$html_out} "<p>\nLATEST ENTRY DATE: $latest_entry_date\n\n</p>";
 
-    print HTML_OUTPUT "</body></html>\n";
+    print {$html_out} "</body></html>\n";
 
-    close HTML_OUTPUT;
+    close $html_out;
 
     $rss->save($journal_base . "/" . $journal_type . "_entries.rss");
 

@@ -14,8 +14,8 @@ sub sidebar {
     ($date,$ls1rfile) = @_;
 
     undef $/;      # file slurp mode
-    open LSONER, $ls1rfile;
-    $ls1r = <LSONER>;
+    open my $lsoner, '<', $ls1rfile;
+    $ls1r = <$lsoner>;
     $/ = "\n";  # unslurp mode
 
     unless ($date =~ m!^\d\d\d\d(?:/|$)!m)
