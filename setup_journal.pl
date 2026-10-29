@@ -1,4 +1,4 @@
-$VERSION = "0.9.0";
+$VERSION = "0.9.1";
 $style_css = "/journal/journal/css/style.css";       # this is used in draw_header.pl
 $journal_css = "/journal/journal/css/journal.css";       # this is used in draw_header.pl
 $journal_pl = "/journal.pl";
