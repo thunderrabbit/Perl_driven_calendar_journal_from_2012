@@ -20,13 +20,13 @@ sub draw_AJAX_navigation {
 
     # grab parameters
     @param_nav_set = split(/&/, $_[0]);
-#    warn "|" . join (", ", @param_nav_set) . "|\n";
+    #    warn "|" . join (", ", @param_nav_set) . "|\n";
 
     my $html = "";
     $html .= "<table border=\"0\" width=\"100%\"><tr><td valign=\"top\">\n";
     for (local $p_count = 0; $p_count < @param_nav_set-1; $p_count++) {
-	$html .= &single_navigation_bar ($param_nav_set[$p_count],$param_nav_set[$p_count+1]);
-	$html .= "<br />";
+        $html .= &single_navigation_bar ($param_nav_set[$p_count],$param_nav_set[$p_count+1]);
+        $html .= "<br />";
     }
     $html .= "</td><td valign=\"top\">";
 
@@ -53,7 +53,7 @@ sub draw_AJAX_navigation {
     my $formatter = Number::Format->new();
     $html .= "Rob is " . $formatter->format_number($days_since) . " days old today.";
 
-# change journal.pl at the bottom as well
+    # change journal.pl at the bottom as well
     $html .=  "</td>\n";
     $html .=  "</tr></table>\n";
     $html .= "<!-- end of navigation stuff at top of page -->\n";

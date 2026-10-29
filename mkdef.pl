@@ -4,9 +4,9 @@ sub mkdef {
     my($ival) = @_;
 
     if (defined $ival) {
-	return $ival;
+        return $ival;
     } else {
-	return "";
+        return "";
     }
 }
 1;

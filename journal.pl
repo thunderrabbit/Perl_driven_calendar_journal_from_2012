@@ -80,8 +80,8 @@ if ($printer_version) {
     $ls1r = <LSONER>;
 
     unless ($date =~ m!^\d\d\d\d(?:/|$)!m) {
-	# if date does not start with a four digit year, then grab the Latest Date as defined in the ls1R.html file
-	($date) = $ls1r =~ m/LATEST ENTRY DATE: (.*)/m;
+# if date does not start with a four digit year, then grab the Latest Date as defined in the ls1R.html file
+        ($date) = $ls1r =~ m/LATEST ENTRY DATE: (.*)/m;
     }
 
     ($year, $month, $day) = split /\//, $date;
@@ -97,7 +97,7 @@ else
     print "</td>";
 }
 
-    print "\n<td class=\"mainbar\">";
+print "\n<td class=\"mainbar\">";
 
 $debug && print "Here we print the journal entries for $date.\n";
 $debug && print "<br>year $year\n";
@@ -110,18 +110,18 @@ $debug && print "<br>next $nextday\n";
 print "\n<table border='0' width='100%'><tr>";
 unless ($printer_version) {
     if($day) {
-	print "<td>\n";
-	if($lastday) {
-	    print "<a href=\"$journal_pl?type=$journal_type&amp;date=$lastday\">prev day</a> ";
-	} else {
-	    print "prev day ";
-	}
-	if($nextday) {
-	    print "<a href=\"$journal_pl?type=$journal_type&amp;date=$nextday\">next day</a>";
-	} else {
-	    print "next day";
-	}
-	print "</td>\n";
+        print "<td>\n";
+        if($lastday) {
+            print "<a href=\"$journal_pl?type=$journal_type&amp;date=$lastday\">prev day</a> ";
+        } else {
+            print "prev day ";
+        }
+        if($nextday) {
+            print "<a href=\"$journal_pl?type=$journal_type&amp;date=$nextday\">next day</a>";
+        } else {
+            print "next day";
+        }
+        print "</td>\n";
     }
     print "<td align=\"right\"><a href=\"$journal_pl?type=$journal_type&amp;date=$day&amp;print=1\">printable version</a></td>";
 }
@@ -132,16 +132,16 @@ print "</tr></table>\n";
 
 unless ($printer_version) {
     if($day) {
-	if($lastday) {
-	    print "<a href=\"$journal_pl?type=$journal_type&amp;date=$lastday\">prev day</a> ";
-	} else {
-	    print "prev day ";
-	}
-	if($nextday) {
-	    print "<a href=\"$journal_pl?type=$journal_type&amp;date=$nextday\">next day</a>";
-	} else {
-	    print "next day";
-	}
+        if($lastday) {
+            print "<a href=\"$journal_pl?type=$journal_type&amp;date=$lastday\">prev day</a> ";
+        } else {
+            print "prev day ";
+        }
+        if($nextday) {
+            print "<a href=\"$journal_pl?type=$journal_type&amp;date=$nextday\">next day</a>";
+        } else {
+            print "next day";
+        }
     }
 }
 
