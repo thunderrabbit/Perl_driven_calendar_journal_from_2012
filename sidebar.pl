@@ -1,4 +1,12 @@
 #!/usr/bin/perl -w
+use strict;
+use warnings;
+
+# Globals this file owns: sidebar() sets $ls1rfile, $year, $month, $day,
+# $lastday and $nextday for journal.pl and mainbar.pl. $date, $ls1r and
+# $debug belong to journal.pl; $journal_pl to setup_journal.pl.
+our ($more_years_prefix, $ls1rfile, $year, $month, $day, $lastday, $nextday);
+our ($date, $ls1r, $debug, $journal_pl, $journal_type);
 
 $more_years_prefix = "/journal.pl?date=";
 
@@ -65,8 +73,8 @@ sub sidebar {
 
     #------------------------------------------
     # get years in the journal
-    ($years) = $ls1r =~ m/^YEARS: *(.*)?/m;
-    ($more_last_years, $lastyear, $nextyear, $more_next_years) =
+    my ($years) = $ls1r =~ m/^YEARS: *(.*)?/m;
+    my ($more_last_years, $lastyear, $nextyear, $more_next_years) =
         $years =~ m/
       #      2+yrs_ago        prev_yr
       (?:(?:(\d\d\d\d),\ *)?(\d\d\d\d),\ *)?
@@ -91,13 +99,13 @@ sub sidebar {
     $debug && print "<br>year = $year\n<br> next year = $nextyear\n";
 
     # get months in the journal
-    ($months) = $ls1r =~ m/^MONTHS $year: *(.*)?/m;
+    my ($months) = $ls1r =~ m/^MONTHS $year: *(.*)?/m;
     if ($month eq "") {
         # if month was unspecified, then default to last month of the year.
         ($month) = $months =~ m/(\d\d)$/m;
     }
 
-    ($more_last_months, $lastmonth, $nextmonth, $more_next_months) =
+    my ($more_last_months, $lastmonth, $nextmonth, $more_next_months) =
         $months =~ m/
       (?:(?:(\d\d),\ *)?(\d\d),\ *)?
       $month
@@ -113,11 +121,12 @@ sub sidebar {
     $debug && print "<p>IN SIDEBAR: month = $month\n<br> next month = $nextmonth\n</p>";
 
     # get days in the journal
-    ($days) = $ls1r =~ m|^DAYS $year/$month:\ *(.*)?|m;
+    my ($days) = $ls1r =~ m|^DAYS $year/$month:\ *(.*)?|m;
     if ($day eq "") {
         # if day was unspecified, then default to last day of the month.
         ($day) = $days =~ m/(\d\d)$/m;
     }
+    my ($more_last_days, $more_next_days);
     ($more_last_days, $lastday, $nextday, $more_next_days) =
         $days =~ m/
       (?:(?:(\d\d),\ *)?(\d\d),\ *)?
@@ -146,7 +155,7 @@ sub sidebar {
         } else {
             # look for first month in $nextyear
             if($nextyear) {
-                ($firstmonth_nextyear) = $ls1r =~ m/^MONTHS $nextyear:\ *(\d\d)?/m;
+                my ($firstmonth_nextyear) = $ls1r =~ m/^MONTHS $nextyear:\ *(\d\d)?/m;
                 $debug && print "<p>first month in next year = $firstmonth_nextyear\n</p>";
                 $nextmonth = "$nextyear/$firstmonth_nextyear";
             }
@@ -159,7 +168,7 @@ sub sidebar {
         } else {
             # look for final month in $lastyear
             if($lastyear) {
-                ($finalmonth_lastyear) = $ls1r =~ m/^MONTHS $lastyear:.*?(\d\d)?$/m;
+                my ($finalmonth_lastyear) = $ls1r =~ m/^MONTHS $lastyear:.*?(\d\d)?$/m;
                 $debug && print "<p>final month in last year = $finalmonth_lastyear\n</p>";
                 $lastmonth = "$lastyear/$finalmonth_lastyear";
             }
@@ -177,7 +186,7 @@ sub sidebar {
         } else {
             # look for first day in $nextmonth
             if($nextmonth) {
-                ($firstday_nextmonth) = $ls1r =~ m/^DAYS $nextmonth:\ *(\d\d)?/m;
+                my ($firstday_nextmonth) = $ls1r =~ m/^DAYS $nextmonth:\ *(\d\d)?/m;
                 $debug && print "<p>first day in next month = $firstday_nextmonth\n</p>";
                 $nextday = "$nextmonth/$firstday_nextmonth";
             }
@@ -190,7 +199,7 @@ sub sidebar {
         } else {
             # look for final day in $lastmonth
             if($lastmonth) {
-                ($finalday_lastmonth) = $ls1r =~ m/^DAYS $lastmonth:.*?(\d\d)?$/m;
+                my ($finalday_lastmonth) = $ls1r =~ m/^DAYS $lastmonth:.*?(\d\d)?$/m;
                 $debug && print "<p>final day in last month = $finalday_lastmonth\n</p>";
                 $lastday = "$lastmonth/$finalday_lastmonth";
             }
@@ -199,8 +208,8 @@ sub sidebar {
         }
     }
 
-    ($first_entry_date) = $ls1r =~ m/FIRST ENTRY DATE: (.*)/m;
-    ($latest_entry_date) = $ls1r =~ m/LATEST ENTRY DATE: (.*)/m;
+    my ($first_entry_date) = $ls1r =~ m/FIRST ENTRY DATE: (.*)/m;
+    my ($latest_entry_date) = $ls1r =~ m/LATEST ENTRY DATE: (.*)/m;
 
     #----------------------
 
