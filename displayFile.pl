@@ -1,3 +1,6 @@
+use strict;
+use warnings;
+
 sub displayFile
 {
     # $_[0] points to the first argument in the argument array @_;

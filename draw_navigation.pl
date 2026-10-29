@@ -1,3 +1,6 @@
+use strict;
+use warnings;
+
 require "single_navigation_bar.pl";
 
 use Cwd qw( abs_path );     # allows Perl 5.26 to include local module date_smurfer.pm
@@ -19,12 +22,12 @@ sub draw_AJAX_navigation {
     # this allows any number of navigation bars to be displayed easily
 
     # grab parameters
-    @param_nav_set = split(/&/, $_[0]);
+    my @param_nav_set = split(/&/, $_[0]);
     #    warn "|" . join (", ", @param_nav_set) . "|\n";
 
     my $html = "";
     $html .= "<table border=\"0\" width=\"100%\"><tr><td valign=\"top\">\n";
-    for (local $p_count = 0; $p_count < @param_nav_set-1; $p_count++) {
+    for (my $p_count = 0; $p_count < @param_nav_set-1; $p_count++) {
         $html .= &single_navigation_bar ($param_nav_set[$p_count],$param_nav_set[$p_count+1]);
         $html .= "<br />";
     }

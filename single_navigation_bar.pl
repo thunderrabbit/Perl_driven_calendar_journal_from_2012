@@ -1,7 +1,10 @@
+use strict;
+use warnings;
+
 sub single_navigation_bar {
 
     require "mkdef.pl";
-    local ($param_nav_set, $param_item_name) = @_;
+    my ($param_nav_set, $param_item_name) = @_;
 
     my $html;
     my $nav_settings_file = $ENV{JOURNAL_NAV_FILE} // "/home/barefoot_rob/robnugen.com/journal/navigation_definitions.txt";
@@ -10,7 +13,7 @@ sub single_navigation_bar {
 
     while (<IN>) {
         # separate the line using the space character as separator
-        ($nav_set, $item_name, $on, $off, $url) = split;
+        my ($nav_set, $item_name, $on, $off, $url) = split;
 
         $on =~ s/\+/ /g;   # 2007 aug 2: convert + to spaces, which allows the RSS feeds to have <a href...>
         $off =~ s/\+/ /g;   # 2007 aug 2: convert + to spaces, which allows the RSS feeds to have <a href...>
