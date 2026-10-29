@@ -1,10 +1,24 @@
 #!/usr/bin/perl -w
+use strict;
+use warnings;
 
 use Cwd qw( abs_path );     # allows Perl 5.26 to include local file setup_journal.pl
 use File::Basename qw( dirname );
 use lib dirname(abs_path(__FILE__));
 
 require "setup_journal.pl";
+
+# Config from setup_journal.pl.
+our ($journal_base, $journal_pl, $www_journal_pl, %journal_regex_type);
+
+# File-scope state of this script. $year is deliberately absent: the
+# localtime() call below declares a file-scope lexical $year that shadows
+# the rest of the file, and declaring it here as well would warn.
+our (@month_lengths, @month_titles_spaced_for_month_summaries, @month_titles_no_spacing,
+     @pre_month_whitespace, @post_month_whitespace, $ls1r);
+our ($month, $day, $dd, $files, @files_of_this_type, @files_of_ANY_type,
+     %list_of_years_per_journal_type, %list_of_months_per_year, %list_of_days_per_year_month,
+     $file, $title, $title_no_spaces, $error_message, $day_of_week);
 
 
 # create an RSS 1.0 file (http://purl.org/rss/1.0/)
@@ -52,14 +66,14 @@ if (!&iMayRunYet) {
 }
 
 sub setFeb {
-    local($year) = @_;
+    my ($year) = @_;
 
     if (&isLeap($year)) { $month_lengths[2]=29; }
     else { $month_lengths[2]=28; }
 }
 
 sub isLeap {
-    local($year) = @_;
+    my ($year) = @_;
     if ($year % 4 == 0) {
         if ($year % 100 == 0) {
             if ($year % 400 == 0) { 1; }
@@ -139,7 +153,7 @@ my $JST_dd = $mday;
 
 
 # %journal_regex_type is defined in setup_journal.pl
-foreach $journal_type (keys %journal_regex_type) {
+foreach my $journal_type (keys %journal_regex_type) {
 
     my $rss;
     undef $rss;
@@ -216,8 +230,6 @@ foreach $journal_type (keys %journal_regex_type) {
 
         if (@files_of_this_type)
         {
-
-            my $filename;
           # Now is where the work begins.  We know what year/month we're looking
           # at, and we have confirmed that there are files in that month that
           # match the regex.  Remember this year has such files.  Remember this
@@ -229,7 +241,7 @@ foreach $journal_type (keys %journal_regex_type) {
             # add this month to this year's list of months with these files
             $list_of_months_per_year{$year}->{$month} = "Y";
 
-            foreach $filename (@files_of_this_type) {
+            foreach my $filename (@files_of_this_type) {
 
                 unless ($filename =~ m/.*\.comment~*$/) {      # keep comments from being displayed
                     unless ($filename =~ m/.*\~$/) {      # keep backups from being displayed
@@ -296,7 +308,7 @@ foreach $journal_type (keys %journal_regex_type) {
 
     print HTML_OUTPUT "<p><!-- YEAR SUMMARIES --></p>\n\n";
 ####### PRINT HTML_OUTPUT YEAR SUMMARIES ##################
-    foreach $year (sort keys %list_of_months_per_year) {
+    foreach my $year (sort keys %list_of_months_per_year) {
 
         print HTML_OUTPUT "MONTHS $year: ";
         print HTML_OUTPUT join ", ", (sort keys %{ $list_of_months_per_year{$year} });
@@ -305,7 +317,7 @@ foreach $journal_type (keys %journal_regex_type) {
         print HTML_OUTPUT "$year:\n";
         print HTML_OUTPUT "<pre class='calendar'>\n";
         print HTML_OUTPUT "         <a href=\"$journal_pl?type=$journal_type&amp;date=$year\">$year</a>        \n";
-        foreach $i (1..12) {
+        foreach my $i (1..12) {
             $month = sprintf "%2.2d", $i;
             print HTML_OUTPUT $pre_month_whitespace[$month];
 
@@ -323,7 +335,7 @@ foreach $journal_type (keys %journal_regex_type) {
 
     print HTML_OUTPUT "<p><!-- MONTH SUMMARIES --></p>\n\n";
 ####### PRINT HTML_OUTPUT MONTH SUMMARIES ##################
-    foreach $yearmonth (sort keys %list_of_days_per_year_month) {
+    foreach my $yearmonth (sort keys %list_of_days_per_year_month) {
         ($year,$month) = $yearmonth =~ m!(\d\d\d\d)/(\d\d)!;
         unless ($month =~ m/^\d\d$/) {next;}
         # Make sure month is exactly two digits before continuing.
@@ -345,7 +357,7 @@ foreach $journal_type (keys %journal_regex_type) {
         print HTML_OUTPUT "&nbsp;$1<a href=\"$journal_pl?type=$journal_type&amp;date=$year/$month\">$2 $year</a>\n";
         print HTML_OUTPUT "&nbsp;";
         print HTML_OUTPUT "   " x $day_of_week;
-        foreach $i (1..$month_lengths[$month]) {
+        foreach my $i (1..$month_lengths[$month]) {
             $day = sprintf "%2.2d", $i;
             # Here is where we print HTML_OUTPUT the day number.
             # This needs to include newlines after each Saturday.
@@ -396,7 +408,7 @@ print "</head>\n";
 print "<body>\n";
 
 print $error_message if $error_message;
-foreach $journal_type (keys %journal_regex_type) {
+foreach my $journal_type (keys %journal_regex_type) {
     my  $longname = "/journal/journal/preformatted_index_for_" . $journal_type . "_entries.html";
     print "<br><a href=\"$longname\">$journal_type index</a>";
     print "<br><a href=\"$journal_pl?type=$journal_type\">$journal_type journal</a>";
