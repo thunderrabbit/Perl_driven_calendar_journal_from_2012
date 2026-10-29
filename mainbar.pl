@@ -1,3 +1,12 @@
+use strict;
+use warnings;
+
+# Config from setup_journal.pl; $debug from journal.pl. $year, $month and
+# $day are the shared globals set by sidebar(): journal.pl reads $day after
+# mainbar() returns, so they stay global here.
+our ($debug, $journal_base, %journal_regex_type, $www_journal_pl, $between_file_text);
+our ($year, $month, $day);
+
 sub mainbar {
     my ($date,$journal_type) = @_;
     my (@list_of_titles, @list_of_hrefs, $filename_counter, $title, $filename, $name_for_href_on_this_page);
@@ -17,14 +26,15 @@ sub mainbar {
     # escape. Legitimate numeric date components are unaffected.
     my $glob_prefix = "$journal_base/$year/$month/$day";
     $glob_prefix =~ s/([\\*?\[\]{}~ ])/\\$1/g;
-    @all_files_for_date = glob("$glob_prefix*");
+    my @all_files_for_date = glob("$glob_prefix*");
 ## end ADDRESSING private entries using security through obscurity
 
     $debug && print "<p>$journal_base/$year/$month/$day</p>";
     $debug && print "\n\n<pre>" . @all_files_for_date . "</pre>\n\n";
 
     # prune this list to only files that match regex
-    foreach $full_file_path (@all_files_for_date) {
+    my (@files_for_date, $matching_file);
+    foreach my $full_file_path (@all_files_for_date) {
         my ($file_only) = $full_file_path =~ m!/(?:(?:.*?)/)*(.*)!;
         $debug && print "<br>comparing $file_only to !$journal_regex_type{$journal_type}!";
         push(@files_for_date, $full_file_path) if ($matching_file) = $file_only =~ m!$journal_regex_type{$journal_type}!i;
@@ -32,7 +42,7 @@ sub mainbar {
 
     # print the entries for this day so people can click on links
     print "<p>Entries this day: ";
-    foreach $file (sort @files_for_date) {       # sort puts the files in A..Za..z order
+    foreach my $file (sort @files_for_date) {       # sort puts the files in A..Za..z order
         unless ($file =~ m/.*\.comment~*$/) {      # keep comments from being displayed
             unless ($file =~ m/.*\~$/) {      # keep backups from being displayed
                 $debug && print "<br>file is \"$file\"\n";
@@ -40,7 +50,7 @@ sub mainbar {
                 $debug && print "<br>title is \"$title\"\n";
 # $filename is the filename only with no path info.  This name is sent to comment.pl to hide the path of my filesystem.
                 ($filename) = $file =~ m!.*/(\d\d.*\.(?:html|txt|md))$!;
-                $title_no_spaces = $title;
+                my $title_no_spaces = $title;
                 $title_no_spaces =~ s/_/ /g;  # basically the title of the entry
 
 # Fixes #9, but a better fix is #8 get title from Frontmatter if this is a markdown file
@@ -57,13 +67,13 @@ sub mainbar {
     }
     print "</p> <!-- matches Entries this day: -->\n";
 
-    foreach $file (sort @files_for_date) {       # sort puts the files in A..Za..z order
+    foreach my $file (sort @files_for_date) {       # sort puts the files in A..Za..z order
         unless ($file =~ m/.*\.comment~*$/) {      # keep comments from being displayed
             unless ($file =~ m/.*\~$/) {      # keep backups from being displayed
                                              # print "<! filename: $file >\n";
-                $this_entrys_href = shift @list_of_hrefs;
+                my $this_entrys_href = shift @list_of_hrefs;
                 print ("<a name=\"", $this_entrys_href, "\"></a>\n");
-                $this_entrys_title = shift @list_of_titles;
+                my $this_entrys_title = shift @list_of_titles;
                 print ("<p class=\"entry_title\">", $this_entrys_title, "</p>\n");
 
                 my $istext = 1  if ($file =~ m/\.txt$/i);
@@ -73,14 +83,14 @@ sub mainbar {
                 if ($ismd) {
                     eval {
                         require Text::RobMiniMarkdown;
-                        $md = Text::RobMiniMarkdown->new;
+                        my $md = Text::RobMiniMarkdown->new;
                         my $markdown_content = do {
                             local $/;
                             open my $fh, '<', $file or die "Could not open $file: $!";
                             <$fh>;
                         };
 
-                        $md_text = $md->markdown($markdown_content);
+                        my $md_text = $md->markdown($markdown_content);
                         if ($md_text) {
                             print $md_text;
                         } else {
