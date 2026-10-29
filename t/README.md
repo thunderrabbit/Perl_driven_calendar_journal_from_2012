@@ -82,4 +82,4 @@ and the whitespace rules. To run it before every commit:
 | tier | pages | wall time | measured |
 |---|---|---|---|
 | smoke | 24,024 | 12 min 20 s | 2026-10-29, two runs, byte-identical |
-| full | 180,648 | (filled in after the baseline) | |
+| full | 180,648 | 92 min 58 s | 2026-10-29 baseline, 0 pages with stderr |
