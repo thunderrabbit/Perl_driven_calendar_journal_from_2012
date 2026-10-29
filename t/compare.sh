@@ -7,6 +7,11 @@ set -uo pipefail
 source "$(dirname "$0")/env.sh"
 a="$HARNESS/render/${1:?usage: compare.sh <before> <after>}"
 b="$HARNESS/render/${2:?usage: compare.sh <before> <after>}"
+for d in "$a" "$b"; do
+    [ -d "$d/out" ] || { echo "compare.sh: no snapshot at $d"; exit 2; }
+    grep -q '^finished: ' "$d/meta.txt" 2>/dev/null \
+        || { echo "compare.sh: $d did not finish (no finished: line in meta.txt)"; exit 2; }
+done
 report="$b/diff-vs-$1.txt"
 : > "$report"
 n=0
@@ -19,6 +24,7 @@ while IFS= read -r -d '' f; do
         { echo "differs: $rel"; diff "$a/out/$rel" "$f"; } >> "$report"
     fi
 done < <(find "$b/out" -type f -print0)
+[ "$n" -gt 0 ] || { echo "compare.sh: $2 rendered no files"; exit 2; }
 tier_a=$(sed -n 's/^tier: //p' "$a/meta.txt" 2>/dev/null)
 tier_b=$(sed -n 's/^tier: //p' "$b/meta.txt" 2>/dev/null)
 if [ "$tier_a" = "$tier_b" ]; then
