@@ -3,7 +3,9 @@
 # plus four-space indentation, no trailing whitespace and a final newline over
 # the code files. Exit 1 on any hit. Never looks inside journal/ (the entries)
 # or .superpowers/ (git-ignored plan scratch).
-cd "$(dirname "$0")" || exit 2
+# readlink -f so the script still finds the repo when run through a symlink
+# such as .git/hooks/pre-commit.
+cd "$(dirname "$(readlink -f "$0")")" || exit 2
 
 PERLBIN="$HOME/perl5/perlbrew/perls/perl-5.38.2/bin"
 unset PERL_MB_OPT PERL_MM_OPT PERL_LOCAL_LIB_ROOT
@@ -22,6 +24,10 @@ list_files() {
 status=0
 mapfile -t FILES < <(list_files)
 mapfile -t PL < <(printf '%s\n' "${FILES[@]}" | grep '\.pl$')
+if [ "${#PL[@]}" -eq 0 ]; then
+    echo "lint.sh: no .pl files found under $PWD"
+    exit 2
+fi
 
 hits=$(grep -nP '[ \t]+$' "${FILES[@]}" /dev/null)
 if [ -n "$hits" ]; then echo "trailing whitespace:"; echo "$hits"; status=1; fi
