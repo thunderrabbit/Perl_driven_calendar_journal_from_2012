@@ -1,4 +1,6 @@
 #!/usr/bin/perl
+use strict;
+use warnings;
 
 print "Content-type: text/html\n\n";
 
@@ -10,6 +12,13 @@ use Cwd qw( abs_path );     # allows Perl 5.26 to include local module date_smur
 use File::Basename qw( dirname );
 use lib dirname(abs_path(__FILE__));
 use lib "/home/barefoot_rob/dev/Text-RobMiniMarkdown/lib";  # CPAN-friendly development directory
+
+# Request state shared with the require'd fragments: draw_header.pl,
+# sidebar.pl and mainbar.pl read these. Config comes from setup_journal.pl.
+# sidebar() sets $ls1rfile, $year, $month, $day, $lastday and $nextday.
+our ($require_reload, $debug, $date, $printer_version, $journal_type, $indexname, $ls1r);
+our ($journal_base, $journal_pl, %journal_regex_type);
+our ($ls1rfile, $year, $month, $day, $lastday, $nextday);
 
 
 my($query);
