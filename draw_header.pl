@@ -1,7 +1,14 @@
+use strict;
+use warnings;
+
 use CGI ();   # for CGI::escape() used below to URL-encode reflected values
 
+# Request state owned by journal.pl, config by setup_journal.pl.
+our ($date, $require_reload, $indexname, $ls1r, $printer_version, $journal_type);
+our ($style_css, $journal_css);
+
 sub draw_header {
-    $new_date = $date;  # if $require_reload = 1, then $new_date will be used below to refresh to new URL
+    my $new_date = $date;  # if $require_reload = 1, then $new_date will be used below to refresh to new URL
     if ($date eq "nil") {
 # this code was jacked from sidebar.pl to force the redirect to happen if the date is not given
 # this code was jacked from sidebar.pl to force the redirect to happen if the date is not given
