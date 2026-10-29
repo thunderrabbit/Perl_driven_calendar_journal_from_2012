@@ -35,7 +35,7 @@ All of this is set by `t/env.sh`; source it for any by-hand run.
 | `render-one.sh <outroot> <type> <date> <print>` | one `journal.pl` page (used by `render.sh` via xargs) |
 | `render.sh <name> [--full]` | index writer, then the matrix, into `render/<name>/{out,stderr}` plus `meta.txt`, `matrix.txt`, `stderr-report.txt` |
 | `summarize-stderr.sh <name>` | counts, unique messages, example pages |
-| `compare.sh <before> <after>` | `diff -r` of the two `out/` trees; exit 0 iff identical |
+| `compare.sh <before> <after>` | every file in `<after>` must match `<before>` byte for byte; when both are the same tier `<before>` may not hold extra files either, so a smoke `<after>` checks only its own pages against a full `<before>`; exit 0 iff clean |
 | `live-check.sh` | fetches each query in `live-urls.txt` from robnugen.com and compares to a local render after normalizing the known time-dependent lines |
 | `reindent.pl ORIGINAL TIDIED` | applies only the leading whitespace of a perltidy result to the original |
 
